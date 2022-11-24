@@ -4,15 +4,18 @@
   "main": "dist/index.js",
   "module": "./dist/index.mjs",
   "scripts": {
-    "predev": "yarn start && yarn sync",
+    "predev": "yarn start && yarn sync && yarn migrate && yarn seed",
     "dev": "tsup src/index.ts --dts --watch --format esm,cjs",
     "build": "tsup src/index.ts --dts --format esm,cjs",
     "start": "docker-compose up -d",
     "stop": "docker-compose down",
-    "sync": "dotenv -c -- prisma generateprisma migrate dev",
+    "sync": "dotenv -c -- prisma generate prisma migrate dev",
     "migrate": "dotenv -c -- prisma migrate dev",
-    "ui": "prisma studio",
-    "seed": "prisma db seed"
+    "ui": "dotenv -c -- prisma studio",
+    "seed": "dotenv -c -- prisma db seed"
+  },
+  "prisma": {
+    "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} --transpile-only prisma/seed.ts"
   },
   "devDependencies": {
     "@types/node": "^18.11.9",

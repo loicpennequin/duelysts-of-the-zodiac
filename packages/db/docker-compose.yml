@@ -4,12 +4,13 @@ services:
     image: mysql:5.7
     platform: linux/x86_64
     restart: always
-    env_file: ./.env
+    env_file: 
+      - .env.local
     environment:
-      - MYSQL_ROOT_PASSWORD=$DB_PASSWORD
-      - MYSQL_DATABASE=$DB_NAME
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=dotz
     ports:
-      - $DB_LOCAL_PORT:$DB_DOCKER_PORT
+      - 3306:3306$DB_LOCAL_PORT
     volumes:
       - db:/var/lib/mysql
 
