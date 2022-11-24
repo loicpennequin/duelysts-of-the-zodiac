@@ -1,13 +1,14 @@
 import { type inferAsyncReturnType, initTRPC } from '@trpc/server';
 import type http from 'http';
+import { prisma } from '@dotz/db';
 
-export const t = initTRPC.create();
+export const t = initTRPC.context<Context>().create();
 export const apiRouter = t.router({
-  hello: t.procedure.query(() => {
-    return 'hello from trpc with nodemon update';
+  hello: t.procedure.query(({ ctx }) => {
+    return ctx.db.user.findMany();
   })
 });
-// export type definition of API
+
 export type ApiRouter = typeof apiRouter;
 
 type CreateContextOptions = {
@@ -16,7 +17,8 @@ type CreateContextOptions = {
 };
 export const createApiContext = ({ req, res }: CreateContextOptions) => ({
   req,
-  res
+  res,
+  db: prisma
 });
 
 export type Context = inferAsyncReturnType<typeof createApiContext>;
