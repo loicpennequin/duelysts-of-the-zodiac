@@ -1,0 +1,20 @@
+{
+  "name": "root",
+  "private": true,
+  "scripts": {
+    "dev": "node scripts/dev.js",
+    "start": "yarn server start"
+  },
+  "workspaces": {
+    "packages": [
+      "packages/*"
+    ]
+  },
+  "dependencies": {
+    "concurrently": "^7.5.0",
+    "fs-extra": "^10.1.0"
+  },
+  "devDependencies": {
+    "shx": "^0.3.4"
+  }
+}
