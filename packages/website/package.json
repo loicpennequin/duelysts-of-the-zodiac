@@ -1,21 +1,17 @@
 {
   "name": "@dotz/website",
-  "version": "0.0.0",
+  "type": "module",
+  "version": "0.0.1",
+  "private": true,
   "scripts": {
-    "dev": "iles dev --open",
-    "build": "iles build",
-    "preview": "iles preview --open --port 5050",
-    "test": "iles test",
-    "typecheck": "vue-tsc --noEmit"
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro"
   },
-  "engines": {
-    "node": "^14.18 || >= 16.0.0"
-  },
-  "devDependencies": {
-    "iles": "^0.8.4",
-    "typescript": "^4.5",
-    "vite": "3.0.9",
-    "vitest": "*",
-    "vue-tsc": "^0.38"
+  "dependencies": {
+    "@astrojs/vue": "^1.2.1",
+    "astro": "^1.6.11"
   }
 }
