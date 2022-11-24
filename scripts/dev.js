@@ -15,6 +15,7 @@ async function main() {
     command: `yarn workspace ${pkgJson.name} dev`,
     name: pkgJson.name.replace(ORG_PREFIX, ""),
   }));
+
   concurrently(commands, {
     killOthers: ["failure", "success"],
     cwd: process.cwd(),
