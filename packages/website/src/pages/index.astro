@@ -1,12 +1,7 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import { trpcClient } from '../trpc';
-import UsersList from '../components/UsersList.vue';
-
-const users = await trpcClient.user.findAll.query()
 ---
 
 <Layout title="Duelysts of the Zodiac">
-	<a href="/signupn">Play now for free</a>
-	<UsersList users={users} />
+	<a href="/signup">Play now for free</a>
 </Layout>
