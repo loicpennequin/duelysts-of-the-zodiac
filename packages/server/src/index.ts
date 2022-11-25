@@ -1,9 +1,9 @@
 import express from 'express';
 import http from 'http';
-
 import * as trpcExpress from '@trpc/server/adapters/express';
 import { apiRouter, createApiContext } from '@dotz/api';
 import cors from 'cors';
+
 const app = express();
 const server = http.createServer(app);
 

@@ -6,6 +6,7 @@ import { UserRepository } from './user/UserRepository';
 import { CreateUserController } from './user/controllers/CreateUserController';
 import { GetAllUsersController } from './user/controllers/GetallUsersController';
 import { db } from './db';
+import { UserMapper } from './user/UserMapper';
 
 export type CreateContextOptions = {
   req: http.IncomingMessage;
@@ -18,6 +19,7 @@ export const createApiContext = ({ req, res }: CreateContextOptions) => ({
     db: asValue(db),
     userRepo: asClass(UserRepository),
     createUserUController: asClass(CreateUserController),
+    userMapper: asClass(UserMapper),
     getAllUsersController: asClass(GetAllUsersController)
   })
 });

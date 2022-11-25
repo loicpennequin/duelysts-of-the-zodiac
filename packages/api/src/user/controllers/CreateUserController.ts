@@ -1,19 +1,26 @@
+import type { UserDto } from '@dotz/shared';
 import type { UseCase } from '../../types';
 import type { CreateUserDto } from '../dtos';
+import type { UserMapper } from '../UserMapper';
 import type { UserRepository } from '../UserRepository';
-import type { User } from '@prisma/client';
 
 type Args = {
   userRepo: UserRepository;
+  userMapper: UserMapper;
 };
-export class CreateUserController implements UseCase<CreateUserDto, User> {
+export class CreateUserController implements UseCase<CreateUserDto, UserDto> {
   private userRepo: UserRepository;
 
-  constructor({ userRepo }: Args) {
+  private userMapper: UserMapper;
+
+  constructor({ userRepo, userMapper }: Args) {
     this.userRepo = userRepo;
+    this.userMapper = userMapper;
   }
 
-  execute(dto: CreateUserDto) {
-    return this.userRepo.create(dto);
+  async execute(dto: CreateUserDto) {
+    const user = await this.userRepo.create(dto);
+
+    return this.userMapper.toDto(user);
   }
 }
