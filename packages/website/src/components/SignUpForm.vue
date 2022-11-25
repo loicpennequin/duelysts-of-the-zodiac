@@ -1,6 +1,29 @@
 <script setup lang="ts">
+import { useMutation } from "@tanstack/vue-query";
+import { trpcClient } from "../trpc";
+import { reactive, ref } from "vue";
+
+const form = reactive({
+  email: "",
+  password: "",
+});
+const error = ref<any>(null);
+
+const { mutate } = useMutation(
+  ["signup"],
+  () => trpcClient.user.create.mutate(form),
+  {
+    onSuccess() {
+      window.location.assign("http://localhost:3000");
+    },
+    onError(err) {
+      error.value = err;
+    },
+  }
+);
+
 const signUp = () => {
-  console.log("sign up");
+  mutate();
 };
 </script>
 
@@ -8,11 +31,11 @@ const signUp = () => {
   <form @submit.prevent="signUp">
     <fieldset>
       <label for="email">E-mail address</label>
-      <input id="email" type="email" />
+      <input id="email" type="email" v-model="form.email" />
     </fieldset>
     <fieldset>
       <label for="password">Password</label>
-      <input id="password" type="password" />
+      <input id="password" type="password" v-model="form.password" />
     </fieldset>
     <fieldset>
       <label for="password-confirm">Confirm password</label>
@@ -20,6 +43,7 @@ const signUp = () => {
     </fieldset>
 
     <button>Sign up</button>
+    <p v-if="error" style="color: red">{{ error }}</p>
   </form>
 </template>
 

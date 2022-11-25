@@ -13,7 +13,11 @@
   },
   "dependencies": {
     "@dotz/db": "*",
+    "@dotz/shared-domain": "*",
     "@trpc/server": "^10.1.0",
+    "@types/bcrypt": "^5.0.0",
+    "awilix": "^8.0.0",
+    "bcrypt": "^5.1.0",
     "zod": "^3.19.1"
   }
 }

@@ -1,24 +1,12 @@
-import { type inferAsyncReturnType, initTRPC } from '@trpc/server';
-import type http from 'http';
-import { prisma } from '@dotz/db';
+import { initTRPC } from '@trpc/server';
+import { type Context, createApiContext } from './createContext';
+import { userRouter } from './user/userRouter';
 
 export const t = initTRPC.context<Context>().create();
 export const apiRouter = t.router({
-  hello: t.procedure.query(({ ctx }) => {
-    return ctx.db.user.findMany();
-  })
+  user: userRouter
 });
 
 export type ApiRouter = typeof apiRouter;
 
-type CreateContextOptions = {
-  req: http.IncomingMessage;
-  res: http.ServerResponse;
-};
-export const createApiContext = ({ req, res }: CreateContextOptions) => ({
-  req,
-  res,
-  db: prisma
-});
-
-export type Context = inferAsyncReturnType<typeof createApiContext>;
+export { createApiContext, Context };

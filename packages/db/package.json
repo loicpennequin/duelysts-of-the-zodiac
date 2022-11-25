@@ -11,6 +11,7 @@
     "stop": "docker-compose down",
     "sync": "dotenv -c -- prisma generate prisma migrate dev",
     "migrate": "dotenv -c -- prisma migrate dev",
+    "migrate:force": "dotenv -c -- prisma db push",
     "ui": "dotenv -c -- prisma studio",
     "seed": "dotenv -c -- prisma db seed"
   },

@@ -6,5 +6,3 @@ export const CreateUserDto = z.object({
 });
 
 export type CreateUserDto = z.infer<typeof CreateUserDto>;
-
-export * from './types';

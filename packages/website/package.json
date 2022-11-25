@@ -11,7 +11,19 @@
     "astro": "astro"
   },
   "dependencies": {
-    "@astrojs/vue": "^1.2.1",
+    "@dotz/shared-domain": "*",
+    "@tanstack/vue-query": "^4.17.0",
+    "@trpc/client": "^10.1.0",
     "astro": "^1.6.11"
+  },
+  "devDependencies": {
+    "@astrojs/vue": "^1.2.1",
+    "@rushstack/eslint-patch": "^1.2.0",
+    "@typescript-eslint/parser": "^5.44.0",
+    "@vue/eslint-config-prettier": "^7.0.0",
+    "@vue/eslint-config-typescript": "^11.0.2",
+    "eslint": "^8.28.0",
+    "eslint-plugin-astro": "^0.21.0",
+    "eslint-plugin-vue": "^9.8.0"
   }
 }
