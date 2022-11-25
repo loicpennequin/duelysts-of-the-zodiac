@@ -5,19 +5,34 @@
   "module": "./dist/index.mjs",
   "scripts": {
     "dev": "tsup src/index.ts --dts --watch --format esm,cjs",
-    "build": "tsup src/index.ts --dts --format esm,cjs"
+    "build": "tsup src/index.ts --dts --format esm,cjs",
+    "predev": "yarn db:start && yarn db:sync && yarn db:migrate",
+    "db:start": "docker-compose up -d",
+    "db:stop": "docker-compose down",
+    "db:sync": "dotenv -c -- prisma generate prisma migrate dev",
+    "db:migrate": "dotenv -c -- prisma migrate dev",
+    "db:migrate:force": "dotenv -c -- prisma db push",
+    "db:ui": "dotenv -c -- prisma studio",
+    "db:seed": "dotenv -c -- prisma db seed"
+  },
+  "prisma": {
+    "seed": "ts-node --project tsconfig.seed.json --transpile-only prisma/seed.ts"
   },
   "devDependencies": {
     "tsup": "^6.4.0",
-    "typescript": "^4.9.3"
+    "typescript": "^4.9.3",
+    "@types/node": "^18.11.9",
+    "dotenv-cli": "^6.0.0",
+    "prisma": "^4.6.1",
+    "ts-node": "^10.9.1"
   },
   "dependencies": {
-    "@dotz/db": "*",
     "@dotz/shared-domain": "*",
     "@trpc/server": "^10.1.0",
     "@types/bcrypt": "^5.0.0",
     "awilix": "^8.0.0",
     "bcrypt": "^5.1.0",
-    "zod": "^3.19.1"
+    "zod": "^3.19.1",
+    "@prisma/client": "^4.6.1"
   }
 }

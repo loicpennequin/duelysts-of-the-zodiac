@@ -1,4 +1,4 @@
-import type { Db } from '@dotz/db';
+import type { Db } from '../db';
 import type { CreateUserDto } from './dtos';
 import bcrypt from 'bcrypt';
 
