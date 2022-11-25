@@ -6,7 +6,10 @@
     "build:libs": "yarn workspace @dotz/shared build && yarn workspace @dotz/sdk build && yarn workspace @dotz/api build",
     "build:front": "yarn workspace @dotz/website build & yarn workspace @dotz/client build:win",
     "build:back": "yarn workspace @dotz/server build",
-    "postbuild:back": "shx cp -r ./packages/website/dist/* ./packages/server/public && shx cp -r ./packages/client/dist ./packages/server/public/installers",
+    "move:website": "shx cp -r ./packages/website/dist/* ./packages/server/public",
+    "move:client": "shx mkdir ./packages/server/public/play && shx cp -r ./packages/client/out/renderer/* ./packages/server/public/play",
+    "move:installers": "shx cp -r ./packages/client/dist ./packages/server/public/installers",
+    "postbuild:back": "yarn move:website && yarn move:client && yarn move:installers",
     "build": "yarn build:libs && yarn build:front && yarn build:back",
     "start": "yarn workspace @dotz/server  start"
   },
