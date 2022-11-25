@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { User } from "@dotz/shared-domain";
+import type { User } from "@dotz/shared";
 
 const props = defineProps<{ users: User[] }>();
 </script>

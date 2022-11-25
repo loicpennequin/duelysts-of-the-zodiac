@@ -27,7 +27,7 @@
     "ts-node": "^10.9.1"
   },
   "dependencies": {
-    "@dotz/shared-domain": "*",
+    "@dotz/shared": "*",
     "@trpc/server": "^10.1.0",
     "@types/bcrypt": "^5.0.0",
     "awilix": "^8.0.0",
