@@ -1,14 +1,14 @@
 import type { LoginDto } from '@dotz/shared';
-import type { Response } from 'express';
 import { getConfig } from '../../config';
 import { REFRESH_TOKEN_COOKIE } from '../../constants';
 import { login } from '../authService';
+import type { HandlerArgs } from '../../types';
 
-export const loginHandler = async (dto: LoginDto, res: Response) => {
+export const loginHandler = async ({ ctx, input }: HandlerArgs<LoginDto>) => {
   const config = getConfig();
-  const { accessToken, refreshToken } = await login(dto);
+  const { accessToken, refreshToken } = await login(input);
 
-  res.cookie(REFRESH_TOKEN_COOKIE, refreshToken, {
+  ctx.res.cookie(REFRESH_TOKEN_COOKIE, refreshToken, {
     path: config.REFRESH_TOKEN.PATH,
     httpOnly: config.REFRESH_TOKEN.HTTPONLY,
     secure: config.REFRESH_TOKEN.SECURE,
