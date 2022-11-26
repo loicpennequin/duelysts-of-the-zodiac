@@ -31,7 +31,6 @@
     "@prisma/client": "^4.6.1",
     "@trpc/server": "^10.1.0",
     "@types/bcrypt": "^5.0.0",
-    "awilix": "^8.0.0",
     "bcrypt": "^5.1.0",
     "superjson": "^1.11.0",
     "zod": "^3.19.1"

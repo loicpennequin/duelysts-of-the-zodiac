@@ -1,12 +1,14 @@
 import { procedure, router } from '../router';
-import { CreateUserDto } from './dtos';
+import { CreateUserDto } from '@dotz/shared';
+import { createUserHandler } from './handlers/createUserHandler';
+import { getAllUsersHandler } from './handlers/getAllUsersHandler';
 
 export const userRouter = router({
-  create: procedure.input(CreateUserDto).mutation(({ ctx, input }) => {
-    return ctx.container.resolve('createUserUController').execute(input);
+  create: procedure.input(CreateUserDto).mutation(({ input }) => {
+    return createUserHandler(input);
   }),
 
-  findAll: procedure.query(({ ctx }) => {
-    return ctx.container.resolve('getAllUsersController').execute();
+  findAll: procedure.query(() => {
+    return getAllUsersHandler();
   })
 });

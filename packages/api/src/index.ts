@@ -1,9 +1,8 @@
-import { initTRPC } from '@trpc/server';
 import { type Context, createApiContext } from './createContext';
 import { userRouter } from './user/userRouter';
+import { router } from './router';
 
-export const t = initTRPC.context<Context>().create();
-export const apiRouter = t.router({
+export const apiRouter = router({
   user: userRouter
 });
 

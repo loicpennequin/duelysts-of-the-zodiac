@@ -1,4 +1,12 @@
-import type { Size, Point, Matrix, AnyConstructor } from './types';
+import type {
+  Size,
+  Point,
+  Matrix,
+  AnyConstructor,
+  Either,
+  Left,
+  Right
+} from './types';
 
 export const indexBy = <T extends Record<string, any>>(
   arr: T[],
@@ -75,11 +83,6 @@ export const pipeBuilder = <A, B>(fn: (a: A) => B) => {
 
 export const mixinBuilder = <TBase extends AnyConstructor>(BaseClass: TBase) =>
   pipeBuilder(() => BaseClass);
-
-export const pipe =
-  <T>(...fns: Array<(arg: T) => T>) =>
-  (value: T) =>
-    fns.reduce((acc, fn) => fn(acc), value);
 
 export const noop = () => void 0;
 
