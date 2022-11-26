@@ -1,12 +1,4 @@
-import type {
-  Size,
-  Point,
-  Matrix,
-  AnyConstructor,
-  Either,
-  Left,
-  Right
-} from './types';
+import type { Size, Point, Matrix, AnyConstructor } from './types';
 
 export const indexBy = <T extends Record<string, any>>(
   arr: T[],

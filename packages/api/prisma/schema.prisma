@@ -9,6 +9,7 @@ model User {
   email        String    @unique
   username     String?
   passwordHash String
+  refreshToken String?
 }
 
 datasource db {
