@@ -3,8 +3,10 @@ import { FIFTEEN_MINUTES_IN_SECONDS, ONE_WEEK_IN_SECONDS } from '@dotz/shared';
 export const createConfig = () => ({
   PORT: process.env.PORT,
 
+  WEBSITE_URL: process.env.WEBSITE_URL,
+
   CORS: {
-    ALLOWED_ORIGINS: ['http://localhost:3000', 'http://localhost:5173']
+    ALLOWED_ORIGINS: [process.env.WEBSITE_URL, 'http://localhost:5173']
   },
 
   SESSION: {

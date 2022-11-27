@@ -40,6 +40,20 @@ export const findUserByEmail = (email: string) => {
   return db.user.findUnique({ where: { email } });
 };
 
+export const findByPasswordResetToken = (token: string) => {
+  return db.user.findFirst({ where: { passwordResetToken: token } });
+};
+
 export const updateUserById = (id: string, data: Partial<User>) => {
   return db.user.update({ where: { id }, data });
+};
+
+export const resetPassword = async (id: string, password: string) => {
+  return db.user.update({
+    where: { id },
+    data: {
+      passwordHash: await bcrypt.hash(password, SALT_ROUNDS),
+      passwordResetToken: null
+    }
+  });
 };

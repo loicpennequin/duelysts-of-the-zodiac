@@ -29,8 +29,8 @@ const lostPasswordUrl = `${
       <input id="remember-me" v-model="rememberMe" type="checkbox" />
       <label for="remember-me">Remember me</label>
     </fieldset>
-    <a :href="lostPasswordUrl" target="_blank">Forgot password ?</a>
     <button>Login</button>
+    <a :href="lostPasswordUrl" target="_blank">Forgot password ?</a>
     <p v-if="error" style="color: red">{{ error }}</p>
   </form>
 </template>

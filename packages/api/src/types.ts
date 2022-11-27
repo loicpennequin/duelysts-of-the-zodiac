@@ -1,6 +1,8 @@
 import type { Context } from './createContext';
 
 export type ApiConfig = {
+  WEBSITE_URL: string;
+
   REFRESH_TOKEN: {
     SECRET: string;
     EXPIRES_IN_SECONDS: number;

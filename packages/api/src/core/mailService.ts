@@ -15,12 +15,16 @@ const getTransport = () => {
 export const mailerService: IMailService = {
   sendMail({ to, template }) {
     const transporter = getTransport();
-
-    return transporter.sendMail({
-      from: 'dotz@gmail.com',
-      to,
-      subject: template.subject,
-      html: template.body
-    });
+    console.log('hello ?');
+    return transporter
+      .sendMail({
+        from: 'dotz@gmail.com',
+        to,
+        subject: template.subject,
+        html: template.body
+      })
+      .then(result => {
+        console.log('mail sent', result);
+      });
   }
 };
