@@ -8,23 +8,24 @@ import { authService } from './api/auth';
 
 const routes = setupLayouts(generatedRoutes);
 
-authService.init();
-createApp(App)
-  .use(
-    createRouter({
-      history: createWebHistory(),
-      routes
-    })
-  )
-  .use(VueQueryPlugin, {
-    queryClientConfig: {
-      defaultOptions: {
-        queries: {
-          retry: false,
-          refetchOnWindowFocus: false,
-          staleTime: 30_000
+authService.init().finally(() => {
+  createApp(App)
+    .use(
+      createRouter({
+        history: createWebHistory(),
+        routes
+      })
+    )
+    .use(VueQueryPlugin, {
+      queryClientConfig: {
+        defaultOptions: {
+          queries: {
+            retry: false,
+            refetchOnWindowFocus: false,
+            staleTime: 30_000
+          }
         }
       }
-    }
-  })
-  .mount('#app');
+    })
+    .mount('#app');
+});

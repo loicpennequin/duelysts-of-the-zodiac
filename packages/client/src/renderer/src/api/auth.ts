@@ -72,6 +72,8 @@ export const authService = {
   init() {
     handleRefreshToken();
     addHeaders();
+    const rememberMe = useStorage('remember-me', false);
+    return rememberMe.value ? authService.refreshJwt() : Promise.resolve();
   },
 
   async login(data: LoginDto) {

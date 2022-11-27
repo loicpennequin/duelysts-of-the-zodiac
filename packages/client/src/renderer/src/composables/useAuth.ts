@@ -1,16 +1,15 @@
 import { authService } from '@renderer/api/auth';
 import { queryKeys } from '@renderer/utils/queryKeys';
-import { useSession } from './useSession';
 
 export const useLogin = (options = {}) => {
   const { push } = useRouter();
-  const { refetch: refetchSession } = useSession();
+  const qc = useQueryClient();
 
   return useMutation({
     mutationFn: authService.login,
     ...options,
     onSuccess() {
-      refetchSession();
+      qc.refetchQueries({ queryKey: queryKeys.session() });
       push({ name: 'Home' });
     }
   });
