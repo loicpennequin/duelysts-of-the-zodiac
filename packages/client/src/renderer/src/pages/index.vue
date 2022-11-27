@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import UserOnboardingModal from '@renderer/components/UserOnboardingModal.vue';
 import { useLogout } from '@renderer/composables/useAuth';
 import { useSession } from '@renderer/composables/useSession';
 
@@ -10,7 +11,8 @@ const { mutate } = useLogout();
 <template>
   <div v-if="isLoading">Loading profile...</div>
   <div v-else-if="data">
-    <h2>Hello, {{ data.email }}</h2>
+    <UserOnboardingModal />
+    <h2>Hello, {{ data.username ?? 'there' }}</h2>
     <button @click="mutate()">Logout</button>
     <button @click="refetch()">Refresh Session</button>
   </div>

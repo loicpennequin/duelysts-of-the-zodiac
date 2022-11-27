@@ -1,6 +1,7 @@
 import { app, shell, BrowserWindow, globalShortcut } from 'electron';
 import * as path from 'path';
 import { electronApp, optimizer, is } from '@electron-toolkit/utils';
+import installExtension, { VUEJS_DEVTOOLS } from 'electron-devtools-installer';
 
 function createWindow(): void {
   // Create the browser window.
@@ -48,6 +49,11 @@ function createWindow(): void {
 app.whenReady().then(() => {
   // Set app user model id for windows
   electronApp.setAppUserModelId('com.electron');
+
+  // install vue devtools
+  installExtension(VUEJS_DEVTOOLS)
+    .then(name => console.log(`Added Extension:  ${name}`))
+    .catch(err => console.log('An error occurred: ', err));
 
   // Default open or close DevTools by F12 in development
   // and ignore CommandOrControl + R in production.

@@ -1,39 +1,35 @@
 import { authService } from '@renderer/api/auth';
+import { queryKeys } from '@renderer/utils/queryKeys';
+import { useSession } from './useSession';
 
 export const useLogin = (options = {}) => {
   const { push } = useRouter();
+  const { refetch: refetchSession } = useSession();
 
-  return useMutation(
-    computed(() => ({
-      mutationFn: authService.login,
-      ...unref(options),
-      onSuccess() {
-        push({ name: 'Home' });
-      }
-    }))
-  );
+  return useMutation({
+    mutationFn: authService.login,
+    ...options,
+    onSuccess() {
+      refetchSession();
+      push({ name: 'Home' });
+    }
+  });
 };
 
 export const useLogout = (options = {}) => {
-  const { push } = useRouter();
   const qc = useQueryClient();
 
-  return useMutation(
-    computed(() => ({
-      mutationFn: authService.logout,
-      ...unref(options),
-      onSuccess() {
-        push({ name: 'Login' });
-        qc.removeQueries(['session']);
-      }
-    }))
-  );
+  return useMutation({
+    mutationFn: authService.logout,
+    ...options,
+    onSuccess() {
+      qc.setQueryData(queryKeys.session(), null);
+    }
+  });
 };
 
 export const useRefreshJwt = (options = {}) =>
-  useMutation(
-    computed(() => ({
-      mutationFn: authService.refreshJwt,
-      ...unref(options)
-    }))
-  );
+  useMutation({
+    mutationFn: authService.refreshJwt,
+    ...options
+  });

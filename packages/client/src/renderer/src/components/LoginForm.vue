@@ -6,9 +6,8 @@ const form = reactive({
   password: ''
 });
 const rememberMe = useStorage('remember-me', false);
-const error = ref<any>(null);
 
-const { mutate } = useLogin();
+const { mutate, error } = useLogin();
 </script>
 
 <template>
@@ -32,9 +31,3 @@ const { mutate } = useLogin();
 </template>
 
 <style scoped></style>
-
-<route lang="json">
-{
-  "name": "Login"
-}
-</route>

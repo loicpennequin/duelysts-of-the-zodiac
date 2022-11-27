@@ -1,7 +1,8 @@
 import { procedure, router } from '../router';
-import { CreateUserDto } from '@dotz/shared';
+import { CreateUserDto, UserOnboardingDto } from '@dotz/shared';
 import { createUserHandler } from './handlers/createUserHandler';
 import { getAllUsersHandler } from './handlers/getAllUsersHandler';
+import { userOnboardingHandler } from './handlers/userOnboardingHandler';
 
 export const userRouter = router({
   create: procedure.input(CreateUserDto).mutation(args => {
@@ -10,5 +11,10 @@ export const userRouter = router({
 
   findAll: procedure.query(() => {
     return getAllUsersHandler();
-  })
+  }),
+
+  onboarding: procedure
+    .input(UserOnboardingDto)
+    .meta({ needsAuth: true })
+    .mutation(arg => userOnboardingHandler(arg))
 });

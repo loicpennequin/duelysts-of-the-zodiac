@@ -10,7 +10,7 @@
   "dependencies": {
     "@dotz/api": "*",
     "@dotz/shared": "*",
-    "@trpc/server": "^10.1.0",
+    "@trpc/server": "^10.3.0",
     "@types/cors": "^2.8.12",
     "@types/node": "^18.11.8",
     "chalk": "^4.0.0",
