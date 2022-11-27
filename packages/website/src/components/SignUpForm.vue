@@ -7,9 +7,8 @@ const form = reactive({
   email: '',
   password: ''
 });
-const error = ref<any>(null);
 
-const { mutate } = useMutation(
+const { mutate, error, isSuccess } = useMutation(
   ['signup'],
   () => trpcClient.user.create.mutate(form),
   {
@@ -28,7 +27,7 @@ const signUp = () => {
 </script>
 
 <template>
-  <form @submit.prevent="signUp">
+  <form @submit.prevent="signUp" v-if="!isSuccess">
     <fieldset>
       <label for="email">E-mail address</label>
       <input id="email" type="email" v-model="form.email" />
@@ -44,6 +43,13 @@ const signUp = () => {
     <button>Sign up</button>
     <p v-if="error" style="color: red">{{ error }}</p>
   </form>
+
+  <p v-else>
+    You're all set ! You can now
+    <a href="/download">Download the game client</a>
+    or
+    <a href="/play">Play right now in your browser</a>
+  </p>
 </template>
 
 <style scoped></style>

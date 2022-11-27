@@ -3,14 +3,30 @@ generator client {
 }
 
 model User {
-  id                 String    @id @unique @default(cuid())
-  createdAt          DateTime  @default(now())
-  updatedAt          DateTime? @updatedAt
-  email              String    @unique
+  id                 String              @id @unique @default(cuid())
+  createdAt          DateTime            @default(now())
+  updatedAt          DateTime?           @updatedAt
+  email              String              @unique
   username           String?
-  passwordHash       String    @unique
-  refreshToken       String?   @unique @db.VarChar(200)
-  passwordResetToken String?   @db.VarChar(200)
+  passwordHash       String              @unique
+  refreshToken       RefreshToken?
+  passwordResetToken PasswordResetToken?
+}
+
+model RefreshToken {
+  id        String   @id @unique @default(cuid())
+  createdAt DateTime @default(now())
+  value     String   @unique @db.VarChar(200)
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String   @unique
+}
+
+model PasswordResetToken {
+  id        String   @id @unique @default(cuid())
+  createdAt DateTime @default(now())
+  value     String   @unique @db.VarChar(200)
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String   @unique
 }
 
 datasource db {

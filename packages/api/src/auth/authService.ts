@@ -54,6 +54,20 @@ export const verifyRefreshToken = (token: string) => {
   }
 };
 
+export const updateUserRefreshToken = (userId: string, token: string) =>
+  updateUserById(userId, {
+    refreshToken: {
+      connectOrCreate: {
+        where: {
+          userId: userId
+        },
+        create: {
+          value: token
+        }
+      }
+    }
+  });
+
 export const login = async (dto: LoginDto) => {
   const user = await findUserByEmail(dto.email);
   const isValid =
@@ -67,13 +81,13 @@ export const login = async (dto: LoginDto) => {
     refreshToken: generateRefreshToken()
   };
 
-  await updateUserById(user.id, { refreshToken: tokens.refreshToken });
+  await updateUserRefreshToken(user.id, tokens.refreshToken);
 
   return tokens;
 };
 
 export const logout = (userId: string) => {
-  return updateUserById(userId, { refreshToken: null });
+  return updateUserById(userId, { refreshToken: { delete: true } });
 };
 
 export const authenticate = async (token: string) => {
@@ -101,7 +115,7 @@ export const refreshJWT = async (refreshToken: string) => {
     refreshToken: generateRefreshToken()
   };
 
-  await updateUserById(user.id, { refreshToken: tokens.refreshToken });
+  await updateUserRefreshToken(user.id, tokens.refreshToken);
 
   return tokens;
 };

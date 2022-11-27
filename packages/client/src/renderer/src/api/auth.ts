@@ -60,8 +60,6 @@ const handleRefreshToken = () => {
 
     if (!ongoingRefreshPromise) {
       ongoingRefreshPromise = refreshJwtIfNeeded();
-    } else {
-      console.log('refresh promise already ongoing', config.request.toString());
     }
 
     await ongoingRefreshPromise;

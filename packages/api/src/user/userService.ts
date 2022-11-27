@@ -1,8 +1,8 @@
 import { db } from '../db';
 import type { CreateUserDto } from '@dotz/shared';
 import bcrypt from 'bcrypt';
+import type { Prisma } from '@prisma/client';
 import { TRPCError } from '@trpc/server';
-import type { User } from '@prisma/client';
 
 const SALT_ROUNDS = 10;
 
@@ -29,7 +29,7 @@ export const createUser = async ({ password, ...dto }: CreateUserDto) => {
 };
 
 export const findUserByRefreshToken = (token: string) => {
-  return db.user.findUnique({ where: { refreshToken: token } });
+  return db.refreshToken.findUnique({ where: { value: token } }).user();
 };
 
 export const findUserById = (id: string) => {
@@ -41,10 +41,13 @@ export const findUserByEmail = (email: string) => {
 };
 
 export const findByPasswordResetToken = (token: string) => {
-  return db.user.findFirst({ where: { passwordResetToken: token } });
+  return db.passwordResetToken.findUnique({ where: { value: token } }).user();
 };
 
-export const updateUserById = (id: string, data: Partial<User>) => {
+export const updateUserById = (
+  id: string,
+  data: Prisma.UserUpdateArgs['data']
+) => {
   return db.user.update({ where: { id }, data });
 };
 
@@ -53,7 +56,7 @@ export const resetPassword = async (id: string, password: string) => {
     where: { id },
     data: {
       passwordHash: await bcrypt.hash(password, SALT_ROUNDS),
-      passwordResetToken: null
+      passwordResetToken: { delete: true }
     }
   });
 };

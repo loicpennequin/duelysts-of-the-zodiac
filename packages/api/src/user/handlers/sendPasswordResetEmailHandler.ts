@@ -17,7 +17,16 @@ export const sendPasswordResetEmailHandler = async ({
   const passwordResetToken = crypto.randomBytes(20).toString('hex');
 
   await updateUserById(user.id, {
-    passwordResetToken
+    passwordResetToken: {
+      upsert: {
+        update: {
+          value: passwordResetToken
+        },
+        create: {
+          value: passwordResetToken
+        }
+      }
+    }
   });
 
   await mailerService.sendMail({
