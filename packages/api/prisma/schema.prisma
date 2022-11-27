@@ -8,9 +8,12 @@ model User {
   updatedAt          DateTime?           @updatedAt
   email              String              @unique
   username           String?
+  usernameTag        String?             @db.VarChar(4)
   passwordHash       String              @unique
   refreshToken       RefreshToken?
   passwordResetToken PasswordResetToken?
+
+  @@unique([username, usernameTag])
 }
 
 model RefreshToken {

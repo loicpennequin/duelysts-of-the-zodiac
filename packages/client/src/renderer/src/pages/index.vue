@@ -12,7 +12,10 @@ const { mutate } = useLogout();
   <div v-if="isLoading">Loading profile...</div>
   <div v-else-if="data">
     <UserOnboardingModal />
-    <h2>Hello, {{ data.username ?? 'there' }}</h2>
+    <h2 v-if="data.username">
+      Hello, {{ data.username }}#{{ data.usernameTag }}
+    </h2>
+    <h2 v-else>Hello, There</h2>
     <button @click="mutate()">Logout</button>
     <button @click="refetch()">Refresh Session</button>
   </div>

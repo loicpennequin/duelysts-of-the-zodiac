@@ -95,3 +95,16 @@ export const memoize = <TArgs extends any[], TReturn>(
 };
 
 export class EmptyClass {}
+
+export const random = (max: number) => Math.random() * max;
+
+export const randomInt = (max: number) => Math.round(random(max));
+
+export function randomIntExcluding(max: number, excluded: number[]) {
+  const available = [];
+  for (let i = 0; i <= max; i++) {
+    if (!excluded.includes(i)) available.push(i);
+  }
+
+  return available[randomInt(available.length)];
+}
