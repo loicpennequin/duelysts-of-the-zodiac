@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import { useLogin } from '@renderer/composables/useAuth';
+import { REMEMBER_ME_LOCAL_STORAGE } from '@renderer/utils/constants';
 
 const form = reactive({
   email: '',
   password: ''
 });
-const rememberMe = useStorage('remember-me', false);
+const rememberMe = useStorage(REMEMBER_ME_LOCAL_STORAGE, false);
 
 const { mutate, error } = useLogin();
 </script>

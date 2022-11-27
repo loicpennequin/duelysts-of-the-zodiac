@@ -1,6 +1,7 @@
 import { LoginDto, Nullable } from '@dotz/shared';
 import { httpService } from '@dotz/shared/dist/client';
 import { trpcClient } from '@renderer/trpc';
+import { REMEMBER_ME_LOCAL_STORAGE } from '@renderer/utils/constants';
 import jwtDecode from 'jwt-decode';
 
 type JwtPayload = {
@@ -72,8 +73,8 @@ export const authService = {
   init() {
     handleRefreshToken();
     addHeaders();
-    const rememberMe = useStorage('remember-me', false);
-    return rememberMe.value ? authService.refreshJwt() : Promise.resolve();
+    const rememberMe = localStorage.getItem(REMEMBER_ME_LOCAL_STORAGE);
+    return rememberMe ? authService.refreshJwt() : Promise.resolve();
   },
 
   async login(data: LoginDto) {

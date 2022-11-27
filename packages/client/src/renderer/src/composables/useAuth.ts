@@ -1,5 +1,5 @@
 import { authService } from '@renderer/api/auth';
-import { queryKeys } from '@renderer/utils/queryKeys';
+import { queryKeys } from '@renderer/utils/constants';
 
 export const useLogin = (options = {}) => {
   const { push } = useRouter();
@@ -9,7 +9,7 @@ export const useLogin = (options = {}) => {
     mutationFn: authService.login,
     ...options,
     onSuccess() {
-      qc.refetchQueries({ queryKey: queryKeys.session() });
+      qc.refetchQueries({ queryKey: queryKeys.SESSION() });
       push({ name: 'Home' });
     }
   });
@@ -22,7 +22,7 @@ export const useLogout = (options = {}) => {
     mutationFn: authService.logout,
     ...options,
     onSuccess() {
-      qc.setQueryData(queryKeys.session(), null);
+      qc.setQueryData(queryKeys.SESSION(), null);
     }
   });
 };

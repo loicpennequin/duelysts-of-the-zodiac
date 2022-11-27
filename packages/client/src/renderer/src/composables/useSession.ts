@@ -1,10 +1,10 @@
 import { authService } from '@renderer/api/auth';
-import { queryKeys } from '@renderer/utils/queryKeys';
+import { queryKeys } from '@renderer/utils/constants';
 import { useQuery } from '@tanstack/vue-query';
 
 export const useSession = (options = {}) => {
   return useQuery({
-    queryKey: queryKeys.session(),
+    queryKey: queryKeys.SESSION(),
     queryFn: authService.getSession,
     ...options
   });
