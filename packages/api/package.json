@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "tsup src/index.ts --dts --watch --format esm,cjs",
     "build": "tsup src/index.ts --dts --format esm,cjs",
-    "predev": "yarn db:start && yarn db:sync && yarn db:migrate",
+    "predev": "yarn db:start && yarn db:sync",
     "db:start": "docker-compose up -d",
     "db:stop": "docker-compose down",
     "db:sync": "dotenv -c -- prisma generate prisma migrate dev",

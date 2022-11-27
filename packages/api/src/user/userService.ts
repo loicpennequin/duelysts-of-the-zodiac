@@ -13,7 +13,7 @@ export const findAllUsers = async () => {
 export const createUser = async ({ password, ...dto }: CreateUserDto) => {
   const exists = await db.user.count({ where: { email: dto.email } });
 
-  if (!exists) {
+  if (exists) {
     throw new TRPCError({
       code: 'BAD_REQUEST',
       message: 'An account with this email already exists'

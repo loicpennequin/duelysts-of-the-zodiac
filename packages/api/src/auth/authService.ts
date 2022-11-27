@@ -23,7 +23,7 @@ export const generateRefreshToken = () => {
   const config = getConfig();
 
   return jwt.sign(
-    { sub: crypto.randomBytes(20).toString('hex') },
+    { sub: crypto.randomBytes(10).toString('hex') },
     config.REFRESH_TOKEN.SECRET,
     {
       expiresIn: config.REFRESH_TOKEN.EXPIRES_IN_SECONDS
@@ -55,10 +55,8 @@ export const verifyRefreshToken = (token: string) => {
 
 export const login = async (dto: LoginDto) => {
   const user = await findUserByEmail(dto.email);
-
   const isValid =
     user && (await bcrypt.compare(dto.password, user.passwordHash));
-
   if (!isValid) {
     throw new TRPCError({ code: 'UNAUTHORIZED' });
   }

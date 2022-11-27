@@ -1,7 +1,7 @@
 import express from 'express';
 import http from 'http';
 import * as trpcExpress from '@trpc/server/adapters/express';
-import { apiRouter, createApiContext } from '@dotz/api';
+import { ApiConfig, apiRouter, createApiContext } from '@dotz/api';
 import cors from 'cors';
 import chalk from 'chalk';
 import cookieParser from 'cookie-parser';
@@ -19,7 +19,14 @@ if (process.env.NODE_ENV === 'production') {
 } else {
   app.use(
     cors({
-      origin: config.CORS.ALLOWED_ORIGINS
+      credentials: true,
+      origin: function (origin, callback) {
+        if (config.CORS.ALLOWED_ORIGINS.includes(origin as string)) {
+          callback(null, true);
+        } else {
+          callback(new Error('CORS yo ass baby'));
+        }
+      }
     })
   );
 }
@@ -29,10 +36,11 @@ app.use(
   '/api',
   trpcExpress.createExpressMiddleware({
     router: apiRouter,
-    createContext: ({ req, res }) => ({ req, res, config }),
+    createContext: ({ req, res }) =>
+      createApiContext({ req, res, config: config as ApiConfig }),
     onError({ error, path, input }) {
       // eslint-disable-next-line no-console
-      console.log(chalk.red('[ERROR]'), '-', path, '-', error.message);
+      console.log(chalk.red('[ ERROR ]'), '-', path, '-', error.message);
       console.log(input);
     }
   })

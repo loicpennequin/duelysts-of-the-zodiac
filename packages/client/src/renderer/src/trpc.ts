@@ -7,7 +7,7 @@ export const trpcClient = createTRPCProxyClient<ApiRouter>({
   transformer: superjson,
   links: [
     httpBatchLink({
-      url: import.meta.env.PUBLIC_API_URL,
+      url: import.meta.env.RENDERER_VITE_API_URL,
       fetch: httpService.trpcFetch,
     }),
   ],

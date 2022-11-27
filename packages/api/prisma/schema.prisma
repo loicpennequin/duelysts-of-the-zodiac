@@ -8,8 +8,8 @@ model User {
   updatedAt    DateTime? @updatedAt
   email        String    @unique
   username     String?
-  passwordHash String
-  refreshToken String?   @unique
+  passwordHash String    @unique
+  refreshToken String?   @unique @db.VarChar(200)
 }
 
 datasource db {
