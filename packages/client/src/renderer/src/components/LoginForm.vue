@@ -9,6 +9,9 @@ const form = reactive({
 const rememberMe = useStorage(REMEMBER_ME_LOCAL_STORAGE, false);
 
 const { mutate, error } = useLogin();
+const lostPasswordUrl = `${
+  import.meta.env.RENDERER_VITE_WEBSITE_URL
+}/lost-password`;
 </script>
 
 <template>
@@ -26,6 +29,7 @@ const { mutate, error } = useLogin();
       <input id="remember-me" v-model="rememberMe" type="checkbox" />
       <label for="remember-me">Remember me</label>
     </fieldset>
+    <a :href="lostPasswordUrl" target="_blank">Forgot password ?</a>
     <button>Login</button>
     <p v-if="error" style="color: red">{{ error }}</p>
   </form>

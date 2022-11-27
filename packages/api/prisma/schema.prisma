@@ -3,13 +3,14 @@ generator client {
 }
 
 model User {
-  id           String    @id @unique @default(cuid())
-  createdAt    DateTime  @default(now())
-  updatedAt    DateTime? @updatedAt
-  email        String    @unique
-  username     String?
-  passwordHash String    @unique
-  refreshToken String?   @unique @db.VarChar(200)
+  id                 String    @id @unique @default(cuid())
+  createdAt          DateTime  @default(now())
+  updatedAt          DateTime? @updatedAt
+  email              String    @unique
+  username           String?
+  passwordHash       String    @unique
+  refreshToken       String?   @unique @db.VarChar(200)
+  passwordResetToken String?   @db.VarChar(200)
 }
 
 datasource db {

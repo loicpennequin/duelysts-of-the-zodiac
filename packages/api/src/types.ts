@@ -24,3 +24,22 @@ export type HandlerArgs<T = unknown> = {
 export type RouterMeta = {
   needsAuth?: boolean;
 };
+
+export type EmailTemplate<T extends string> = (
+  variables: Record<T, string>
+) => {
+  subject: string;
+  body: string;
+};
+
+export type SendMailOptions = {
+  to: string;
+  template: {
+    subject: string;
+    body: string;
+  };
+};
+
+export interface IMailService {
+  sendMail: (options: SendMailOptions) => Promise<any>;
+}

@@ -17,6 +17,10 @@ module.exports = {
   rules: {
     '@typescript-eslint/no-explicit-any': 'off',
     '@typescript-eslint/no-non-null-assertion': 'off',
-    'no-unexpected-multiline': 'off'
+    'no-unexpected-multiline': 'off',
+    '@typescript-eslint/ban-ts-comment': [
+      'error',
+      { 'ts-ignore': 'allow-with-description' }
+    ]
   }
 };

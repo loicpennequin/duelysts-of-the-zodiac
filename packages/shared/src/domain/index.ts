@@ -13,7 +13,10 @@ export const CreateUserDto = z.object({
 
 export type CreateUserDto = z.infer<typeof CreateUserDto>;
 
-export type UserDto = Override<PrismaUser, { passwordHash?: never }>;
+export type UserDto = Override<
+  PrismaUser,
+  { passwordHash?: never; refreshToken?: never; passwordResetToken?: never }
+>;
 
 export const LoginDto = z.object({
   email: z.string().email().trim(),
@@ -27,3 +30,10 @@ export const UserOnboardingDto = z.object({
 });
 
 export type UserOnboardingDto = z.infer<typeof UserOnboardingDto>;
+
+export const SendPasswordResetEmailDto = z.object({
+  email: z.string().email()
+});
+export type SendPasswordResetEmailDto = z.infer<
+  typeof SendPasswordResetEmailDto
+>;

@@ -7,8 +7,6 @@
     "dev": "tsup src/index.ts --dts --watch --format esm,cjs",
     "build": "tsup src/index.ts --dts --format esm,cjs",
     "predev": "yarn db:start && yarn db:sync",
-    "db:start": "docker-compose up -d",
-    "db:stop": "docker-compose down",
     "db:sync": "dotenv -c -- prisma generate prisma migrate dev",
     "db:migrate": "dotenv -c -- prisma migrate dev",
     "db:migrate:force": "dotenv -c -- prisma db push",
@@ -33,9 +31,11 @@
     "@types/bcrypt": "^5.0.0",
     "@types/dotenv": "^8.2.0",
     "@types/jsonwebtoken": "^8.5.9",
+    "@types/nodemailer": "^6.4.6",
     "bcrypt": "^5.1.0",
     "dotenv": "^16.0.3",
     "jsonwebtoken": "^8.5.1",
+    "nodemailer": "^6.8.0",
     "superjson": "^1.11.0",
     "zod": "^3.19.1"
   }

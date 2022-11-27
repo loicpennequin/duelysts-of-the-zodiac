@@ -1,20 +1,25 @@
 import { procedure, router } from '../router';
-import { CreateUserDto, UserOnboardingDto } from '@dotz/shared';
+import {
+  CreateUserDto,
+  SendPasswordResetEmailDto,
+  UserOnboardingDto
+} from '@dotz/shared';
 import { createUserHandler } from './handlers/createUserHandler';
-import { getAllUsersHandler } from './handlers/getAllUsersHandler';
 import { userOnboardingHandler } from './handlers/userOnboardingHandler';
+import { wrapProcedure } from '../utils';
+import { sendPasswordResetEmailHandler } from './handlers/sendPasswordResetEmailHandler';
 
 export const userRouter = router({
-  create: procedure.input(CreateUserDto).mutation(args => {
-    return createUserHandler(args);
-  }),
-
-  findAll: procedure.query(() => {
-    return getAllUsersHandler();
-  }),
+  create: procedure
+    .input(CreateUserDto)
+    .mutation(args => wrapProcedure(() => createUserHandler(args))),
 
   onboarding: procedure
     .input(UserOnboardingDto)
     .meta({ needsAuth: true })
-    .mutation(arg => userOnboardingHandler(arg))
+    .mutation(arg => wrapProcedure(() => userOnboardingHandler(arg))),
+
+  sendResetPasswordEmail: procedure
+    .input(SendPasswordResetEmailDto)
+    .mutation(args => wrapProcedure(() => sendPasswordResetEmailHandler(args)))
 });

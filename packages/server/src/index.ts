@@ -7,6 +7,7 @@ import chalk from 'chalk';
 import cookieParser from 'cookie-parser';
 import dotenv from 'dotenv';
 import { createConfig } from './config';
+import MailDev from 'maildev';
 
 dotenv.config({ path: `.env.local` });
 const config = createConfig();
@@ -21,7 +22,8 @@ if (process.env.NODE_ENV === 'production') {
     cors({
       credentials: true,
       origin: function (origin, callback) {
-        if (config.CORS.ALLOWED_ORIGINS.includes(origin as string)) {
+        if (!origin) callback(null, true);
+        else if (config.CORS.ALLOWED_ORIGINS.includes(origin)) {
           callback(null, true);
         } else {
           callback(new Error('CORS yo ass baby'));
@@ -29,6 +31,13 @@ if (process.env.NODE_ENV === 'production') {
       }
     })
   );
+
+  // const maildev = new MailDev({ smtp: 25 });
+  // maildev.listen(err => {
+  //   if (err) console.error(err);
+
+  //   console.log(chalk.yellow('[MAILDEV]'), ' - ', 'ready at endpoint /maildev');
+  // });
 }
 
 app.use(cookieParser(config.SESSION.SECRET));
@@ -41,10 +50,13 @@ app.use(
     onError({ error, path, input }) {
       // eslint-disable-next-line no-console
       console.log(chalk.red('[ ERROR ]'), '-', path, '-', error.message);
-      console.log(input);
+      if (input) {
+        console.log('input :', input);
+      }
     }
   })
 );
+app.use('/', (req, res) => res.send('hello'));
 
 server.listen(process.env.port || 4000, () => {
   console.log('server ready');

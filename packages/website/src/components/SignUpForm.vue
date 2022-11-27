@@ -1,24 +1,24 @@
 <script setup lang="ts">
-import { useMutation } from "@tanstack/vue-query";
-import { trpcClient } from "../trpc";
-import { reactive, ref } from "vue";
+import { useMutation } from '@tanstack/vue-query';
+import { trpcClient } from '../trpc';
+import { reactive, ref } from 'vue';
 
 const form = reactive({
-  email: "",
-  password: "",
+  email: '',
+  password: ''
 });
 const error = ref<any>(null);
 
 const { mutate } = useMutation(
-  ["signup"],
+  ['signup'],
   () => trpcClient.user.create.mutate(form),
   {
     onSuccess() {
-      window.location.assign("http://localhost:3000");
+      window.location.assign('http://localhost:3000');
     },
     onError(err) {
       error.value = err;
-    },
+    }
   }
 );
 

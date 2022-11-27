@@ -4,7 +4,7 @@ import type { User as PrismaUser } from '@prisma/client';
 export const userMapper = {
   toDto(user: PrismaUser): UserDto {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { passwordHash, ...rest } = user;
+    const { passwordHash, refreshToken, passwordResetToken, ...rest } = user;
 
     return rest;
   }

@@ -1,4 +1,6 @@
-# TODO
+# DUELYSTS_OF_THE_ZODIAC
+
+This is the repository for the game Duelysts Of The Zodiac, a turn based tactical game inspired by [Duelyst](https://store.steampowered.com/app/2004320/Duelyst_II/) in the universe of [Saint Seiya (Knights of the Zodiac)](https://en.wikipedia.org/wiki/Knights_of_the_Zodiac:_Saint_Seiya). This is a fan-made hobby game and is **NOT** used for commercial profit of any kind.
 
 ## Prerequisites
 
@@ -8,4 +10,5 @@
 ## Get Started
 
 - `yarn install`
+- `docker-compose up -d`
 - `yarn dev`
