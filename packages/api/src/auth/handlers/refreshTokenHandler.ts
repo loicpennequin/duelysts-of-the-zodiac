@@ -3,8 +3,9 @@ import { refreshJWT } from '../authService';
 import type { HandlerArgs } from '../../types';
 import { TRPCError } from '@trpc/server';
 import { getConfig } from '../../config';
+import { logoutHandler } from './logoutHandler';
 
-export const refreshTokenHandler = async ({ ctx }: HandlerArgs) => {
+export const refreshTokenHandler = async ({ ctx, input }: HandlerArgs) => {
   // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
   const refreshTokenCookie = ctx.req.cookies?.[REFRESH_TOKEN_COOKIE] as string;
   if (!refreshTokenCookie) {
@@ -26,7 +27,7 @@ export const refreshTokenHandler = async ({ ctx }: HandlerArgs) => {
 
     return { accessToken };
   } catch (err) {
-    ctx.res.clearCookie(REFRESH_TOKEN_COOKIE);
+    await logoutHandler({ ctx, input });
     throw err;
   }
 };

@@ -45,9 +45,13 @@ export const verifyJwt = (token: string) => {
 export const verifyRefreshToken = (token: string) => {
   const config = getConfig();
 
-  return jwt.verify(token, config.REFRESH_TOKEN.SECRET, {
-    complete: false
-  });
+  try {
+    return jwt.verify(token, config.REFRESH_TOKEN.SECRET, {
+      complete: false
+    });
+  } catch {
+    throw new TRPCError({ code: 'UNAUTHORIZED' });
+  }
 };
 
 export const login = async (dto: LoginDto) => {
@@ -87,18 +91,10 @@ export const refreshJWT = async (refreshToken: string) => {
   const user = await findUserByRefreshToken(refreshToken);
 
   if (!user) {
-    console.log('no user found');
     throw new TRPCError({ code: 'UNAUTHORIZED' });
   }
 
-  try {
-    verifyRefreshToken(refreshToken);
-  } catch (err) {
-    console.log(err);
-    await updateUserById(user.id, { refreshToken: null });
-
-    throw new TRPCError({ code: 'UNAUTHORIZED' });
-  }
+  verifyRefreshToken(refreshToken);
 
   const tokens = {
     accessToken: generateJWT(user.id),

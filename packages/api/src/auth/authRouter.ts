@@ -6,9 +6,7 @@ import { refreshTokenHandler } from './handlers/refreshTokenHandler';
 import { sessionHandler } from './handlers/sessionHandler';
 
 export const authRouter = router({
-  login: procedure.input(LoginDto).mutation(args => {
-    return loginHandler(args);
-  }),
+  login: procedure.input(LoginDto).mutation(args => loginHandler(args)),
 
   logout: procedure.mutation(args => logoutHandler(args)),
 
