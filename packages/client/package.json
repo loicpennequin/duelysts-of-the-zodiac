@@ -20,12 +20,15 @@
     "build:linux": "npm run build && electron-builder --linux --config"
   },
   "dependencies": {
+    "@dotz/shared": "*",
     "@electron-toolkit/preload": "^1.0.2",
     "@electron-toolkit/utils": "^1.0.2",
     "@tanstack/vue-query": "^4.17.1",
     "@trpc/client": "^10.2.0",
+    "@types/jwt-decode": "^3.1.0",
     "@vueuse/core": "^9.6.0",
     "electron-updater": "^5.3.0",
+    "jwt-decode": "^3.1.2",
     "superjson": "^1.11.0",
     "unplugin-auto-import": "^0.12.0",
     "vite-plugin-checker": "^0.5.1",

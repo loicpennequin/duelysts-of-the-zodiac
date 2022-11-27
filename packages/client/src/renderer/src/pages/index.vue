@@ -2,7 +2,7 @@
 import { useLogout } from '@renderer/composables/useAuth';
 import { useSession } from '@renderer/composables/useSession';
 
-const { isLoading, data } = useSession();
+const { isLoading, data, refetch } = useSession();
 
 const { mutate } = useLogout();
 </script>
@@ -12,6 +12,7 @@ const { mutate } = useLogout();
   <div v-else-if="data">
     <h2>Hello, {{ data.email }}</h2>
     <button @click="mutate()">Logout</button>
+    <button @click="refetch()">Refresh Session</button>
   </div>
 </template>
 
