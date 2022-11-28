@@ -2,82 +2,53 @@
 
 ## Core features - expected for MVP
 
-- Core
-
-  - [ ] SDK
-
-- Website
-
-  - [x] Account creation
-  - [x] Password reset
-  - [ ] Game presentation, branding, etc
-  - [ ] GDPR
-
-- Client
-
-  - [x] Authentication
-  - [x] Username tag
-  - [ ] Matchmaking
-  - [ ] Play games (duh)
-  - [ ] Friend Requests
-  - [ ] Friends list
-  - [ ] Chat
-  - [ ] Shop
-  - [ ] Visuals / UX good enough to be playable
-
-- Server
-  - [x] API setup
-  - [x] API Authentication
-  - [ ] Websockets setup
-  - [ ] Websockets Authentication
+- [ ] game logic SDK
+- [ ] Play games (duh)
+- [x] Account creation
+- [x] Password reset
+- [ ] Landing page
+- [ ] GDPR
+- [x] Client Authentication
+- [x] API Authentication
+- [ ] Websockets Authentication
+- [x] Username tag
+- [ ] Matchmaking
+- [ ] Friend Requests
+- [ ] Friends list
+- [ ] Chat
+- [ ] Shop
+- [ ] Visuals / UX good enough to be playable
+- [ ] CI / CD
 
 ## Extra features - expected for v1.0.0
 
-- Website
-
-  - [ ] Authentication
-  - [ ] Profile page
-  - [ ] MFA
-  - [ ] Admin Panel
-  - [ ] Support
-
-- Client
-
-  - [ ] Friend games
-  - [ ] Ranked games
-  - [ ] Leaderboards
-  - [ ] Cosmetics
-  - [ ] Game history (V1: opponent / teams / end result)
-  - [ ] Spectator mode
-  - [ ] Visual polish
-  - [ ] Sound design
-
-- Server
-  - [ ] Rate limiting
-  - [ ] Caching
+- [ ] Website Authentication
+- [ ] Profile page
+- [ ] MFA
+- [ ] Admin Panel
+- [ ] Support
+- [ ] Friendly games
+- [ ] Ranked games
+- [ ] Leaderboards
+- [ ] Mac / linux installers
+- [ ] User Reporting / moderation
+- [ ] Server side Caching
+- [ ] Visual polish & sound design
 
 ## Luxury features - nice to have
 
-- Core
-
-  - [ ] Internationalization
-
-- Website
-
-  - [ ] Forum
-  - [ ] Wiki
-  - [ ] Referrals & rewards
-  - [ ] CMS
-
-- Client
-
-  - [ ] Solo mode (vs AI)
-  - [ ] Tournaments
-  - [ ] Custom games
-  - [ ] Achievements
-  - [ ] Game Replays
-  - [ ] News (from CMS)
-
-- Server
-  - [ ] Monitoring
-  - [ ] Error reporting
+- [ ] Mobile support (PWA ?)
+- [ ] Internationalization
+- [ ] Forum
+- [ ] Wiki
+- [ ] Referrals & rewards
+- [ ] CMS
+- [ ] Cosmetics
+- [ ] Solo mode (vs AI)
+- [ ] Tournaments
+- [ ] Spectator mode
+- [ ] Achievements
+- [ ] Game Replays
+- [ ] Monitoring
+- [ ] Error reporting
+- [ ] Daily quests
