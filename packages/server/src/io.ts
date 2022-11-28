@@ -4,6 +4,7 @@ import { User } from '@prisma/client';
 import { authenticate } from './auth/authService';
 import { handleCORS } from './core/cors';
 import { ClientToServerEvents, PING, ServerToClientEvents } from '@dotz/shared';
+import { rankedQueue } from './matchmaking/queues';
 
 const usersBySocket = new Map<Socket, User>();
 const socketsByUserId = new Map<string, Socket>();
@@ -38,6 +39,7 @@ export const initIO = (server: http.Server) => {
       const user = usersBySocket.get(socket);
       if (user) {
         socketsByUserId.delete(user.id);
+        rankedQueue.leave(user);
       }
 
       usersBySocket.delete(socket);

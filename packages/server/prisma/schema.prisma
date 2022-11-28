@@ -18,6 +18,7 @@ model User {
   matchmakingRating  Int                 @default(1200)
   refreshToken       RefreshToken?
   passwordResetToken PasswordResetToken?
+  gameUsers          GameUser[]
 
   @@unique([username, usernameTag])
 }
@@ -36,4 +37,22 @@ model PasswordResetToken {
   value     String   @unique @db.VarChar(200)
   user      User     @relation(fields: [userId], references: [id])
   userId    String   @unique
+}
+
+model Game {
+  id        String     @id @unique @default(cuid())
+  createdAt DateTime   @default(now())
+  updatedAt DateTime?  @updatedAt
+  endedAt   DateTime?
+  gameUsers GameUser[]
+}
+
+model GameUser {
+  userId String
+  gameId String
+  user   User     @relation(fields: [userId], references: [id])
+  game   Game     @relation(fields: [gameId], references: [id])
+  winner Boolean?
+
+  @@id([gameId, userId])
 }

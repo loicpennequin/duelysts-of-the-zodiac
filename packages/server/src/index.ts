@@ -14,10 +14,12 @@ import { config } from './config';
 import { createApiContext } from './core/createContext';
 import { handleCORS } from './core/cors';
 import { initIO } from './io';
+import { matchmakingRouter } from './matchmaking/matchmakingRouter';
 
 export const apiRouter = router({
   user: userRouter,
-  auth: authRouter
+  auth: authRouter,
+  matchmaking: matchmakingRouter
 });
 
 export type ApiRouter = typeof apiRouter;

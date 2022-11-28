@@ -8,8 +8,7 @@ import { useSocket, useSocketEvent } from './composables/useSocket';
 const socket = useSocket();
 const { data: session, isLoading } = useSession({
   onSuccess(data) {
-    if (data) {
-      console.log('should connect socket');
+    if (data && !socket.connected) {
       socket.connect();
     }
   }

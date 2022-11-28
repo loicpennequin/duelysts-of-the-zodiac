@@ -12,8 +12,8 @@
 - [x] API Authentication
 - [x] Websockets Authentication
 - [x] Username tag
-- [ ] Matchmaking
-- [ ] Decks management
+- [x] Matchmaking
+- [ ] Squads management
 - [ ] Friend Requests
 - [ ] Friends list
 - [ ] Chat

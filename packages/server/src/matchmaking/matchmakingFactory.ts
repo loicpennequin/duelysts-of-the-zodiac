@@ -4,7 +4,7 @@ import { User } from '@prisma/client';
 import EventEmitter from 'events';
 
 const PAIRING_INTERVAL = 3000;
-const MATCHMAKING_EVENTS = {
+export const MATCHMAKING_EVENTS = {
   STARTED: 'started',
   STOPPED: 'stopped',
   PÄIRED: 'paired'
@@ -19,9 +19,9 @@ type MatchmakingClient = {
 type MatchmadePair = [MatchmakingClient, MatchmakingClient];
 
 export type MatchmakingEvents = {
-  [MATCHMAKING_EVENTS.STARTED]: () => void;
-  [MATCHMAKING_EVENTS.STOPPED]: () => void;
-  [MATCHMAKING_EVENTS.PÄIRED]: (payload: MatchmadePair) => void;
+  [MATCHMAKING_EVENTS.STARTED]: () => any;
+  [MATCHMAKING_EVENTS.STOPPED]: () => any;
+  [MATCHMAKING_EVENTS.PÄIRED]: (payload: MatchmadePair) => any;
 };
 
 export const createMatchMaking = () => {
@@ -44,18 +44,20 @@ export const createMatchMaking = () => {
     if (isAlreadyInQueue) return;
 
     clients.push(createClient(user));
-
     if (!isEmpty()) start();
   };
 
   const leave = (user: User) => {
-    const index = clients.findIndex(client => client.user.id !== user.id);
-    clients.splice(index, 1);
+    const index = clients.findIndex(client => client.user.id === user.id);
+    if (index === -1) return;
 
+    clients.splice(index, 1);
     if (isEmpty()) stop();
   };
 
   const start = () => {
+    if (pairingInterval) return;
+
     pairingInterval = setInterval(matchClients, PAIRING_INTERVAL);
     emitter.emit(MATCHMAKING_EVENTS.STARTED);
   };
@@ -63,11 +65,12 @@ export const createMatchMaking = () => {
   const stop = () => {
     if (!pairingInterval) return;
     clearInterval(pairingInterval);
+    pairingInterval = null;
     emitter.emit(MATCHMAKING_EVENTS.STOPPED);
   };
 
   const isMatchable = ([highest, lowest]: MatchmadePair) => {
-    // let's keep ot to the bare minomum for now
+    // let's keep it to the bare minomum for now
     // We will come up with better heuristics later
     // for now this will allow Matchmaking to be more and more lax the longer a user has been in queue
     return (
@@ -77,20 +80,26 @@ export const createMatchMaking = () => {
   };
 
   const matchClients = () => {
-    const sortedClientsByRating = clients.sort(
-      (a, b) => b.user.matchmakingRating - a.user.matchmakingRating
-    );
-
+    const sortedClientsByRating = clients
+      .slice()
+      .sort((a, b) => b.user.matchmakingRating - a.user.matchmakingRating);
+    const pairs: MatchmadePair[] = [];
     while (sortedClientsByRating.length > 1) {
       const [a, b] = sortedClientsByRating;
 
       if (isMatchable([a, b])) {
         const pair = sortedClientsByRating.splice(0, 2) as MatchmadePair;
+        pairs.push(pair);
         emitter.emit(MATCHMAKING_EVENTS.PÄIRED, pair);
       } else {
         sortedClientsByRating.shift();
       }
     }
+
+    pairs.forEach(([client1, client2]) => {
+      leave(client1.user);
+      leave(client2.user);
+    });
   };
 
   return {
