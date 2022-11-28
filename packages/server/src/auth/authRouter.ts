@@ -1,5 +1,5 @@
 import { LoginDto } from '@dotz/shared';
-import { procedure, router } from '../router';
+import { procedure, router } from '../core/router';
 import { wrapProcedure } from '../utils';
 import { loginHandler } from './handlers/loginHandler';
 import { logoutHandler } from './handlers/logoutHandler';

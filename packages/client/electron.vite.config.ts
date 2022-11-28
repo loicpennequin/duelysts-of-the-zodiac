@@ -2,11 +2,11 @@ import { resolve } from 'path';
 import { defineConfig, externalizeDepsPlugin } from 'electron-vite';
 import vue from '@vitejs/plugin-vue';
 import checker from 'vite-plugin-checker';
-import Pages from 'vite-plugin-pages';
 import AutoImport from 'unplugin-auto-import/vite';
-import Layouts from 'vite-plugin-vue-layouts';
-import { fileURLToPath, URL } from 'node:url';
+import VueRouter from 'unplugin-vue-router/vite';
 
+import { VueRouterAutoImports } from 'unplugin-vue-router';
+import { fileURLToPath } from 'node:url';
 export default defineConfig({
   main: {
     plugins: [externalizeDepsPlugin()]
@@ -21,28 +21,22 @@ export default defineConfig({
       }
     },
     plugins: [
-      vue(),
-      Layouts({
-        layoutsDirs: [
-          fileURLToPath(new URL('./src/renderer/src/layouts', import.meta.url))
-        ]
+      VueRouter({
+        routesFolder: fileURLToPath(
+          new URL('./src/renderer/src/pages', import.meta.url)
+        ),
+        dts: './src/renderer/typed-router.d.ts'
       }),
+      vue(),
       checker({
         vueTsc: { tsconfigPath: './tsconfig.web.json' }
-      }),
-
-      Pages({
-        extensions: ['vue'],
-        pagesDir: [
-          fileURLToPath(new URL('./src/renderer/src/pages', import.meta.url))
-        ]
       }),
       AutoImport({
         include: [/\.[tj]sx?$/, /\.vue$/, /\.vue\?vue/, /\.md$/],
         imports: [
           'vue',
           '@vueuse/core',
-          'vue-router',
+          VueRouterAutoImports,
           {
             '@tanstack/vue-query': [
               'useQuery',

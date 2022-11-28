@@ -7,11 +7,11 @@ import * as trpcExpress from '@trpc/server/adapters/express';
 import cors from 'cors';
 import chalk from 'chalk';
 import cookieParser from 'cookie-parser';
-import { router } from './router';
+import { router } from './core/router';
 import { userRouter } from './user/userRouter';
 import { authRouter } from './auth/authRouter';
 import { config } from './config';
-import { createApiContext } from './createContext';
+import { createApiContext } from './core/createContext';
 
 export const apiRouter = router({
   user: userRouter,

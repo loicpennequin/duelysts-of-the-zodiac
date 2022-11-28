@@ -1,6 +1,6 @@
 import type { inferAsyncReturnType } from '@trpc/server';
 import type { Request, Response } from 'express';
-import { authenticate } from './auth/authService';
+import { authenticate } from '../auth/authService';
 
 const parseAuthHeader = (header: string) => header.replace('Bearer ', '');
 

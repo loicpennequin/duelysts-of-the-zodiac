@@ -1,4 +1,4 @@
-import { procedure, router } from '../router';
+import { procedure, router } from '../core/router';
 import {
   CreateUserDto,
   ResetPasswordDto,

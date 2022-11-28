@@ -1,5 +1,5 @@
 import { LoginDto, Nullable } from '@dotz/shared';
-import { httpService } from '@dotz/shared/dist/client';
+import { httpService } from '@dotz/shared';
 import { trpcClient } from '@renderer/trpc';
 import { REMEMBER_ME_LOCAL_STORAGE } from '@renderer/utils/constants';
 import jwtDecode from 'jwt-decode';

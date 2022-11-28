@@ -1,4 +1,4 @@
-import type { Context } from './createContext';
+import type { Context } from './core/createContext';
 
 export type ApiConfig = {
   WEBSITE_URL: string;
