@@ -2,6 +2,11 @@ generator client {
   provider = "prisma-client-js"
 }
 
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
 model User {
   id                 String              @id @unique @default(cuid())
   createdAt          DateTime            @default(now())
@@ -30,9 +35,4 @@ model PasswordResetToken {
   value     String   @unique @db.VarChar(200)
   user      User     @relation(fields: [userId], references: [id])
   userId    String   @unique
-}
-
-datasource db {
-  provider = "mysql"
-  url      = env("DATABASE_URL")
 }

@@ -1,9 +1,27 @@
 <script lang="ts" setup>
 import { RouterView } from 'vue-router';
 import LoginForm from './components/LoginForm.vue';
+import { useLogout } from './composables/useAuth';
 import { useSession } from './composables/useSession';
+import { useSocket, useSocketEvent } from './composables/useSocket';
 
-const { data: session, isLoading } = useSession();
+const socket = useSocket();
+const { data: session, isLoading } = useSession({
+  onSuccess(data) {
+    if (data) {
+      console.log('should connect socket');
+      socket.connect();
+    }
+  }
+});
+
+const { mutate: logout } = useLogout();
+useSocketEvent('connect_error', () => {
+  logout();
+});
+useSocketEvent('disconnect', () => {
+  logout();
+});
 </script>
 
 <template>

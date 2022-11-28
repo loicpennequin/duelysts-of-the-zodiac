@@ -12,6 +12,8 @@ import { userRouter } from './user/userRouter';
 import { authRouter } from './auth/authRouter';
 import { config } from './config';
 import { createApiContext } from './core/createContext';
+import { handleCORS } from './core/cors';
+import { initIO } from './io';
 
 export const apiRouter = router({
   user: userRouter,
@@ -29,14 +31,7 @@ if (process.env.NODE_ENV === 'production') {
   app.use(
     cors({
       credentials: true,
-      origin: function (origin, callback) {
-        if (!origin) callback(null, true);
-        else if (config.CORS.ALLOWED_ORIGINS.includes(origin)) {
-          callback(null, true);
-        } else {
-          callback(new Error('CORS yo ass baby'));
-        }
-      }
+      origin: handleCORS
     })
   );
 }
@@ -56,6 +51,8 @@ app.use(
     }
   })
 );
+
+initIO(server);
 
 server.listen(process.env.port || 4000, () => {
   console.log('server ready');

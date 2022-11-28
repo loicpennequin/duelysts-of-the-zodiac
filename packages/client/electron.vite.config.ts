@@ -1,7 +1,7 @@
 import { resolve } from 'path';
 import { defineConfig, externalizeDepsPlugin } from 'electron-vite';
 import vue from '@vitejs/plugin-vue';
-import checker from 'vite-plugin-checker';
+// import checker from 'vite-plugin-checker';
 import AutoImport from 'unplugin-auto-import/vite';
 import VueRouter from 'unplugin-vue-router/vite';
 
@@ -28,9 +28,9 @@ export default defineConfig({
         dts: './src/renderer/typed-router.d.ts'
       }),
       vue(),
-      checker({
-        vueTsc: { tsconfigPath: './tsconfig.web.json' }
-      }),
+      // checker({
+      //   vueTsc: { tsconfigPath: './tsconfig.web.json' }
+      // }),
       AutoImport({
         include: [/\.[tj]sx?$/, /\.vue$/, /\.vue\?vue/, /\.md$/],
         imports: [

@@ -1,11 +1,12 @@
+import { UserDto } from '@dotz/shared';
 import { authService } from '@renderer/api/auth';
 import { queryKeys } from '@renderer/utils/constants';
-import { useQuery } from '@tanstack/vue-query';
+import { useQuery, UseQueryOptions } from '@tanstack/vue-query';
 
-export const useSession = (options = {}) => {
+export const useSession = (options: UseQueryOptions = {}) => {
   return useQuery({
     queryKey: queryKeys.SESSION(),
-    queryFn: authService.getSession,
+    queryFn: authService.getSession as () => Promise<UserDto>,
     ...options
   });
 };

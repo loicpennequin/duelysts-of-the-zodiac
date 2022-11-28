@@ -2,31 +2,33 @@
 
 ## Core features - expected for MVP
 
-- [ ] game logic SDK
+- [ ] Game logic SDK
 - [ ] Play games (duh)
 - [x] Account creation
 - [x] Password reset
-- [ ] Landing page
-- [ ] GDPR
+- [ ] Landing page (website)
+- [ ] Profile page (client)
 - [x] Client Authentication
 - [x] API Authentication
-- [ ] Websockets Authentication
+- [x] Websockets Authentication
 - [x] Username tag
 - [ ] Matchmaking
+- [ ] Decks management
 - [ ] Friend Requests
 - [ ] Friends list
 - [ ] Chat
 - [ ] Shop
-- [ ] Visuals / UX good enough to be playable
+- [ ] GDPR
 - [ ] CI / CD
+- [ ] Visuals / UX good enough to be playable
 
 ## Extra features - expected for v1.0.0
 
 - [ ] Website Authentication
-- [ ] Profile page
+- [ ] Profile page (website)
 - [ ] MFA
 - [ ] Admin Panel
-- [ ] Support
+- [ ] Customer Support
 - [ ] Friendly games
 - [ ] Ranked games
 - [ ] Leaderboards
@@ -44,7 +46,7 @@
 - [ ] Referrals & rewards
 - [ ] CMS
 - [ ] Cosmetics
-- [ ] Solo mode (vs AI)
+- [ ] Solo mode
 - [ ] Tournaments
 - [ ] Spectator mode
 - [ ] Achievements

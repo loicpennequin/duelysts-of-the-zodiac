@@ -1,5 +1,6 @@
 import { authService } from '@renderer/api/auth';
 import { queryKeys } from '@renderer/utils/constants';
+import { useSocket } from './useSocket';
 
 export const useLogin = (options = {}) => {
   const { push } = useRouter();
@@ -17,12 +18,14 @@ export const useLogin = (options = {}) => {
 
 export const useLogout = (options = {}) => {
   const qc = useQueryClient();
+  const socket = useSocket();
 
   return useMutation({
     mutationFn: authService.logout,
     ...options,
     onSuccess() {
       qc.setQueryData(queryKeys.SESSION(), null);
+      socket.disconnect();
     }
   });
 };

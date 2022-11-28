@@ -3,7 +3,7 @@ import UserOnboardingModal from '@renderer/components/UserOnboardingModal.vue';
 import { useLogout } from '@renderer/composables/useAuth';
 import { useSession } from '@renderer/composables/useSession';
 
-const { isLoading, data, refetch } = useSession();
+const { isLoading, data } = useSession();
 
 const { mutate } = useLogout();
 </script>
@@ -13,11 +13,11 @@ const { mutate } = useLogout();
   <div v-else-if="data">
     <UserOnboardingModal />
     <h2 v-if="data.username">
-      Hello, {{ data.username }}#{{ data.usernameTag }}
+      Welcome back, {{ data.username }}#{{ data.usernameTag }}
     </h2>
     <h2 v-else>Hello, There</h2>
     <button @click="mutate()">Logout</button>
-    <button @click="refetch()">Refresh Session</button>
+    <router-link to="/matchmaking">Play</router-link>
   </div>
 </template>
 

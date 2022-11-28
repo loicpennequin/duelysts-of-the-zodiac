@@ -75,6 +75,10 @@ export const authService = {
     return rememberMe ? authService.refreshJwt() : Promise.resolve();
   },
 
+  get token() {
+    return token;
+  },
+
   async login(data: LoginDto) {
     const { accessToken } = await trpcClient.auth.login.mutate(data);
     token = accessToken;
@@ -94,6 +98,7 @@ export const authService = {
   },
 
   getSession() {
+    if (!token) return null;
     return trpcClient.auth.session.query();
   }
 };
