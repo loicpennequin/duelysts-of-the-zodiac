@@ -11,6 +11,7 @@ This is the repository for the game Duelysts Of The Zodiac, a turn based tactica
 
 - `yarn install`
 - `docker-compose up -d`
+- `yarn migrate`
 - `yarn dev`
 - Game client will launch automatically and will also be available at `http://localhost:5173`
 - Website will be available at `http://localhost:3000`

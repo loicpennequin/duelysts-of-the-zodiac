@@ -1,16 +1,19 @@
-/*
-  Warnings:
+-- CreateTable
+CREATE TABLE `User` (
+    `id` VARCHAR(191) NOT NULL,
+    `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `updatedAt` DATETIME(3) NULL,
+    `email` VARCHAR(191) NOT NULL,
+    `username` VARCHAR(191) NULL,
+    `usernameTag` VARCHAR(4) NULL,
+    `passwordHash` VARCHAR(191) NOT NULL,
 
-  - You are about to drop the column `passwordResetToken` on the `User` table. All the data in the column will be lost.
-  - You are about to drop the column `refreshToken` on the `User` table. All the data in the column will be lost.
-
-*/
--- DropIndex
-DROP INDEX `User_refreshToken_key` ON `User`;
-
--- AlterTable
-ALTER TABLE `User` DROP COLUMN `passwordResetToken`,
-    DROP COLUMN `refreshToken`;
+    UNIQUE INDEX `User_id_key`(`id`),
+    UNIQUE INDEX `User_email_key`(`email`),
+    UNIQUE INDEX `User_passwordHash_key`(`passwordHash`),
+    UNIQUE INDEX `User_username_usernameTag_key`(`username`, `usernameTag`),
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
 CREATE TABLE `RefreshToken` (
