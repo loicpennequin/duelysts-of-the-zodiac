@@ -50,11 +50,11 @@ export const verifyRefreshToken = (token: string) => {
 export const updateUserRefreshToken = (userId: string, token: string) =>
   updateUserById(userId, {
     refreshToken: {
-      connectOrCreate: {
-        where: {
-          userId: userId
-        },
+      upsert: {
         create: {
+          value: token
+        },
+        update: {
           value: token
         }
       }
@@ -96,7 +96,6 @@ export const authenticate = async (token: string) => {
 
 export const refreshJWT = async (refreshToken: string) => {
   const user = await findUserByRefreshToken(refreshToken);
-
   if (!user) {
     throw new TRPCError({ code: 'UNAUTHORIZED' });
   }
