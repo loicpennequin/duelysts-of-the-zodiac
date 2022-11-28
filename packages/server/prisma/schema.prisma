@@ -15,6 +15,7 @@ model User {
   username           String?
   usernameTag        String?             @db.VarChar(4)
   passwordHash       String              @unique
+  matchmakingRating  Int                 @default(1200)
   refreshToken       RefreshToken?
   passwordResetToken PasswordResetToken?
 

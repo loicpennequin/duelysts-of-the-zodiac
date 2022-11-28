@@ -5,8 +5,12 @@ import { authenticate } from './auth/authService';
 import { handleCORS } from './core/cors';
 import { ClientToServerEvents, PING, ServerToClientEvents } from '@dotz/shared';
 
+const usersBySocket = new Map<Socket, User>();
+const socketsByUserId = new Map<string, Socket>();
+
+export const getSocket = (userId: string) => socketsByUserId.get(userId);
+
 export const initIO = (server: http.Server) => {
-  const usersBySocket = new Map<Socket, User>();
   const io = new Server<ClientToServerEvents, ServerToClientEvents>(server, {
     cors: {
       origin: handleCORS,
@@ -18,21 +22,24 @@ export const initIO = (server: http.Server) => {
   io.use(async (socket, next) => {
     try {
       const token = socket.handshake.auth.token as string;
-      console.log('io middleware', token);
       if (!token) throw new Error('no token provided');
-      usersBySocket.set(socket, await authenticate(token));
-      console.log('io middleware user', usersBySocket.get(socket));
+
+      const user = await authenticate(token);
+      usersBySocket.set(socket, user);
+      socketsByUserId.set(user.id, socket);
       next();
     } catch (err) {
-      console.log('io middleware error', err);
       next(err as Error);
     }
   });
 
   io.on('connection', socket => {
-    console.log('new socket connection');
     socket.on('disconnect', () => {
-      console.log('new socket disconnect');
+      const user = usersBySocket.get(socket);
+      if (user) {
+        socketsByUserId.delete(user.id);
+      }
+
       usersBySocket.delete(socket);
     });
 
