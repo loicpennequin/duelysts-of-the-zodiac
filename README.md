@@ -16,3 +16,11 @@ This is the repository for the game Duelysts Of The Zodiac, a turn based tactica
 - Game client will launch automatically and will also be available at `http://localhost:5173`
 - Website will be available at `http://localhost:3000`
 - Mail dev server will be available at `http://localhost:1080`
+
+## Roadmap
+
+[ROADMAP](ROADMAP.md)
+
+## Licence
+
+[MIT](LICENSE)
