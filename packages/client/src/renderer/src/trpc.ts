@@ -1,5 +1,5 @@
 import { httpService } from '@dotz/shared/dist/client';
-import type { ApiRouter } from '@dotz/api';
+import type { ApiRouter } from '@dotz/server';
 import { createTRPCProxyClient, httpBatchLink } from '@trpc/client';
 import superjson from 'superjson';
 

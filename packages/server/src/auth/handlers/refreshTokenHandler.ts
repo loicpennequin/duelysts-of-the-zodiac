@@ -2,7 +2,7 @@ import { REFRESH_TOKEN_COOKIE } from '../../constants';
 import { refreshJWT } from '../authService';
 import type { HandlerArgs } from '../../types';
 import { TRPCError } from '@trpc/server';
-import { getConfig } from '../../config';
+import { config } from '../../config';
 import { logoutHandler } from './logoutHandler';
 
 export const refreshTokenHandler = async ({ ctx, input }: HandlerArgs) => {
@@ -11,8 +11,6 @@ export const refreshTokenHandler = async ({ ctx, input }: HandlerArgs) => {
   if (!refreshTokenCookie) {
     throw new TRPCError({ code: 'UNAUTHORIZED' });
   }
-
-  const config = getConfig();
 
   try {
     const { accessToken, refreshToken } = await refreshJWT(refreshTokenCookie);

@@ -4,14 +4,12 @@ import { findUserByEmail, updateUserById } from '../userService';
 import crypto from 'crypto';
 import { mailerService } from '../../core/mailService';
 import { lostPasswordTemplate } from '../../core/emailTemplates';
-import { getConfig } from '../../config';
+import { config } from '../../config';
 import { TRPCError } from '@trpc/server';
 
 export const sendPasswordResetEmailHandler = async ({
   input
 }: HandlerArgs<SendPasswordResetEmailDto>) => {
-  const config = getConfig();
-
   const user = await findUserByEmail(input.email);
   if (!user || !user.username) throw new TRPCError({ code: 'NOT_FOUND' });
   const passwordResetToken = crypto.randomBytes(20).toString('hex');

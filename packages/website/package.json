@@ -12,7 +12,6 @@
   },
   "dependencies": {
     "@dotz/shared": "*",
-    "@dotz/api": "*",
     "@tanstack/vue-query": "^4.17.0",
     "@trpc/client": "^10.3.0",
     "astro": "^1.6.11",

@@ -1,11 +1,10 @@
 import type { LoginDto } from '@dotz/shared';
-import { getConfig } from '../../config';
+import { config } from '../../config';
 import { REFRESH_TOKEN_COOKIE } from '../../constants';
 import { login } from '../authService';
 import type { HandlerArgs } from '../../types';
 
 export const loginHandler = async ({ ctx, input }: HandlerArgs<LoginDto>) => {
-  const config = getConfig();
   const { accessToken, refreshToken } = await login(input);
 
   ctx.res.cookie(REFRESH_TOKEN_COOKIE, refreshToken, {

@@ -3,7 +3,7 @@ import { TRPCError } from '@trpc/server';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import crypto from 'crypto';
-import { getConfig } from '../config';
+import { config } from '../config';
 import {
   findUserById,
   findUserByEmail,
@@ -12,16 +12,12 @@ import {
 } from '../user/userService';
 
 export const generateJWT = (userId: string) => {
-  const config = getConfig();
-
   return jwt.sign({ sub: userId }, config.JWT.SECRET, {
     expiresIn: config.JWT.EXPIRES_IN_SECONDS
   });
 };
 
 export const generateRefreshToken = () => {
-  const config = getConfig();
-
   return jwt.sign(
     { sub: crypto.randomBytes(10).toString('hex') },
     config.REFRESH_TOKEN.SECRET,
@@ -32,7 +28,6 @@ export const generateRefreshToken = () => {
 };
 
 export const verifyJwt = (token: string) => {
-  const config = getConfig();
   try {
     return jwt.verify(token, config.JWT.SECRET, {
       complete: false
@@ -43,8 +38,6 @@ export const verifyJwt = (token: string) => {
 };
 
 export const verifyRefreshToken = (token: string) => {
-  const config = getConfig();
-
   try {
     return jwt.verify(token, config.REFRESH_TOKEN.SECRET, {
       complete: false
