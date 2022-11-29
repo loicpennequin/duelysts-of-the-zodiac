@@ -4,6 +4,7 @@ import type { UserDto } from '../user';
 
 export type GameSessionDto = PrismaGame & {
   users: UserDto[];
+  winnerId?: string;
 };
 
 export const GetGameSessionDto = z.object({

@@ -2,13 +2,14 @@
 import { GAME_ENDED } from '@dotz/shared';
 import QueryLoader from '@renderer/components/QueryLoader/index.vue';
 import { useGameSession, useSurrender } from '@renderer/composables/useGame';
+import { useSession } from '@renderer/composables/useSession';
 import { useSocketEvent } from '@renderer/composables/useSocket';
 import { queryKeys } from '@renderer/utils/constants';
 
 const route = useRoute('GameSession');
-const router = useRouter();
 
 const qc = useQueryClient();
+const { data: session } = useSession();
 const gameSessionQuery = useGameSession(route.params.id);
 
 const { mutate: surrender } = useSurrender({
@@ -19,7 +20,6 @@ const { mutate: surrender } = useSurrender({
 
 useSocketEvent(GAME_ENDED, ({ gameSession }) => {
   qc.setQueryData(queryKeys.GAME_SESSION(route.params.id), gameSession);
-  router.push({ name: 'Home' });
 });
 </script>
 
@@ -30,9 +30,10 @@ useSocketEvent(GAME_ENDED, ({ gameSession }) => {
 
     <template #default="{ data: gameSession }">
       <div v-if="gameSession.endedAt">
-        This game has already ended.
-        <router-link to="/">Back to home page</router-link>
+        {{ session?.id === gameSession.winnerId ? 'Victory' : 'Defeat' }}
+        <router-link to="/">Continue</router-link>
       </div>
+
       <data v-else>
         <pre>{{ gameSession }}</pre>
         <button @click="surrender(gameSession.id)">Surrender</button>

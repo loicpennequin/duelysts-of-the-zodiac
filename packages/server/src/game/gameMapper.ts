@@ -8,7 +8,8 @@ export const gameMapper = {
 
     return {
       ...rest,
-      users: gameUsers.map(gameUser => userMapper.toDto(gameUser.user))
+      users: gameUsers.map(gameUser => userMapper.toDto(gameUser.user)),
+      winnerId: gameUsers.find(gameUser => gameUser.winner)?.userId
     };
   }
 };
