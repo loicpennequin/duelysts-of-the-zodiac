@@ -7,7 +7,7 @@ const PAIRING_INTERVAL = 3000;
 export const MATCHMAKING_EVENTS = {
   STARTED: 'started',
   STOPPED: 'stopped',
-  PÄIRED: 'paired'
+  PAIRED: 'paired'
 } as const;
 
 type MatchmakingClient = {
@@ -21,7 +21,7 @@ type MatchmadePair = [MatchmakingClient, MatchmakingClient];
 export type MatchmakingEvents = {
   [MATCHMAKING_EVENTS.STARTED]: () => any;
   [MATCHMAKING_EVENTS.STOPPED]: () => any;
-  [MATCHMAKING_EVENTS.PÄIRED]: (payload: MatchmadePair) => any;
+  [MATCHMAKING_EVENTS.PAIRED]: (payload: MatchmadePair) => any;
 };
 
 export const createMatchMaking = () => {
@@ -90,7 +90,7 @@ export const createMatchMaking = () => {
       if (isMatchable([a, b])) {
         const pair = sortedClientsByRating.splice(0, 2) as MatchmadePair;
         pairs.push(pair);
-        emitter.emit(MATCHMAKING_EVENTS.PÄIRED, pair);
+        emitter.emit(MATCHMAKING_EVENTS.PAIRED, pair);
       } else {
         sortedClientsByRating.shift();
       }

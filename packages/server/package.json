@@ -6,7 +6,7 @@
     "dev": "dotenv -c -- nodemon",
     "build": "tsc",
     "start": "cross-env NODE_ENV=production node dist/index.js",
-    "db:sync": "dotenv -c -- prisma generate prisma migrate dev",
+    "db:sync": "dotenv -c -- prisma generate",
     "db:migrate": "dotenv -c -- prisma migrate dev",
     "db:migrate:force": "dotenv -c -- prisma db push",
     "db:ui": "dotenv -c -- prisma studio",

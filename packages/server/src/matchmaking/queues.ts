@@ -6,7 +6,7 @@ import { getSocket } from '../io';
 import { createMatchMaking, MATCHMAKING_EVENTS } from './matchmakingFactory';
 
 export const rankedQueue = createMatchMaking();
-rankedQueue.on(MATCHMAKING_EVENTS.PÄIRED, async pair => {
+rankedQueue.on(MATCHMAKING_EVENTS.PAIRED, async pair => {
   const users = pair.map(client => client.user) as [User, User];
   try {
     const game = await createGame(users);
