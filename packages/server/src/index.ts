@@ -13,7 +13,7 @@ import { authRouter } from './auth/authRouter';
 import { config } from './config';
 import { createApiContext } from './core/createContext';
 import { handleCORS } from './core/cors';
-import { initIO } from './io';
+import { initIO } from './core/io';
 import { matchmakingRouter } from './matchmaking/matchmakingRouter';
 import { gameRouter } from './game/gameRouter';
 

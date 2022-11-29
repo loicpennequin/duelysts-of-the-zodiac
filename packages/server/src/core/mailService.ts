@@ -15,7 +15,6 @@ const getTransport = () => {
 export const mailerService: IMailService = {
   sendMail({ to, template }) {
     const transporter = getTransport();
-    console.log('hello ?');
     return transporter
       .sendMail({
         from: 'dotz@gmail.com',

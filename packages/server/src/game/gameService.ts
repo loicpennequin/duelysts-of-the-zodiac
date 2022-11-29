@@ -2,7 +2,7 @@ import { GAME_ENDED, Nullable } from '@dotz/shared';
 import { Prisma, User } from '@prisma/client';
 import { SOCKET_ROOMS } from '../constants';
 import { db } from '../core/db';
-import { getIo } from '../io';
+import { getIo } from '../core/io';
 import { gameMapper } from './gameMapper';
 
 export const createGame = (users: [User, User]) => {

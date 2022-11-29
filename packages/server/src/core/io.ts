@@ -1,17 +1,17 @@
 import { Server, Socket } from 'socket.io';
 import type http from 'http';
 import { User } from '@prisma/client';
-import { authenticate } from './auth/authService';
-import { handleCORS } from './core/cors';
+import { authenticate } from '../auth/authService';
+import { handleCORS } from './cors';
 import {
   ClientToServerEvents,
   noop,
   PING,
   ServerToClientEvents
 } from '@dotz/shared';
-import { rankedQueue } from './matchmaking/queues';
-import { findGame } from './game/gameService';
-import { SOCKET_ROOMS } from './constants';
+import { rankedQueue } from '../matchmaking/queues';
+import { findGame } from '../game/gameService';
+import { SOCKET_ROOMS } from '../constants';
 
 let io: Server<ClientToServerEvents, ServerToClientEvents>;
 const usersBySocket = new Map<Socket, User>();

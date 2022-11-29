@@ -2,7 +2,7 @@ import { GAME_FOUND, noop } from '@dotz/shared';
 import { User } from '@prisma/client';
 import { SOCKET_ROOMS } from '../constants';
 import { createGame } from '../game/gameService';
-import { getSocket } from '../io';
+import { getSocket } from '../core/io';
 import { createMatchMaking, MATCHMAKING_EVENTS } from './matchmakingFactory';
 
 export const rankedQueue = createMatchMaking();
