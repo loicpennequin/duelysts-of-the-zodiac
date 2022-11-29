@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { GAME_FOUND } from '@dotz/shared';
+import { useOngoingGame } from '@renderer/composables/useGame';
 import {
   useJoinRankedQueue,
   useLeaveRankedQueue
@@ -8,6 +9,8 @@ import { useSocketEvent } from '@renderer/composables/useSocket';
 
 const hasJoined = ref(false);
 const router = useRouter();
+
+const { data: ongoingGame } = useOngoingGame();
 
 const { mutate: join } = useJoinRankedQueue({
   onSuccess() {
@@ -33,8 +36,12 @@ useSocketEvent(GAME_FOUND, payload => {
 <template>
   <router-link to="/">Back</router-link>
   <h2>Matchmaking page</h2>
-  <button v-if="hasJoined" @click="leave()">Cancel</button>
-  <button v-else @click="join()">Search for opponent</button>
+  <button v-if="hasJoined" :disabled="!!ongoingGame" @click="leave()">
+    Cancel
+  </button>
+  <button v-else :disabled="!!ongoingGame" @click="join()">
+    Search for opponent
+  </button>
 </template>
 
 <style scoped></style>

@@ -1,5 +1,6 @@
 import type { ResetPasswordDto } from '@dotz/shared';
 import { TRPCError } from '@trpc/server';
+import { EMPTY_RESPONSE } from '../../constants';
 import type { HandlerArgs } from '../../types';
 import { findByPasswordResetToken, resetPassword } from '../userService';
 
@@ -12,5 +13,5 @@ export const resetPasswordHandler = async ({
 
   await resetPassword(user.id, input.password);
 
-  return { success: true };
+  return EMPTY_RESPONSE;
 };

@@ -21,10 +21,28 @@ useSocketEvent('connect_error', () => {
 useSocketEvent('disconnect', () => {
   logout();
 });
+
+const layoutMap = {
+  default: defineAsyncComponent(
+    () => import('@renderer/layouts/DefaultLayout.vue')
+  ),
+  gameSession: defineAsyncComponent(
+    () => import('@renderer/layouts/GameSessionLayout.vue')
+  )
+};
+const router = useRouter();
+const currentLayout = computed(() => {
+  const key = router.currentRoute.value.meta.layout ?? 'default';
+  return layoutMap[key as string];
+});
 </script>
 
 <template>
   <div v-if="isLoading">Loading...</div>
+
   <LoginForm v-else-if="!session" />
-  <router-view v-else />
+
+  <component :is="currentLayout" v-else>
+    <router-view />
+  </component>
 </template>

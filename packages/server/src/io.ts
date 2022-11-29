@@ -3,21 +3,53 @@ import type http from 'http';
 import { User } from '@prisma/client';
 import { authenticate } from './auth/authService';
 import { handleCORS } from './core/cors';
-import { ClientToServerEvents, PING, ServerToClientEvents } from '@dotz/shared';
+import {
+  ClientToServerEvents,
+  noop,
+  PING,
+  ServerToClientEvents
+} from '@dotz/shared';
 import { rankedQueue } from './matchmaking/queues';
+import { findGame } from './game/gameService';
+import { SOCKET_ROOMS } from './constants';
 
+let io: Server<ClientToServerEvents, ServerToClientEvents>;
 const usersBySocket = new Map<Socket, User>();
 const socketsByUserId = new Map<string, Socket>();
 
 export const getSocket = (userId: string) => socketsByUserId.get(userId);
+export const getIo = () => {
+  if (!io) throw new Error('referencing io before initialization');
+  return io;
+};
 
 export const initIO = (server: http.Server) => {
-  const io = new Server<ClientToServerEvents, ServerToClientEvents>(server, {
+  io = new Server<ClientToServerEvents, ServerToClientEvents>(server, {
     cors: {
       origin: handleCORS,
       methods: ['GET', 'POST']
     }
   });
+
+  const connectToOngoingGameRoom = async (socket: Socket) => {
+    console.log('connecting to ongoing game...');
+    const user = usersBySocket.get(socket);
+    if (!user) return;
+
+    const game = await findGame({
+      where: {
+        endedAt: null,
+        gameUsers: {
+          some: {
+            userId: user.id
+          }
+        }
+      },
+      include: { gameUsers: { include: { user: true } } }
+    });
+    if (!game) return;
+    socket.join(SOCKET_ROOMS.GAME(game))?.catch(console.log);
+  };
 
   // eslint-disable-next-line @typescript-eslint/no-misused-promises
   io.use(async (socket, next) => {
@@ -35,18 +67,18 @@ export const initIO = (server: http.Server) => {
   });
 
   io.on('connection', socket => {
+    connectToOngoingGameRoom(socket).catch(noop);
+
     socket.on('disconnect', () => {
       const user = usersBySocket.get(socket);
       if (user) {
         socketsByUserId.delete(user.id);
         rankedQueue.leave(user);
+        // @TODO broadcast event in ongoing game room if applicable
+        // @TODO start timer to auto surrender ongoing game
       }
 
       usersBySocket.delete(socket);
-    });
-
-    socket.on(PING, (timestamp, callback) => {
-      callback(timestamp);
     });
   });
 };

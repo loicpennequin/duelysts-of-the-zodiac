@@ -15,9 +15,7 @@ const { mutate, error } = useUserOnboarding();
     <p>We just need you to select a username below</p>
 
     <form @submit.prevent="mutate({ username })">
-      <label for="onboarding-username" block font-bold text-xl text-center>
-        My username is
-      </label>
+      <label for="onboarding-username">My username is</label>
       <input id="onboarding-username" v-model="username" />
       <button>Let's go ! 🚀</button>
       <p v-if="error">{{ error }}</p>

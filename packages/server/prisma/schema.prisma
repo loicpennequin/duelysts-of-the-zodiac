@@ -48,11 +48,12 @@ model Game {
 }
 
 model GameUser {
-  userId String
-  gameId String
-  user   User     @relation(fields: [userId], references: [id])
-  game   Game     @relation(fields: [gameId], references: [id])
-  winner Boolean?
+  userId  String
+  gameId  String
+  user    User     @relation(fields: [userId], references: [id])
+  game    Game     @relation(fields: [gameId], references: [id])
+  winner  Boolean?
+  ongoing Boolean  @default(true)
 
   @@id([gameId, userId])
 }

@@ -1,5 +1,6 @@
-import { GAME_FOUND } from '@dotz/shared';
+import { GAME_FOUND, noop } from '@dotz/shared';
 import { User } from '@prisma/client';
+import { SOCKET_ROOMS } from '../constants';
 import { createGame } from '../game/gameService';
 import { getSocket } from '../io';
 import { createMatchMaking, MATCHMAKING_EVENTS } from './matchmakingFactory';
@@ -11,7 +12,10 @@ rankedQueue.on(MATCHMAKING_EVENTS.PÄIRED, async pair => {
     const game = await createGame(users);
     users.forEach(user => {
       const socket = getSocket(user.id);
-      socket?.emit(GAME_FOUND, { gameId: game.id });
+      if (!socket) throw new Error("Couldn't find socket associated with user");
+
+      socket.join(SOCKET_ROOMS.GAME(game))?.catch(noop);
+      socket.emit(GAME_FOUND, { gameId: game.id });
     });
   } catch (err) {
     // TODO maximum retry ?

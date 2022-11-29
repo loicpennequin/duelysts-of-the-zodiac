@@ -8,3 +8,17 @@ export const useGameSession = (id: string, options = {}) => {
     ...options
   });
 };
+
+export const useSurrender = (options = {}) =>
+  useMutation({
+    mutationFn: gameService.surrender,
+    ...options
+  });
+
+export const useOngoingGame = (options = {}) =>
+  useQuery({
+    queryKey: queryKeys.ONGOING_GAME(),
+    queryFn: () => gameService.getOngoingGame(),
+    staleTime: 0,
+    ...options
+  });
