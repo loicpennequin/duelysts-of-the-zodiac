@@ -7,6 +7,7 @@ import {
 import { useSocketEvent } from '@renderer/composables/useSocket';
 
 const hasJoined = ref(false);
+const router = useRouter();
 
 const { mutate: join } = useJoinRankedQueue({
   onSuccess() {
@@ -25,7 +26,7 @@ onUnmounted(() => {
 });
 
 useSocketEvent(GAME_FOUND, payload => {
-  console.log('game found', payload);
+  router.push({ name: 'GameSession', params: { id: payload.gameId } });
 });
 </script>
 
@@ -37,3 +38,9 @@ useSocketEvent(GAME_FOUND, payload => {
 </template>
 
 <style scoped></style>
+
+<route lang="json">
+{
+  "name": "Matchmaking"
+}
+</route>

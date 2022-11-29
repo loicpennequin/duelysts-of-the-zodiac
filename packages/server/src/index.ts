@@ -15,11 +15,13 @@ import { createApiContext } from './core/createContext';
 import { handleCORS } from './core/cors';
 import { initIO } from './io';
 import { matchmakingRouter } from './matchmaking/matchmakingRouter';
+import { gameRouter } from './game/gameRouter';
 
 export const apiRouter = router({
   user: userRouter,
   auth: authRouter,
-  matchmaking: matchmakingRouter
+  matchmaking: matchmakingRouter,
+  game: gameRouter
 });
 
 export type ApiRouter = typeof apiRouter;

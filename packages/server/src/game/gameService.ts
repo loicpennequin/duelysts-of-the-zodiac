@@ -1,4 +1,4 @@
-import { User } from '@prisma/client';
+import { Prisma, User } from '@prisma/client';
 import { db } from '../core/db';
 
 export const createGame = (users: [User, User]) => {
@@ -15,4 +15,18 @@ export const createGame = (users: [User, User]) => {
       }
     }
   });
+};
+
+export const findGameById = async <
+  T extends Omit<Prisma.GameFindUniqueArgs, 'where'>
+>(
+  id: string,
+  options: T
+) => {
+  const game = await db.game.findUnique({
+    where: { id },
+    ...options
+  });
+
+  return game as Prisma.GameGetPayload<T>;
 };

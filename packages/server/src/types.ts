@@ -1,3 +1,4 @@
+import { Prisma } from '@prisma/client';
 import type { Context } from './core/createContext';
 
 export type ApiConfig = {
@@ -45,3 +46,7 @@ export type SendMailOptions = {
 export interface IMailService {
   sendMail: (options: SendMailOptions) => Promise<any>;
 }
+
+export type GameSession = Prisma.GameGetPayload<{
+  include: { gameUsers: { include: { user: true } } };
+}>;

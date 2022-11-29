@@ -4,11 +4,11 @@ import { joinRankedQueueHandler } from './handlers/joinRankedQueueHandler';
 import { leaveRankedQueueHandler } from './handlers/leaveRankedQueueHandler';
 
 export const matchmakingRouter = router({
-  joinRankedQueue: procedure.mutation(args =>
-    wrapProcedure(() => joinRankedQueueHandler(args))
-  ),
+  joinRankedQueue: procedure
+    .meta({ needsAuth: true })
+    .mutation(args => wrapProcedure(() => joinRankedQueueHandler(args))),
 
-  leaveRankedQueue: procedure.mutation(args =>
-    wrapProcedure(() => leaveRankedQueueHandler(args))
-  )
+  leaveRankedQueue: procedure
+    .meta({ needsAuth: true })
+    .mutation(args => wrapProcedure(() => leaveRankedQueueHandler(args)))
 });
