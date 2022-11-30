@@ -37,7 +37,6 @@ const getDelay = (i: number) => `${i * 200 - 10000}ms`;
 .app-title {
   --size: var(--text-size-8);
 
-  transform-style: preserve-3d;
   position: relative;
   margin-inline: auto;
   max-width: 80%;
@@ -51,10 +50,10 @@ const getDelay = (i: number) => `${i * 200 - 10000}ms`;
     display: flex;
     flex-direction: column;
     font-weight: 700;
+    mix-blend-mode: overlay;
     font-size: var(--size);
-    mix-blend-mode: color-burn;
     clip-path: var(--clip-path);
-    animation: shine 2000ms var(--delay) ease-in-out infinite alternate;
+    animation: shine 3000ms var(--delay) ease-in-out infinite alternate;
 
     @media (prefers-reduced-motion: reduce) {
       animation: none;

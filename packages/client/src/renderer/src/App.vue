@@ -49,7 +49,7 @@ const isElectron = !!window.electron;
 </script>
 
 <template>
-  <div class="app">
+  <div class="app" :class="isElectron && 'app--is-electron'">
     <AppFrame v-if="isElectron" />
     <Spinner v-if="isLoading" />
     <template v-else>
@@ -75,6 +75,10 @@ const isElectron = !!window.electron;
   background-position: right;
   transition: all var(--duration-3);
   display: grid;
+  grid-template-rows: 1fr;
+}
+
+.app--is-electron {
   grid-template-rows: auto 1fr;
 }
 

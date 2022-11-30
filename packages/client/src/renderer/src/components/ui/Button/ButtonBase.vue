@@ -22,50 +22,50 @@ const is = computed(() => {
 
 <style lang="postcss">
 .button-base {
-  display: inline-flex;
-  background-color: var(--color-primary);
-  color: var(--color-on-primary);
-  border-radius: var(--radius-1);
+  position: relative;
   font-weight: 700;
   overflow: hidden;
   cursor: pointer;
-  border: solid 1px var(--color-primary-light);
-  backdrop-filter: blur(0.5rem);
+  box-shadow: inset 0 0 2px #000000;
   text-shadow: none;
+  border-image: linear-gradient(
+    to bottom,
+    var(--color-primary-light),
+    var(--color-primary-half)
+  );
+  border-image-slice: 1;
+  border-width: 2px;
+  border-style: solid;
+  position: relative;
+  display: inline-flex;
 
-  & > span {
-    position: relative;
-    width: 100%;
-    z-index: 1;
-    padding: var(--space-3) var(--space-5);
-  }
-
-  & > span::after {
+  &::after {
     content: '';
     position: absolute;
-    inset: 0;
-    width: 50%;
-    background: linear-gradient(
-      to left,
-      var(--color-primary-dark),
-      transparent
-    );
-    transform: skewX(45deg);
-    transition: transform var(--duration-2);
+    width: 2rem;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background-color: var(--color-accent);
     z-index: -1;
+    translate: -100% 100%;
+    filter: blur(10px);
+    bottom: 0;
+    transition: scale var(--duration-1), translate var(--duration-1);
   }
 
   &:hover,
   &:focus-visible {
-    filter: contrast(130%);
-
+    /* filter: contrast(130%); */
     &::after {
-      transform: scale(2.5);
+      translate: 0 100%;
+      scale: 2;
     }
+  }
 
-    & > span::after {
-      transform: skewX(-45deg);
-    }
+  & > span {
+    width: fit-content;
+    background-color: var(--color-surface);
+    padding: var(--space-3) var(--space-5);
   }
 }
 </style>
