@@ -10,8 +10,6 @@ type Props = {
 };
 const props = withDefaults(defineProps<Props>(), {
   type: 'text',
-  leftIcon: undefined,
-  rightIcon: undefined,
   name: undefined
 });
 const emit = defineEmits<{
@@ -48,7 +46,7 @@ const slots = useSlots();
   transition: background-color var(--duration-1);
 
   &:focus-within {
-    border-color: var(--color-primary);
+    border-color: var(--color-accent);
     background-color: var(--color-surface);
   }
 
@@ -56,6 +54,14 @@ const slots = useSlots();
     flex: 1;
     padding: var(--space-2) var(--space-3);
     min-width: 0;
+
+    &:-webkit-autofill,
+    &:-webkit-autofill:hover,
+    &:-webkit-autofill:focus,
+    &:-webkit-autofill:active {
+      -webkit-box-shadow: 0 0 0 30px var(--color-surface) inset !important;
+      text-shadow: none;
+    }
   }
 }
 </style>

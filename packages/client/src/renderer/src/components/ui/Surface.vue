@@ -13,5 +13,10 @@ const props = withDefaults(defineProps<{ as?: string }>(), { as: 'div' });
   background-color: var(--color-surface);
   backdrop-filter: blur(0.5rem);
   padding: var(--space-8);
+  border: 1px solid var(--color-primary-quarter);
+  border-radius: var(--radius-3);
+  box-shadow: 0 3rem 1em rgba(0, 0, 0, 0.25);
+  color: var(--color-on-surface);
+  text-shadow: rgba(0, 0, 0, 0.7) 1px 0 0.2rem;
 }
 </style>

@@ -48,6 +48,9 @@ useSocketEvent(GAME_FOUND, payload => {
 
 <route lang="json">
 {
-  "name": "Matchmaking"
+  "name": "Matchmaking",
+  "meta": {
+    "bg": "img/matchmaking.png"
+  }
 }
 </route>

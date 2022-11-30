@@ -31,6 +31,7 @@ const is = computed(() => {
   cursor: pointer;
   border: solid 2px var(--color-primary-light);
   backdrop-filter: blur(0.5rem);
+  text-shadow: none;
 
   & > span {
     position: relative;

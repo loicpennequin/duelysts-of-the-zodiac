@@ -4,6 +4,7 @@ import { REMEMBER_ME_LOCAL_STORAGE } from '@renderer/utils/constants';
 import ButtonBase from './ui/Button/ButtonBase.vue';
 import Surface from '@renderer/components/ui/Surface.vue';
 import TextInput from './ui/TextInput.vue';
+import Checkbox from './ui/Checkbox.vue';
 
 const form = reactive({
   email: '',
@@ -19,6 +20,7 @@ const lostPasswordUrl = `${
 
 <template>
   <Surface class="login-form">
+    <h1>Sign in</h1>
     <form space-y-2 @submit.prevent="mutate(form)">
       <fieldset>
         <label for="email">E-mail address</label>
@@ -30,8 +32,9 @@ const lostPasswordUrl = `${
       </fieldset>
 
       <fieldset>
-        <input id="remember-me" v-model="rememberMe" type="checkbox" />
-        <label for="remember-me">Remember me</label>
+        <Checkbox id="remember-me" v-model="rememberMe" type="checkbox">
+          Remember me
+        </Checkbox>
       </fieldset>
 
       <footer justify-between gap-5>
@@ -43,7 +46,7 @@ const lostPasswordUrl = `${
   </Surface>
 </template>
 
-<style scoped>
+<style scoped lang="postcss">
 .login-form {
   width: 100vw;
   max-width: 40rem;
@@ -68,5 +71,16 @@ form > footer {
 
 form > footer > a {
   font-size: var(--text-size-2);
+  text-decoration: underline;
+
+  &:focus {
+    color: var(--color-accent);
+  }
+}
+
+h1 {
+  font-size: var(--text-size-7);
+  margin-block-end: var(--space-6);
+  text-shadow: rgba(0, 0, 0, 0.7) 1px 0 0.5rem;
 }
 </style>

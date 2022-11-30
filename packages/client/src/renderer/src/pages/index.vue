@@ -45,6 +45,9 @@ const { data: ongoingGame } = useOngoingGame();
 
 <route lang="json">
 {
-  "name": "Home"
+  "name": "Home",
+  "meta": {
+    "bg": "img/main-menu.png"
+  }
 }
 </route>
