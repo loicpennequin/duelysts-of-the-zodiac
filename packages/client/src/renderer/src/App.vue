@@ -4,6 +4,8 @@ import LoginForm from './components/LoginForm.vue';
 import { useLogout } from './composables/useAuth';
 import { useSession } from './composables/useSession';
 import { useSocket, useSocketEvent } from './composables/useSocket';
+import mainBg from '@renderer/assets/img/main-bg.png';
+import Spinner from './components/ui/Spinner.vue';
 
 const socket = useSocket();
 const { data: session, isLoading } = useSession({
@@ -35,14 +37,29 @@ const currentLayout = computed(() => {
   const key = router.currentRoute.value.meta.layout ?? 'default';
   return layoutMap[key as string];
 });
+
+const bg = `url(${mainBg})`;
 </script>
 
 <template>
-  <div v-if="isLoading">Loading...</div>
-
-  <LoginForm v-else-if="!session" />
-
-  <component :is="currentLayout" v-else>
-    <router-view />
-  </component>
+  <div class="app">
+    <Spinner v-if="isLoading" />
+    <template v-else>
+      <LoginForm v-if="!session" />
+      <component :is="currentLayout" v-else>
+        <router-view />
+      </component>
+    </template>
+  </div>
 </template>
+
+<style scoped lang="postcss">
+.app {
+  min-height: 100vh;
+  background-image: v-bind(bg);
+  background-size: cover;
+  background-position: right;
+  display: grid;
+  place-content: center;
+}
+</style>

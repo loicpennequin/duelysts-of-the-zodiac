@@ -1,0 +1,76 @@
+:root {
+  --color-background: hsl(230, 30%, 20%);
+  --color-on-background: var(--color-primary-light);
+
+  --color-surface: hsla(230, 30%, 10%, 0.5);
+  --color-on-surface: var(--color-on-background);
+
+  --color-primary: hsl(45, 90%, 60%);
+  --color-on-primary: hsl(0, 0%, 0%);
+
+  --color-primary-half: hsl(45, 90%, 60%, 0.8);
+  --color-on-primary: hsl(0, 0%, 0%);
+
+  --color-primary-dark: hsl(45, 90%, 45%);
+  --color-on-primary-dark: var(--color-on-primary);
+
+  --color-primary-light: hsl(45, 80%, 80%);
+  --color-on-primary-dark: var(--color-on-primary);
+
+  --color-accent: hsl(190, 90%, 70%);
+  --color-on-primary: hsl(0, 0%, 0%);
+
+
+  --font-primary: Lato;
+
+  --space-0: 0;
+  --space-1: .125rem;
+  --space-2: .25rem;
+  --space-3: .5rem;
+  --space-4: .75rem;
+  --space-5: 1rem;
+  --space-6: 1.25rem;
+  --space-7: 1.5rem;
+  --space-8: 1.75rem;
+  --space-9: 2rem;
+  --space-10: 2.5rem;
+  --space-11: 3rem;
+  --space-12: 3.5rem;
+  --space-13: 4rem;
+  --space-14: 4.5rem;
+  --space-15: 5rem;
+  --space-16: 6rem;
+  --space-17: 7rem;
+  --space-18: 8rem;
+  --space-19: 9rem;
+  --space-20: 10rem;
+
+  --radius-0: 0;
+  --radius-1: .125rem;
+  --radius-2: .25rem;
+  --radius-3: .375rem;
+  --radius-4: .5rem;
+  --radius-5: .625rem;
+  --radius-6: .625rem;
+  --radius-7: .75rem;
+  --radius-8: .875rem;
+  --radius-9: 1rem;
+  --radius-pill: 9999px;
+
+  --duration-0: 0;
+  --duration-1: 200ms;
+  --duration-2: 300ms;
+  --duration-3: 500ms;
+  --duration-4: 800ms;
+  --duration-5: 1s;
+
+  --text-size-base: 1rem;
+  --text-size-1: 0.7rem;
+  --text-size-2: 0.8rem;
+}
+
+body {
+  background-color: var(--color-background);
+  color: var(--color-on-background);
+  font-family: var(--font-primary);
+}

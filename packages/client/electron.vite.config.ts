@@ -4,9 +4,11 @@ import vue from '@vitejs/plugin-vue';
 // import checker from 'vite-plugin-checker';
 import AutoImport from 'unplugin-auto-import/vite';
 import VueRouter from 'unplugin-vue-router/vite';
+import Icons from 'unplugin-icons/vite';
 
 import { VueRouterAutoImports } from 'unplugin-vue-router';
 import { fileURLToPath } from 'node:url';
+
 export default defineConfig({
   main: {
     plugins: [externalizeDepsPlugin()]
@@ -15,6 +17,8 @@ export default defineConfig({
     plugins: [externalizeDepsPlugin()]
   },
   renderer: {
+    css: { postcss: './postcss.config.cjs' },
+
     resolve: {
       alias: {
         '@renderer': resolve('src/renderer/src')
@@ -31,6 +35,11 @@ export default defineConfig({
       // checker({
       //   vueTsc: { tsconfigPath: './tsconfig.web.json' }
       // }),
+
+      Icons({
+        compiler: 'vue3'
+      }),
+
       AutoImport({
         include: [/\.[tj]sx?$/, /\.vue$/, /\.vue\?vue/, /\.md$/],
         imports: [

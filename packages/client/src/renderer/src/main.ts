@@ -1,3 +1,6 @@
+import 'animate.css';
+import '@renderer/assets/styles/global.css';
+
 import { createApp } from 'vue';
 import App from './App.vue';
 import { VueQueryPlugin } from '@tanstack/vue-query';

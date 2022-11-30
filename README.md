@@ -10,6 +10,7 @@ This is the repository for the game Duelysts Of The Zodiac, a turn based tactica
 ## Get Started
 
 - `yarn install`
+  -(optional if you are not using yarn) `yarn workspace @dotz/ui prepare`
 - `docker-compose up -d`
 - `yarn migrate`
 - `yarn dev`
