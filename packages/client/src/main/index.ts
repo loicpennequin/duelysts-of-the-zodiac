@@ -1,4 +1,4 @@
-import { app, shell, BrowserWindow, globalShortcut } from 'electron';
+import { app, shell, BrowserWindow, globalShortcut, ipcMain } from 'electron';
 import * as path from 'path';
 import { electronApp, optimizer, is } from '@electron-toolkit/utils';
 import installExtension, { VUEJS_DEVTOOLS } from 'electron-devtools-installer';
@@ -10,6 +10,7 @@ function createWindow(): void {
     height: 900,
     show: false,
     autoHideMenuBar: true,
+    frame: false,
     ...(process.platform === 'linux'
       ? {
           icon: path.join(__dirname, '../../build/icon.png')
@@ -41,6 +42,19 @@ function createWindow(): void {
   } else {
     mainWindow.loadFile(path.join(__dirname, '../renderer/index.html'));
   }
+
+  ipcMain.handle('close', () => {
+    app.quit();
+  });
+
+  ipcMain.handle('minimize', () => {
+    mainWindow.minimize();
+  });
+
+  ipcMain.handle('maximized', () => {
+    if (mainWindow.isMaximized()) mainWindow.unmaximize();
+    else mainWindow.maximize();
+  });
 }
 
 // This method will be called when Electron has finished

@@ -5,6 +5,8 @@ import ButtonBase from './ui/Button/ButtonBase.vue';
 import Surface from '@renderer/components/ui/Surface.vue';
 import TextInput from './ui/TextInput.vue';
 import Checkbox from './ui/Checkbox.vue';
+import PasswordInput from './ui/PasswordInput.vue';
+import AppTitle from './AppTitle.vue';
 
 const form = reactive({
   email: '',
@@ -20,7 +22,7 @@ const lostPasswordUrl = `${
 
 <template>
   <Surface class="login-form">
-    <h1>Sign in</h1>
+    <AppTitle />
     <form space-y-2 @submit.prevent="mutate(form)">
       <fieldset>
         <label for="email">E-mail address</label>
@@ -28,7 +30,7 @@ const lostPasswordUrl = `${
       </fieldset>
       <fieldset>
         <label for="password">Password</label>
-        <TextInput id="password" v-model="form.password" type="password" />
+        <PasswordInput id="password" v-model="form.password" />
       </fieldset>
 
       <fieldset>

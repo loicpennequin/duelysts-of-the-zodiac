@@ -19,5 +19,6 @@ import IconSpinner from '~icons/game-icons/sword-spin';
   font-size: var(--spinner-size);
   aspect-ratio: 1;
   animation: spin 2s infinite ease-out;
+  min-height: 1em;
 }
 </style>

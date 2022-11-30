@@ -23,13 +23,13 @@ const is = computed(() => {
 <style lang="postcss">
 .button-base {
   display: inline-flex;
-  background-color: var(--color-primary-half);
+  background-color: var(--color-primary);
   color: var(--color-on-primary);
-  border-radius: var(--radius-pill);
+  border-radius: var(--radius-1);
   font-weight: 700;
   overflow: hidden;
   cursor: pointer;
-  border: solid 2px var(--color-primary-light);
+  border: solid 1px var(--color-primary-light);
   backdrop-filter: blur(0.5rem);
   text-shadow: none;
 
@@ -45,7 +45,11 @@ const is = computed(() => {
     position: absolute;
     inset: 0;
     width: 50%;
-    background: linear-gradient(to left, var(--color-primary), transparent);
+    background: linear-gradient(
+      to left,
+      var(--color-primary-dark),
+      transparent
+    );
     transform: skewX(45deg);
     transition: transform var(--duration-2);
     z-index: -1;

@@ -77,6 +77,12 @@
   --text-size-7: 3.25rem;
   --text-size-8: 5rem;
   --text-size-9: 7rem;
+
+  --breakpoints-sm: 40rem;
+  --breakpoints-md: 48rem;
+  --breakpoints-lg: 64rem;
+  --breakpoints-xl: 80rem;
+  --breakpoints-2xl: 96rem;
 }
 
 body {

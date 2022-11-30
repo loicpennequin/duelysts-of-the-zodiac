@@ -5,6 +5,7 @@ import { useLogout } from './composables/useAuth';
 import { useSession } from './composables/useSession';
 import { useSocket, useSocketEvent } from './composables/useSocket';
 import Spinner from './components/ui/Spinner.vue';
+import AppFrame from './components/AppFrame.vue';
 
 const socket = useSocket();
 const { data: session, isLoading } = useSession({
@@ -43,18 +44,24 @@ const bg = computed(
       session.value ? router.currentRoute.value.meta.bg : 'img/login.png'
     })`
 );
+
+const isElectron = !!window.electron;
 </script>
 
 <template>
   <div class="app">
+    <AppFrame v-if="isElectron" />
     <Spinner v-if="isLoading" />
     <template v-else>
       <div v-if="!session" class="login-wrapper">
         <LoginForm />
       </div>
-      <component :is="currentLayout" v-else>
-        <router-view />
-      </component>
+
+      <div v-else>
+        <component :is="currentLayout">
+          <router-view />
+        </component>
+      </div>
     </template>
   </div>
 </template>
@@ -67,10 +74,11 @@ const bg = computed(
   background-size: cover;
   background-position: right;
   transition: all var(--duration-3);
+  display: grid;
+  grid-template-rows: auto 1fr;
 }
 
 .login-wrapper {
-  min-height: 100vh;
   display: grid;
   height: 100%;
   place-content: center;
