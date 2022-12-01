@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import QueryLoader from '@renderer/components/QueryLoader/index.vue';
-import UserOnboardingModal from '@renderer/components/UserOnboardingModal.vue';
 import { useLogout } from '@renderer/composables/useAuth';
 import { useSession } from '@renderer/composables/useSession';
 import Surface from '@renderer/components/ui/Surface.vue';
@@ -21,9 +20,9 @@ const { mutate } = useLogout();
       </Center>
     </template>
 
-    <template #default="{ data: session }">
+    <template #default>
       <Surface>
-        <UserOnboardingModal v-if="!session.username" />
+        <UserOnboardingModal />
         <button class="logout-button" @click="mutate()">Logout</button>
       </Surface>
     </template>

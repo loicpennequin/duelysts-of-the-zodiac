@@ -31,13 +31,15 @@ const is = computed(() => {
   border-image: linear-gradient(
     to bottom,
     var(--color-primary-light),
-    var(--color-primary-half)
+    var(--color-primary-dark)
   );
   border-image-slice: 1;
   border-width: 2px;
   border-style: solid;
   position: relative;
   display: inline-flex;
+  align-items: center;
+  transition: box-shadow var(--duration-2);
 
   &::after {
     content: '';
@@ -56,8 +58,10 @@ const is = computed(() => {
   &:hover,
   &:focus-visible {
     /* filter: contrast(130%); */
+    box-shadow: inset 0 0 2px #000000,
+      0 0.25rem 0.5rem var(--color-primary-half);
     &::after {
-      translate: 0 100%;
+      translate: 0 75%;
       scale: 2;
     }
   }

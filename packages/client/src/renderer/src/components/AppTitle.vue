@@ -50,10 +50,10 @@ const getDelay = (i: number) => `${i * 200 - 10000}ms`;
     display: flex;
     flex-direction: column;
     font-weight: 700;
-    mix-blend-mode: overlay;
+    mix-blend-mode: soft-light;
     font-size: var(--size);
     clip-path: var(--clip-path);
-    animation: shine 3000ms var(--delay) ease-in-out infinite alternate;
+    animation: shine 2500ms var(--delay) ease-in-out infinite alternate;
 
     @media (prefers-reduced-motion: reduce) {
       animation: none;

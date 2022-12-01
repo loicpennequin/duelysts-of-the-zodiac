@@ -1,27 +1,32 @@
 :root {
-  --color-background: hsl(230, 20%, 10%);
+  --yellow: 45, 90%;
+  --cyan: 190,90%;
+  --cold-grey: 230, 20%;
+  --grey: 0, 0%;
+
+  --color-background: hsl(var(--cold-grey), 10%);
   --color-on-background: var(--color-primary-light);
 
-  --color-surface: hsla(230, 10%, 10%, 0.4);
+  --color-surface: hsla(var(--cold-grey), 10%, 0.4);
   --color-on-surface: var(--color-on-background);
 
-  --color-primary: hsl(45, 90%, 60%);
-  --color-on-primary: hsl(0, 0%, 0%);
+  --color-primary: hsl(var(--yellow), 60%);
+  --color-on-primary: hsl(var(--grey), 0%);
 
-  --color-primary-half: hsl(45, 90%, 60%, 0.7);
-  --color-on-primary: hsl(0, 0%, 0%);
+  --color-primary-half: hsl(var(--yellow), 60%, 0.7);
+  --color-on-primary: var(--color-on-primary);
 
-  --color-primary-quarter: hsl(45, 90%, 60%, 0.3);
-  --color-on-primary: hsl(0, 0%, 0%);
+  --color-primary-quarter: hsl(var(--yellow), 60%, 0.3);
+  --color-on-primary: var(--color-on-primary);
 
-  --color-primary-dark: hsl(45, 90%, 45%);
+  --color-primary-dark: hsl(var(--yellow), 45%);
   --color-on-primary-dark: var(--color-on-primary);
 
-  --color-primary-light: hsl(45, 80%, 85%);
+  --color-primary-light: hsl(var(--yellow), 85%);
   --color-on-primary-dark: var(--color-on-primary);
 
-  --color-accent: hsl(190, 90%, 70%);
-  --color-on-primary: hsl(0, 0%, 0%);
+  --color-accent: hsl(var(--cyan), 70%);
+  --color-on-primary: hsl(var(--grey), 0%);
 
 
   --font-primary: Lato;

@@ -6,6 +6,7 @@ import { useSession } from './composables/useSession';
 import { useSocket, useSocketEvent } from './composables/useSocket';
 import Spinner from './components/ui/Spinner.vue';
 import AppFrame from './components/AppFrame.vue';
+import UserOnboardingModal from '@renderer/components/UserOnboardingModal.vue';
 
 const socket = useSocket();
 const { data: session, isLoading } = useSession({
@@ -49,6 +50,7 @@ const isElectron = !!window.electron;
 </script>
 
 <template>
+  <UserOnboardingModal />
   <div class="app" :class="isElectron && 'app--is-electron'">
     <AppFrame v-if="isElectron" />
     <Spinner v-if="isLoading" />
@@ -57,11 +59,9 @@ const isElectron = !!window.electron;
         <LoginForm />
       </div>
 
-      <div v-else>
-        <component :is="currentLayout">
-          <router-view />
-        </component>
-      </div>
+      <component :is="currentLayout" v-else>
+        <router-view />
+      </component>
     </template>
   </div>
 </template>
