@@ -26,6 +26,52 @@ export const createMatrix = <T>(
     Array.from({ length: dimensions.h }, (_, y) => initialValue({ x, y }))
   );
 
+export const rotateMatrix = <T>(
+  matrix: Matrix<T>,
+  angle: number
+): Matrix<T> => {
+  if (angle % 90 !== 0) {
+    throw new Error('Invalid input; degrees must be a multiple of 90');
+  }
+
+  const deg = ((angle % 360) + 360) % 360;
+  const w = matrix.length;
+  const h = matrix[0].length;
+
+  let newMatrix = new Array(h);
+
+  if (deg === 90) {
+    for (let y = 0; y < h; y++) {
+      newMatrix[y] = new Array(w);
+      for (let x = 0; x < w; x++) {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+        newMatrix[y][x] = matrix[w - 1 - x][y];
+      }
+    }
+  } else if (deg === 180) {
+    for (let y = 0; y < h; y++) {
+      const n = h - 1 - y;
+      newMatrix[n] = new Array(w);
+      for (let x = 0; x < w; x++) {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+        newMatrix[n][w - 1 - x] = matrix[y][x];
+      }
+    }
+  } else if (deg === 270) {
+    for (let y = 0; y < h; y++) {
+      newMatrix[y] = new Array(w);
+      for (let x = 0; x < w; x++) {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+        newMatrix[y][x] = matrix[x][h - 1 - y];
+      }
+    }
+  } else {
+    newMatrix = matrix;
+  }
+
+  return newMatrix as Matrix<T>;
+};
+
 export const debounce = <F extends (...args: Parameters<F>) => ReturnType<F>>(
   func: F,
   waitFor: number

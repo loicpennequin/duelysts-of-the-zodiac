@@ -27,6 +27,8 @@ export const createGameCanvas = async (
     resizeTo: container
   });
   PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST;
+  PIXI.settings.SORTABLE_CHILDREN = true;
+
   app.stage.pivot = { x: 0.5, y: 0.5 };
 
   const stage = stages[gameSession.stageId] as Stage;
@@ -46,7 +48,7 @@ export const createGameCanvas = async (
     camera
   });
   controls.enableCamera();
-  await createStage(app, stage);
+  await createStage(app, stage, camera);
 
   app.ticker.add(() => {
     camera.apply(app.stage);

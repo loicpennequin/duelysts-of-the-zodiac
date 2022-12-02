@@ -13,7 +13,7 @@ export const createCamera = (defaults: Partial<CameraView>) => {
     {
       x: 0,
       y: 0,
-      scale: 1,
+      scale: 2,
       angle: 0
     },
     defaults
