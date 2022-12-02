@@ -44,6 +44,7 @@ model Game {
   createdAt DateTime   @default(now())
   updatedAt DateTime?  @updatedAt
   endedAt   DateTime?
+  stageId   String
   gameUsers GameUser[]
 }
 

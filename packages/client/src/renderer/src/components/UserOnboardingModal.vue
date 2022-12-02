@@ -22,7 +22,7 @@ const { mutate, error } = useUserOnboarding();
 
       <form @submit.prevent="mutate({ username })">
         <label for="onboarding-username" class="sr-only">My username is</label>
-        <TextInput class="input" id="onboarding-username" v-model="username" />
+        <TextInput id="onboarding-username" v-model="username" class="input" />
         <ButtonBase>Let's go !</ButtonBase>
         <p v-if="error">{{ error }}</p>
       </form>

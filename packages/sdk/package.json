@@ -7,6 +7,9 @@
     "dev": "tsup src/index.ts --dts --watch --format esm,cjs",
     "build": "tsup src/index.ts --dts --format esm,cjs"
   },
+  "dependencies": {
+    "@dotz/shared": "*"
+  },
   "devDependencies": {
     "tsup": "^6.4.0",
     "typescript": "^4.9.3"

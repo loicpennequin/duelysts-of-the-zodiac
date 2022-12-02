@@ -71,7 +71,6 @@ useModalProvider({
 .backdrop {
   position: fixed;
   inset: 0;
-  background-color: rgba(0, 0, 0, 0.5);
-  backdrop-filter: blur(0.5rem);
+  background-color: rgba(0, 0, 0, 0.7);
 }
 </style>

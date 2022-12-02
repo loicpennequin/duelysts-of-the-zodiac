@@ -4,10 +4,12 @@ import { SOCKET_ROOMS } from '../constants';
 import { db } from '../core/db';
 import { getIo } from '../core/io';
 import { gameMapper } from './gameMapper';
+import { getRandomStage } from '@dotz/sdk';
 
 export const createGame = (users: [User, User]) => {
   return db.game.create({
     data: {
+      stageId: getRandomStage().id,
       gameUsers: {
         create: users.map(user => ({
           user: {

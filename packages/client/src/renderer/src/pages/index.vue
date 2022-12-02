@@ -22,7 +22,6 @@ const { mutate } = useLogout();
 
     <template #default>
       <Surface>
-        <UserOnboardingModal />
         <button class="logout-button" @click="mutate()">Logout</button>
       </Surface>
     </template>

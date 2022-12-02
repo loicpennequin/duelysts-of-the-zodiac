@@ -5,3 +5,5 @@ export * from './domain';
 export * from './pipe';
 export * from './constants';
 export * from './client';
+export * from './vectors';
+export * from './math';

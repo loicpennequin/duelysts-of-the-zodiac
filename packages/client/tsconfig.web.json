@@ -11,7 +11,7 @@
   "compilerOptions": {
     "composite": true,
     "baseUrl": ".",
-    "types": ["vite-plugin-vue-layouts/client", "unplugin-icons/types/vue"],
+    "types": ["unplugin-icons/types/vue"],
     "paths": {
       "@renderer/*": ["src/renderer/src/*"]
     }

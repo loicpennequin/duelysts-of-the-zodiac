@@ -39,7 +39,7 @@ const slots = useSlots();
   transition: all var(--duration-2);
   align-self: flex-start;
   overflow-y: auto;
-  margin-top: var(--space-20);
+  margin-block-start: var(--space-20);
 }
 
 .inner {
@@ -50,7 +50,6 @@ const slots = useSlots();
 
 .body {
   flex: 1;
-  padding-inline: var(--space-5);
 }
 
 footer {
