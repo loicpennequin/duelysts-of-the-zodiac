@@ -8,16 +8,52 @@ import {
 } from '@dotz/shared';
 import * as PIXI from 'pixi.js';
 
-export const createStage = async (app: PIXI.Application, stage: Stage) => {
-  // const getTileCoords = (index: number): Rectangle => {
-  //   return {
-  //     x: ((index - 1) % stage.tileset.columns) * stage.tileset.tilewidth,
-  //     y: Math.floor(index / stage.tileset.columns) * stage.tileset.tileheight,
-  //     w: stage.tileset.tilewidth,
-  //     h: stage.tileset.tileheight
-  //   };
-  // };
+const createTilesetSpriteSheet = async (stage: Stage) => {
+  const { tileset } = stage;
+  const texture = await PIXI.Assets.load(`/tilesets/${tileset.image}`);
 
+  const data = {
+    frames: Object.fromEntries(
+      Array.from({ length: tileset.tilecount }, (_, index) => {
+        // avoids console warnings with HMR
+        if (import.meta.env.DEV) {
+          PIXI.Texture.removeFromCache(`${stage.id}-${index + 1}`);
+        }
+
+        return [
+          `${stage.id}-${index + 1}`,
+          {
+            frame: {
+              x: (index % tileset.columns) * tileset.tilewidth,
+              y: Math.floor(index / tileset.columns) * tileset.tileheight,
+              w: tileset.tilewidth,
+              h: tileset.tileheight
+            },
+            sourceSize: { w: tileset.tilewidth, h: tileset.tileheight },
+            spriteSourceSize: {
+              x: 0,
+              y: 0,
+              w: tileset.tilewidth,
+              h: tileset.tileheight
+            }
+          }
+        ];
+      })
+    ),
+    meta: {
+      image: tileset.image,
+      size: { w: tileset.imagewidth, h: tileset.imageheight },
+      scale: '1'
+    }
+  };
+
+  const spritesheet = new PIXI.Spritesheet(texture, data);
+  await spritesheet.parse();
+
+  return spritesheet;
+};
+
+export const createStage = async (app: PIXI.Application, stage: Stage) => {
   const toIsometric = ({ x, y }: Point) =>
     mulVector(
       cartesianToIsometric({ x, y }),
@@ -25,12 +61,25 @@ export const createStage = async (app: PIXI.Application, stage: Stage) => {
     );
   const [ground] = stage.map.layers.filter(layer => layer.type === 'tilelayer');
 
-  ground.data.forEach((tile, index) => {
+  const sheet = await createTilesetSpriteSheet(stage);
+
+  const colorMatrix = new PIXI.filters.ColorMatrixFilter();
+  colorMatrix.contrast(1, false);
+
+  const tiles = ground.data.map((tile, index) => {
     if (!tile) return;
     const mapOffset = { x: stage.tileset.tilewidth / 2, y: 100 };
 
-    // const tileCoords = getTileCoords(tile);
-    const sprite = PIXI.Sprite.from(`/tilesets/${stage.tileset.image}`);
+    const sprite = new PIXI.Sprite(sheet.textures[`${stage.id}-${tile}`]);
+    sprite.interactive = true;
+    sprite
+      .on('mouseenter', () => {
+        sprite.filters = [colorMatrix];
+      })
+      .on('mouseleave', () => {
+        sprite.filters = [];
+      });
+
     const point = {
       x: index % stage.map.height,
       y: Math.floor(index / stage.map.height)
@@ -40,7 +89,11 @@ export const createStage = async (app: PIXI.Application, stage: Stage) => {
     sprite.y = isoPoint.y;
     sprite.width = stage.tileset.tilewidth;
     sprite.height = stage.tileset.tileheight;
-    console.log(sprite.width, sprite.height);
-    app.stage.addChild(sprite);
+
+    return sprite;
+  });
+
+  tiles.forEach(sprite => {
+    if (sprite) app.stage.addChild(sprite);
   });
 };

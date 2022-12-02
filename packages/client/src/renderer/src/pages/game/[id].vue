@@ -85,6 +85,7 @@ const opponent = computed(() =>
   display: grid;
   grid-template-columns: auto 1fr auto;
   grid-template-rows: auto 1fr;
+  user-select: none;
 
   & > .game-canvas {
     grid-row: 1 / -1;

@@ -26,12 +26,8 @@ export const createGameCanvas = async (
     backgroundAlpha: 0,
     resizeTo: container
   });
-
-  window.addEventListener(
-    'resize',
-    throttle(() => app.resize(), 100)
-  );
   PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST;
+  app.stage.pivot = { x: 0.5, y: 0.5 };
 
   const stage = stages[gameSession.stageId] as Stage;
 
@@ -56,5 +52,13 @@ export const createGameCanvas = async (
     camera.apply(app.stage);
   });
 
-  return canvas;
+  const onWindowResize = throttle(() => app.resize(), 100);
+  window.addEventListener('resize', onWindowResize);
+
+  return {
+    canvas,
+    cleanup() {
+      window.removeEventListener('resize', onWindowResize);
+    }
+  };
 };
