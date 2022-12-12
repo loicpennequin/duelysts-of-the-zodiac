@@ -1,4 +1,4 @@
-import type { Size, Point, Matrix, AnyConstructor } from './types';
+import type { Size, Point, Matrix, AnyConstructor, Boundaries } from './types';
 
 export const indexBy = <T extends Record<string, any>>(
   arr: T[],
@@ -145,6 +145,9 @@ export class EmptyClass {}
 export const random = (max: number) => Math.random() * max;
 
 export const randomInt = (max: number) => Math.round(random(max));
+
+export const randomInRange = ({ min, max }: Boundaries) =>
+  min + Math.random() * (max - min);
 
 export function randomIntExcluding(max: number, excluded: number[]) {
   const available = [];

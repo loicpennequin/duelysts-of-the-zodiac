@@ -12,11 +12,11 @@ export const surrenderGameGandler = async ({
   if (!game) throw new TRPCError({ code: 'NOT_FOUND' });
   if (game.endedAt) throw new TRPCError({ code: 'BAD_REQUEST' });
 
-  const winnerId = game.gameUsers.find(
+  const winner = game.gameUsers.find(
     gameUser => gameUser.userId !== ctx.session!.id
-  )!.userId;
+  );
 
-  const updatedGame = await endGame(input.id, winnerId);
+  const updatedGame = await endGame(input.id, winner?.userId);
 
   return gameMapper.toGameSessionDto(updatedGame);
 };

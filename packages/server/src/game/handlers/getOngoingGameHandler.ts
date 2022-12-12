@@ -1,6 +1,7 @@
 import { HandlerArgs } from '../../types';
 import { gameMapper } from '../gameMapper';
 import { findGame } from '../gameService';
+import { getWorldById } from '../gameWorldService';
 
 export const getOngoingGameHandler = async ({ ctx }: HandlerArgs) => {
   const game = await findGame({
@@ -15,5 +16,7 @@ export const getOngoingGameHandler = async ({ ctx }: HandlerArgs) => {
     include: { gameUsers: { include: { user: true } } }
   });
 
-  return game ? gameMapper.toGameSessionDto(game) : null;
+  if (!game) return null;
+
+  return gameMapper.toGameSessionDto(game);
 };

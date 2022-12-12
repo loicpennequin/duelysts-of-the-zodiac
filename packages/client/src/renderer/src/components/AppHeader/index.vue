@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import Surface from '@renderer/components/ui/Surface.vue';
-import ButtonBase from '@renderer/components/ui/Button/ButtonBase.vue';
 import LinkButton from '@renderer/components/ui/Button/LinkButton.vue';
 import Container from '@renderer/components/ui/Container.vue';
 import { useSession } from '@renderer/composables/useSession';
@@ -13,9 +12,6 @@ const { data: session } = useSession();
     <Container class="inner">
       <nav>
         <ul class="nav-list">
-          <li>
-            <ButtonBase to="/matchmaking" class="play-button">Play</ButtonBase>
-          </li>
           <li>
             <LinkButton to="/" class="nav-link">Home</LinkButton>
           </li>

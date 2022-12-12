@@ -12,6 +12,8 @@ import {
 import { rankedQueue } from '../matchmaking/queues';
 import { findGame } from '../game/gameService';
 import { SOCKET_ROOMS } from '../constants';
+import { getWorldById } from '../game/gameWorldService';
+import { GET_GAME_WORLD } from '@dotz/shared';
 
 let io: Server<ClientToServerEvents, ServerToClientEvents>;
 const usersBySocket = new Map<Socket, User>();
@@ -78,6 +80,11 @@ export const initIO = (server: http.Server) => {
       }
 
       usersBySocket.delete(socket);
+    });
+
+    socket.on(GET_GAME_WORLD, async (id, callback) => {
+      const world = await getWorldById(id);
+      callback(world);
     });
   });
 };

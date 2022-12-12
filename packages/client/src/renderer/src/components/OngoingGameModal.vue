@@ -4,18 +4,19 @@ import ButtonBase from '@renderer/components/ui/Button/ButtonBase.vue';
 import Modal from '@renderer/components/ui/Modal/index.vue';
 import ModalContent from '@renderer/components/ui/Modal/ModalContent.vue';
 
-const { data: ongoingGame } = useOngoingGame();
+const { data: ongoingGame } = useOngoingGame({ staleTime: 0 });
 </script>
 
 <template>
   <Modal
+    v-if="ongoingGame"
     :is-opened="!!ongoingGame"
     :closable="false"
     title="You have an ongoing game !"
   >
     <ModalContent>
       <ButtonBase
-        :to="{ name: 'GameSession', params: { id: ongoingGame!.id } }"
+        :to="{ name: 'GameSession', params: { id: ongoingGame?.id } }"
       >
         Join
       </ButtonBase>

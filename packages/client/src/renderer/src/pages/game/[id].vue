@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { GAME_ENDED } from '@dotz/shared';
+import { GameWorldDto, GAME_ENDED, GET_GAME_WORLD } from '@dotz/shared';
 import EndGameModal from '@renderer/components/EndGameModal.vue';
 import QueryLoader from '@renderer/components/QueryLoader/index.vue';
 import { useGameSession, useSurrender } from '@renderer/composables/useGame';
-import { useSocketEvent } from '@renderer/composables/useSocket';
+import { useSocketEvent, useSocket } from '@renderer/composables/useSocket';
 import { queryKeys } from '@renderer/utils/constants';
 import Modal from '@renderer/components/ui/Modal/index.vue';
 import ModalContent from '@renderer/components/ui/Modal/ModalContent.vue';
@@ -11,11 +11,21 @@ import ButtonBase from '@renderer/components/ui/Button/ButtonBase.vue';
 import GameCanvas from '@renderer/components/GameCanvas.vue';
 import Surface from '@renderer/components/ui/Surface.vue';
 import { useSession } from '@renderer/composables/useSession';
+import Center from '@renderer/components/ui/Center.vue';
+import Spinner from '@renderer/components/ui/Spinner.vue';
 
 const route = useRoute('GameSession');
 
+const gameWorld = ref<GameWorldDto>();
 const qc = useQueryClient();
-const gameSessionQuery = useGameSession(route.params.id);
+const gameSessionQuery = useGameSession(route.params.id, {
+  onSuccess(data) {
+    socket.emit(GET_GAME_WORLD, data.id, world => {
+      gameWorld.value = world;
+    });
+  }
+});
+const socket = useSocket();
 
 const { mutate: surrender } = useSurrender({
   onSuccess(data) {
@@ -50,7 +60,13 @@ const opponent = computed(() =>
 
 <template>
   <QueryLoader :query="gameSessionQuery">
-    <template #loading>Loading game...</template>
+    <template #loading>
+      <Center>
+        <Surface>
+          <Spinner />
+        </Surface>
+      </Center>
+    </template>
 
     <template #default="{ data: gameSession }">
       <EndGameModal :game-session="gameSession" />
@@ -62,7 +78,11 @@ const opponent = computed(() =>
       </Modal>
 
       <div class="game-screen">
-        <GameCanvas :game-session="gameSession" class="game-canvas" />
+        <GameCanvas
+          v-if="gameWorld"
+          :game-world="gameWorld"
+          class="game-canvas"
+        />
 
         <Surface v-if="currentUser" class="player-widget">
           {{ currentUser.username }}#{{ currentUser.usernameTag }}

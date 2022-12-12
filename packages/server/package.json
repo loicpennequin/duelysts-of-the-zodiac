@@ -13,8 +13,8 @@
     "db:seed": "dotenv -c -- prisma db seed"
   },
   "dependencies": {
-    "@dotz/shared": "*",
     "@dotz/sdk": "*",
+    "@dotz/shared": "*",
     "@prisma/client": "^4.6.1",
     "@trpc/server": "^10.3.0",
     "bcrypt": "^5.1.0",
@@ -27,8 +27,10 @@
     "http-proxy-middleware": "^2.0.6",
     "jsonwebtoken": "^8.5.1",
     "maildev": "^2.0.5",
+    "node-redis": "^0.1.7",
     "nodemailer": "^6.8.0",
     "prisma": "^4.6.1",
+    "redis": "^4.5.1",
     "socket.io": "^4.5.4",
     "superjson": "^1.11.0",
     "ts-node": "^10.9.1",
@@ -46,6 +48,7 @@
     "@types/maildev": "^0.0.3",
     "@types/node": "^18.11.8",
     "@types/nodemailer": "^6.4.6",
+    "@types/redis": "^4.0.11",
     "@types/uuid": "^8.3.4",
     "@typescript-eslint/eslint-plugin": "^5.41.0",
     "@typescript-eslint/parser": "^5.41.0",

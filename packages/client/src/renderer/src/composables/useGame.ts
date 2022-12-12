@@ -24,4 +24,4 @@ export const useOngoingGame = (options = {}) =>
   });
 
 export const useCreateSinglePlayerGame = (options = {}) =>
-  useMutation({ mutationFn: gameService.createSinglePlayerGame, ...options });
+  useMutation({ ...options, mutationFn: gameService.createSinglePlayerGame });

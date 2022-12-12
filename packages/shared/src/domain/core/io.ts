@@ -1,5 +1,5 @@
-import type { GameSessionDto } from '../game';
-import { GAME_ENDED, GAME_FOUND, PING } from './events';
+import type { GameSessionDto, GameWorldDto } from '../game';
+import { GAME_ENDED, GAME_FOUND, GET_GAME_WORLD, PING } from './events';
 
 // eslint-disable-next-line @typescript-eslint/ban-types
 export type ServerToClientEvents = {
@@ -9,4 +9,8 @@ export type ServerToClientEvents = {
 
 export type ClientToServerEvents = {
   [PING]: (timestamp: number, callback: (e: number) => void) => void;
+  [GET_GAME_WORLD]: (
+    gameId: string,
+    callback: (e: GameWorldDto) => void
+  ) => void;
 };

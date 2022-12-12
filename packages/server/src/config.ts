@@ -5,6 +5,8 @@ export const config = {
 
   WEBSITE_URL: process.env.WEBSITE_URL as string,
 
+  REDIS_URL: process.env.REDIS_URL,
+
   CORS: {
     ALLOWED_ORIGINS: [process.env.WEBSITE_URL, 'http://localhost:5173']
   },

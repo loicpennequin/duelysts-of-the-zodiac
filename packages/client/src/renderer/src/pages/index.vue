@@ -4,10 +4,23 @@ import { useLogout } from '@renderer/composables/useAuth';
 import { useSession } from '@renderer/composables/useSession';
 import Surface from '@renderer/components/ui/Surface.vue';
 import Center from '@renderer/components/ui/Center.vue';
+import Container from '@renderer/components/ui/Container.vue';
 import Spinner from '@renderer/components/ui/Spinner.vue';
+import { useCreateSinglePlayerGame } from '@renderer/composables/useGame';
+import { GameSessionDto } from '@dotz/shared';
+import ButtonBase from '@renderer/components/ui/Button/ButtonBase.vue';
 
 const sessionQuery = useSession();
-const { mutate } = useLogout();
+const router = useRouter();
+const { mutate: logout } = useLogout();
+
+const { mutate: createSinglePlayerGame, isLoading } = useCreateSinglePlayerGame(
+  {
+    onSuccess(data: GameSessionDto) {
+      router.push({ name: 'GameSession', params: { id: data.id } });
+    }
+  }
+);
 </script>
 
 <template>
@@ -21,16 +34,40 @@ const { mutate } = useLogout();
     </template>
 
     <template #default>
-      <Surface>
-        <button class="logout-button" @click="mutate()">Logout</button>
-      </Surface>
+      <Container class="home-page">
+        <Surface as="ul">
+          <li>
+            <ButtonBase :disabled="isLoading" @click="createSinglePlayerGame()">
+              Single player game
+            </ButtonBase>
+          </li>
+          <li>
+            <ButtonBase to="/matchmaking">Multiplayer game</ButtonBase>
+          </li>
+          <li>
+            <ButtonBase @click="logout()">Logout</ButtonBase>
+          </li>
+        </Surface>
+      </Container>
     </template>
   </QueryLoader>
 </template>
 
 <style scoped lang="postcss">
-.logout-button {
-  text-decoration: underline;
+.home-page {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  margin-top: var(--space-8);
+
+  & > ul a,
+  & > ul button {
+    font-size: var(--text-size-4);
+    width: 100%;
+  }
+
+  & > ul > li + li {
+    margin-top: var(--space-5);
+  }
 }
 </style>
 
@@ -38,7 +75,7 @@ const { mutate } = useLogout();
 {
   "name": "Home",
   "meta": {
-    "bg": "img/main-menu.png"
+    "bg": "/img/main-menu.png"
   }
 }
 </route>

@@ -4,7 +4,7 @@ import { SOCKET_ROOMS } from '../constants';
 import { db } from '../core/db';
 import { getIo } from '../core/io';
 import { gameMapper } from './gameMapper';
-import { getRandomStage } from '@dotz/sdk';
+import { createWorld } from './gameWorldService';
 
 export const createGame = async <T extends Omit<Prisma.GameCreateArgs, 'data'>>(
   userIds: string[],
@@ -13,7 +13,6 @@ export const createGame = async <T extends Omit<Prisma.GameCreateArgs, 'data'>>(
   const game = await db.game.create({
     ...options,
     data: {
-      stageId: getRandomStage().id,
       gameUsers: {
         create: userIds.map(id => ({
           user: {
@@ -23,6 +22,8 @@ export const createGame = async <T extends Omit<Prisma.GameCreateArgs, 'data'>>(
       }
     }
   });
+
+  await createWorld(game.id, userIds);
 
   return game as Prisma.GameGetPayload<T>;
 };
@@ -69,17 +70,19 @@ export const endGame = async (gameId: string, winnerId?: string) => {
   const updatedGame = await updateGameById(
     gameId,
     {
-      gameUsers: {
-        update: {
-          where: {
-            gameId_userId: {
-              gameId: gameId,
-              userId: winnerId ?? ''
+      gameUsers: winnerId
+        ? {
+            update: {
+              where: {
+                gameId_userId: {
+                  gameId: gameId,
+                  userId: winnerId
+                }
+              },
+              data: { winner: true }
             }
-          },
-          data: { winner: true }
-        }
-      },
+          }
+        : undefined,
       endedAt: new Date()
     },
     {

@@ -5,13 +5,11 @@ import { queryKeys } from '@renderer/utils/constants';
 export const useUserOnboarding = (options = {}) => {
   const qc = useQueryClient();
 
-  const queryOptions = computed(() => ({
+  return useMutation({
     mutationFn: userService.completeOnboarding,
-    onSuccess(data: UserDto) {
+    ...options,
+    onSuccess(data) {
       qc.setQueryData(queryKeys.SESSION(), data);
-    },
-    ...unref(options)
-  }));
-
-  return useMutation(queryOptions);
+    }
+  });
 };

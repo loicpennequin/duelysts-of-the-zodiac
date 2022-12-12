@@ -67,7 +67,7 @@ const is = computed(() => {
   }
 
   & > span {
-    width: fit-content;
+    width: 100%;
     background-color: var(--color-surface);
     padding: var(--space-3) var(--space-5);
   }

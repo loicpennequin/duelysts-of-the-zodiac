@@ -17,6 +17,13 @@ services:
     ports:
       - "1080:1080"
       - "1025:1025"
-
+ 
+  redis:
+    image: 'bitnami/redis:latest'
+    environment:
+      - ALLOW_EMPTY_PASSWORD=yes
+    ports:
+      - '6379:6379'
+  
 volumes:
   db:

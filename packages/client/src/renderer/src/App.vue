@@ -19,9 +19,11 @@ const { data: session, isLoading } = useSession({
 
 const { mutate: logout } = useLogout();
 useSocketEvent('connect_error', () => {
+  if (import.meta.env.DEV) return;
   logout();
 });
 useSocketEvent('disconnect', () => {
+  if (import.meta.env.DEV) return;
   logout();
 });
 

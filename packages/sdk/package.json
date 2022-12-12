@@ -8,7 +8,9 @@
     "build": "tsup src/index.ts --dts --format esm,cjs"
   },
   "dependencies": {
-    "@dotz/shared": "*"
+    "@dotz/shared": "*",
+    "fractal-noise": "^2.1.0-pre1",
+    "open-simplex-noise": "^2.5.0"
   },
   "devDependencies": {
     "tsup": "^6.4.0",

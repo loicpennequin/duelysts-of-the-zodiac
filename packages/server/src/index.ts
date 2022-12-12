@@ -16,6 +16,7 @@ import { handleCORS } from './core/cors';
 import { initIO } from './core/io';
 import { matchmakingRouter } from './matchmaking/matchmakingRouter';
 import { gameRouter } from './game/gameRouter';
+import { redisClient } from './core/redis';
 
 export const apiRouter = router({
   user: userRouter,
@@ -26,38 +27,45 @@ export const apiRouter = router({
 
 export type ApiRouter = typeof apiRouter;
 
-const app = express();
-const server = http.createServer(app);
+async function main() {
+  const app = express();
+  const server = http.createServer(app);
 
-if (process.env.NODE_ENV === 'production') {
-  app.use(express.static('public'));
-} else {
+  if (process.env.NODE_ENV === 'production') {
+    app.use(express.static('public'));
+  } else {
+    app.use(
+      cors({
+        credentials: true,
+        origin: handleCORS
+      })
+    );
+  }
+
+  app.use(cookieParser(config.SESSION.SECRET));
   app.use(
-    cors({
-      credentials: true,
-      origin: handleCORS
+    '/api',
+    trpcExpress.createExpressMiddleware({
+      router: apiRouter,
+      createContext: ({ req, res }) => createApiContext({ req, res }),
+      onError({ error, path, input }) {
+        // eslint-disable-next-line no-console
+        console.log(chalk.red('[ ERROR ]'), '-', path, '-', error.message);
+        if (input) {
+          console.log('input :', input);
+        }
+      }
     })
   );
+
+  initIO(server);
+  await redisClient.connect();
+  server.listen(process.env.port || 4000, () => {
+    console.log('server ready');
+  });
 }
 
-app.use(cookieParser(config.SESSION.SECRET));
-app.use(
-  '/api',
-  trpcExpress.createExpressMiddleware({
-    router: apiRouter,
-    createContext: ({ req, res }) => createApiContext({ req, res }),
-    onError({ error, path, input }) {
-      // eslint-disable-next-line no-console
-      console.log(chalk.red('[ ERROR ]'), '-', path, '-', error.message);
-      if (input) {
-        console.log('input :', input);
-      }
-    }
-  })
-);
-
-initIO(server);
-
-server.listen(process.env.port || 4000, () => {
-  console.log('server ready');
+main().catch(err => {
+  console.log(err);
+  process.exit(0);
 });
