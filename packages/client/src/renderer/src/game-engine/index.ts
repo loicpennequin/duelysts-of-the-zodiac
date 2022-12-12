@@ -47,7 +47,7 @@ export const createGameCanvas = async (
     canvas,
     camera
   });
-  controls.enableCamera();
+  controls.disableCamera();
   await createStage(app, stage, camera);
 
   app.ticker.add(() => {

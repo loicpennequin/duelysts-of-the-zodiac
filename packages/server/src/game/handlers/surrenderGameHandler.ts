@@ -9,6 +9,7 @@ export const surrenderGameGandler = async ({
   input
 }: HandlerArgs<SurrenderGameDto>) => {
   const game = await findGameById(input.id, { include: { gameUsers: true } });
+  if (!game) throw new TRPCError({ code: 'NOT_FOUND' });
   if (game.endedAt) throw new TRPCError({ code: 'BAD_REQUEST' });
 
   const winnerId = game.gameUsers.find(

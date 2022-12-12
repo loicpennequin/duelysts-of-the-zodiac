@@ -20,11 +20,12 @@
     "build:linux": "npm run build && electron-builder --linux --config"
   },
   "dependencies": {
-    "@dotz/shared": "*",
     "@dotz/sdk": "*",
+    "@dotz/shared": "*",
     "@electron-toolkit/preload": "^1.0.2",
     "@electron-toolkit/utils": "^1.0.2",
     "@headlessui/vue": "^1.7.4",
+    "@pixi/filter-advanced-bloom": "^5.0.0",
     "@tanstack/vue-query": "^4.17.1",
     "@trpc/client": "^10.3.0",
     "@types/jwt-decode": "^3.1.0",

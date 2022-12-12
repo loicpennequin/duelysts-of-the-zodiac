@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { GameSessionDto } from '@dotz/shared';
-import { createGameCanvas } from '@renderer/canvas';
+import { createGameCanvas } from '@renderer/game-engine';
 
 const props = defineProps<{ gameSession: GameSessionDto }>();
 

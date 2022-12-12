@@ -17,5 +17,6 @@ type QueryLoader = new <T extends ReturnType<typeof useQuery>>(
     empty: (...args: any[]) => VNode[];
   };
 };
+
 export default QueryLoaderBase as QueryLoader;
 </script>

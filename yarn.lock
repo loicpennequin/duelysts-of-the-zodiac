@@ -760,6 +760,13 @@
   resolved "https://registry.yarnpkg.com/@pixi/extract/-/extract-7.0.4.tgz#b8c511b02c568dd712f406f135d635f23ff0fdcf"
   integrity sha512-fchsSpkxHDQBKlQHwF0bVH69ZhI1Z+2rRoZn6ninAMU9QrliUSotrQDrq9Oh0kJAQUmBaQClnEM9IFDzIHwV2A==
 
+"@pixi/filter-advanced-bloom@^5.0.0":
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/@pixi/filter-advanced-bloom/-/filter-advanced-bloom-5.0.0.tgz#ca92f1ac9c0a7bbd687bdda093d81812a38609c5"
+  integrity sha512-P5Xt65GLBEqjZVUkLe4ZZk4D1/j9UEXYnYFG3JrLPYkdcniwD4Y+NIyNCJ+eP91ivgoCmK/+SyBRv0P0AEQkTw==
+  dependencies:
+    "@pixi/filter-kawase-blur" "5.0.0"
+
 "@pixi/filter-alpha@7.0.4":
   version "7.0.4"
   resolved "https://registry.yarnpkg.com/@pixi/filter-alpha/-/filter-alpha-7.0.4.tgz#8b4b75e0b6269d1d5bbc4188222bb35d9d3dcc6b"
@@ -784,6 +791,11 @@
   version "7.0.4"
   resolved "https://registry.yarnpkg.com/@pixi/filter-fxaa/-/filter-fxaa-7.0.4.tgz#2b69a1650a14a797f7ca45147be4e5eed6ca2d1e"
   integrity sha512-wVdhDJgAbWQs+bEcZ26dNBApuDsyHqsrSkNhn4lVl7i3Hc1xm505w7aWWT/6rL9cR6S5W3ss/k6kSahbjmVBIg==
+
+"@pixi/filter-kawase-blur@5.0.0":
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/@pixi/filter-kawase-blur/-/filter-kawase-blur-5.0.0.tgz#103642af2829861485a64407c7303e4d8e00570e"
+  integrity sha512-dKSTaPUOvdVkfx9x+kp0TzYjGAl8CLxIRGz6Wh43NKx96nVqd/lWqvlda+zloHVgZyQoJNHZZ4Spjcw2mYoaWg==
 
 "@pixi/filter-noise@7.0.4":
   version "7.0.4"

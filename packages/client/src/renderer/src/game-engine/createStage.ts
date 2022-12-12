@@ -1,5 +1,5 @@
-import { Stage } from '@dotz/sdk';
-import { rotateMatrix } from '@dotz/shared';
+import { Stage, units } from '@dotz/sdk';
+import { Nullable, rotateMatrix } from '@dotz/shared';
 import {
   type Point,
   mulVector,
@@ -8,59 +8,11 @@ import {
   addVector,
   createMatrix
 } from '@dotz/shared';
-import {
-  createSpritesheetFrameObject,
-  parseAsperiteAnimationSheet
-} from '@renderer/utils/canvas';
 import * as PIXI from 'pixi.js';
 import { Camera } from './createCamera';
+import { createStageUnit } from './createStageUnit';
+import { createTilesetSpriteSheet } from './creatTilesetSpritesheet';
 // @ts-ignore bruh
-import seiyaJSON from './seiya.json';
-
-const createTilesetSpriteSheet = async (stage: Stage) => {
-  const { tileset } = stage;
-  const texture = await PIXI.Assets.load(`/tilesets/${tileset.image}`);
-
-  const data = {
-    frames: Object.fromEntries(
-      Array.from({ length: tileset.tilecount }, (_, index) => {
-        // avoids console warnings with HMR
-        if (import.meta.env.DEV) {
-          PIXI.Texture.removeFromCache(`${stage.id}-${index + 1}`);
-        }
-
-        return [
-          `${stage.id}-${index + 1}`,
-          {
-            frame: {
-              x: (index % tileset.columns) * tileset.tilewidth,
-              y: Math.floor(index / tileset.columns) * tileset.tileheight,
-              w: tileset.tilewidth,
-              h: tileset.tileheight
-            },
-            sourceSize: { w: tileset.tilewidth, h: tileset.tileheight },
-            spriteSourceSize: {
-              x: 0,
-              y: 0,
-              w: tileset.tilewidth,
-              h: tileset.tileheight
-            }
-          }
-        ];
-      })
-    ),
-    meta: {
-      image: tileset.image,
-      size: { w: tileset.imagewidth, h: tileset.imageheight },
-      scale: '1'
-    }
-  };
-
-  const spritesheet = new PIXI.Spritesheet(texture, data);
-  await spritesheet.parse();
-
-  return spritesheet;
-};
 
 const rotateLayer = (
   containers: PIXI.Container[],
@@ -107,6 +59,10 @@ export const createStage = async (
 
   const colorMatrix = new PIXI.filters.ColorMatrixFilter();
   colorMatrix.contrast(1, false);
+  const selectedTileFilter = new PIXI.filters.ColorMatrixFilter();
+  selectedTileFilter.contrast(0.75, false);
+
+  const seiya = await createStageUnit(units.seiya);
 
   const tiles = ground.data.map((tile, index) => {
     const container = new PIXI.Container();
@@ -114,45 +70,37 @@ export const createStage = async (
     container.position.set(isoPoint.x, isoPoint.y);
 
     if (tile) {
-      container.interactive = true;
-      container
-        .on('mouseenter', () => {
-          container.filters = [colorMatrix];
-        })
-        .on('mouseleave', () => {
-          container.filters = [];
-        });
       const sprite = new PIXI.Sprite(sheet.textures[`${stage.id}-${tile}`]);
       sprite.width = stage.tileset.tilewidth;
       sprite.height = stage.tileset.tileheight;
+      container.interactive = true;
+      container.filters = [];
+
+      container
+        .on('mouseenter', () => {
+          if (!container.filters?.includes(colorMatrix))
+            container.filters?.push(colorMatrix);
+        })
+        .on('mouseleave', () => {
+          container.filters =
+            container.filters?.filter(filter => filter !== colorMatrix) ?? null;
+        })
+        .on('click', () => {
+          seiya.parent?.removeChild(seiya);
+          container.addChild(seiya);
+        });
+
       container.addChild(sprite);
     }
 
     return container;
   });
 
-  const seiyaTexture = await PIXI.Assets.load('/units/seiya.png');
-
-  const addUnit = async (sprite: PIXI.Container) => {
-    const data = parseAsperiteAnimationSheet(seiyaJSON);
-    const seiyaSpritesheet = new PIXI.Spritesheet(seiyaTexture, data);
-    await seiyaSpritesheet.parse();
-    const seiya = new PIXI.AnimatedSprite(
-      createSpritesheetFrameObject('idle', seiyaSpritesheet, data)
-    );
-    // seiya.position.y = seiya.position.y + seiya.width / 4;
-    seiya.position.x = seiya.position.x - seiya.width / 4;
-    seiya.position.y = seiya.position.y - seiya.height / 2;
-    seiya.play();
-    sprite.addChild(seiya);
-  };
-
   tiles.forEach((container, index) => {
     if (!container) return;
+    if (!ground.data[index]) return;
+
     app.stage.addChild(container);
-    if (index === 0) {
-      addUnit(container);
-    }
   });
 
   // @TODO fix this crap by having the camera emit events instead

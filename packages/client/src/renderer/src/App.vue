@@ -42,7 +42,7 @@ const currentLayout = computed(() => {
 const bg = computed(
   () =>
     `url(${
-      session.value ? router.currentRoute.value.meta.bg : 'img/login.png'
+      session.value ? router.currentRoute.value.meta.bg : '/img/login.png'
     })`
 );
 

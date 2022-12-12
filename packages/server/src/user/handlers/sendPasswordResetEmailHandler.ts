@@ -6,7 +6,7 @@ import { mailerService } from '../../core/mailService';
 import { lostPasswordTemplate } from '../../core/emailTemplates';
 import { config } from '../../config';
 import { TRPCError } from '@trpc/server';
-import { EMPTY_RESPONSE } from '../../constants';
+import { SUCCESS_RESPONSE } from '../../constants';
 
 export const sendPasswordResetEmailHandler = async ({
   input
@@ -36,5 +36,5 @@ export const sendPasswordResetEmailHandler = async ({
     })
   });
 
-  return EMPTY_RESPONSE;
+  return SUCCESS_RESPONSE;
 };

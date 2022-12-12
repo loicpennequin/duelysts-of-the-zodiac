@@ -4,7 +4,7 @@ import {
   CAMERA_ROTATE_SCALE,
   CAMERA_SCALE_STEP,
   ONE_FRAME_IN_MS
-} from '@renderer/canvas/constants';
+} from '@renderer/game-engine/constants';
 import {
   type Point,
   addVector,

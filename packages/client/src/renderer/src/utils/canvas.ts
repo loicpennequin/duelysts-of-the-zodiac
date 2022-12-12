@@ -1,3 +1,4 @@
+import * as PIXI from 'pixi.js';
 import type { FrameObject, ISpritesheetData, Spritesheet } from 'pixi.js';
 
 export interface AsepriteSheet {
@@ -49,7 +50,14 @@ export function parseAsperiteAnimationSheet(
 ): ISpritesheetData {
   return {
     frames: Object.fromEntries(
-      asepritesheet.frames.map(frame => [frame.filename, frame])
+      asepritesheet.frames.map(frame => {
+        const frameName = `${frame.filename}`;
+        // avoids console warnings with HMR
+        if (import.meta.env.DEV) {
+          PIXI.Texture.removeFromCache(frameName);
+        }
+        return [frameName, frame];
+      })
     ),
     animations: Object.fromEntries(
       asepritesheet.meta.frameTags.map(tag => [

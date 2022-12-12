@@ -1,4 +1,4 @@
-import { EMPTY_RESPONSE, REFRESH_TOKEN_COOKIE } from '../../constants';
+import { SUCCESS_RESPONSE, REFRESH_TOKEN_COOKIE } from '../../constants';
 import { logout } from '../authService';
 import type { HandlerArgs } from '../../types';
 
@@ -8,5 +8,5 @@ export const logoutHandler = async ({ ctx }: HandlerArgs) => {
     ctx.res.clearCookie(REFRESH_TOKEN_COOKIE);
   }
 
-  return EMPTY_RESPONSE;
+  return SUCCESS_RESPONSE;
 };
