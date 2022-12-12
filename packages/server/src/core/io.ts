@@ -32,7 +32,6 @@ export const initIO = (server: http.Server) => {
   });
 
   const connectToOngoingGameRoom = async (socket: Socket) => {
-    console.log('connecting to ongoing game...');
     const user = usersBySocket.get(socket);
     if (!user) return;
 

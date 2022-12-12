@@ -1,6 +1,10 @@
 import { trpcClient } from '@renderer/trpc';
 
 export const gameService = {
+  createSinglePlayerGame() {
+    return trpcClient.game.createSinglePlayerGame.mutate();
+  },
+
   getSession(id: string) {
     return trpcClient.game.getGameSession.query({ id });
   },

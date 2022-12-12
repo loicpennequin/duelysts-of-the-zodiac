@@ -1,26 +1,30 @@
 import { GAME_ENDED, Nullable } from '@dotz/shared';
-import { Prisma, User } from '@prisma/client';
+import { Prisma } from '@prisma/client';
 import { SOCKET_ROOMS } from '../constants';
 import { db } from '../core/db';
 import { getIo } from '../core/io';
 import { gameMapper } from './gameMapper';
 import { getRandomStage } from '@dotz/sdk';
 
-export const createGame = (users: [User, User]) => {
-  return db.game.create({
+export const createGame = async <T extends Omit<Prisma.GameCreateArgs, 'data'>>(
+  userIds: string[],
+  options: T
+) => {
+  const game = await db.game.create({
+    ...options,
     data: {
       stageId: getRandomStage().id,
       gameUsers: {
-        create: users.map(user => ({
+        create: userIds.map(id => ({
           user: {
-            connect: {
-              id: user.id
-            }
+            connect: { id }
           }
         }))
       }
     }
   });
+
+  return game as Prisma.GameGetPayload<T>;
 };
 
 export const findGame = async <T extends Prisma.GameFindFirstArgs>(
@@ -61,7 +65,7 @@ export const updateGameById = async <
   return game as Prisma.GameGetPayload<T>;
 };
 
-export const endGame = async (gameId: string, winnerId: string) => {
+export const endGame = async (gameId: string, winnerId?: string) => {
   const updatedGame = await updateGameById(
     gameId,
     {
@@ -70,7 +74,7 @@ export const endGame = async (gameId: string, winnerId: string) => {
           where: {
             gameId_userId: {
               gameId: gameId,
-              userId: winnerId
+              userId: winnerId ?? ''
             }
           },
           data: { winner: true }

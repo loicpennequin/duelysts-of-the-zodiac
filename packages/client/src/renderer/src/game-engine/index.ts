@@ -1,5 +1,4 @@
 import { GameSessionDto } from '@dotz/shared';
-import { Stage, stages } from '@dotz/sdk';
 import * as PIXI from 'pixi.js';
 import { createCamera } from './createCamera';
 import { PlayerControls } from './createControls';
@@ -31,8 +30,6 @@ export const createGameCanvas = async (
 
   app.stage.pivot = { x: 0.5, y: 0.5 };
 
-  const stage = stages[gameSession.stageId] as Stage;
-
   const camera = createCamera({
     x: app.screen.width / 2,
     y: 100,
@@ -48,7 +45,7 @@ export const createGameCanvas = async (
     camera
   });
   controls.disableCamera();
-  await createStage(app, stage, camera);
+  await createStage(app, camera);
 
   app.ticker.add(() => {
     camera.apply(app.stage);
