@@ -24,7 +24,7 @@ export const updateWorldById = async (id: string, newWorld: GameWorld) => {
 };
 
 export const createWorld = async (id: string, playerIds: string[]) => {
-  const world = createDotzWorld(playerIds);
+  const world = await createDotzWorld(playerIds);
   worlds.set(id, world);
 
   return await redisClient.set(id, serializeWorld(world));

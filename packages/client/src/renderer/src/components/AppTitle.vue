@@ -20,10 +20,14 @@ const getDelay = (i: number) => `${i * 200 - 10000}ms`;
 </script>
 
 <template>
-  <div class="app-title animate__animated animate__backInDown">
+  <div
+    class="app-title animate__animated animate__backInDown"
+    aria-label="Duelysts of the Zodiac"
+  >
     <div
       v-for="i in LAYERS_COUNT"
       :key="i"
+      aria-hidden="true"
       :style="{ '--clip-path': getClipPath(i), '--delay': getDelay(i) }"
     >
       Duelysts
@@ -60,7 +64,7 @@ const getDelay = (i: number) => `${i * 200 - 10000}ms`;
     }
 
     & > span:nth-of-type(1) {
-      margin-bottom: -10px; /* >< */
+      margin-bottom: -10px; /* makes it look more aligned */
       font-size: 0.4em;
       font-weight: 400;
     }

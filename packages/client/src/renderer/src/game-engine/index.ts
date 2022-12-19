@@ -1,10 +1,11 @@
-import { GameSessionDto, GameWorldDto } from '@dotz/shared';
+import { GameWorldDto } from '@dotz/shared';
 import * as PIXI from 'pixi.js';
 import { createCamera } from './createCamera';
 import { PlayerControls } from './createControls';
 import { createMouseTracker } from './createMouseTracker';
 import { createStage } from './createStage';
 import { throttle } from '@dotz/shared';
+import { Graphics } from 'pixi.js';
 
 if (import.meta.env.DEV) {
   // @ts-ignore enables PIXI devtools
@@ -28,13 +29,10 @@ export const createGameCanvas = async (
   PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST;
   PIXI.settings.SORTABLE_CHILDREN = true;
 
-  app.stage.pivot = { x: 0.5, y: 0.5 };
-
   const camera = createCamera({
-    x: 0,
-    y: 0,
-    scale: 1,
-    angle: 0
+    x: 300,
+    y: 300,
+    scale: 2
   });
 
   const canvas = app.view as unknown as HTMLCanvasElement;
@@ -45,10 +43,10 @@ export const createGameCanvas = async (
     camera
   });
   controls.enableCamera();
-  await createStage(app, gameWorld);
+  await createStage(app, gameWorld, camera);
 
   app.ticker.add(() => {
-    camera.apply(app.stage);
+    camera.apply(app);
   });
 
   const onWindowResize = throttle(() => app.resize(), 100);

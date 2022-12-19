@@ -1,9 +1,8 @@
 import { Point } from '@dotz/shared';
-import { Container } from 'pixi.js';
+import { Application } from 'pixi.js';
 
 export type CameraView = Point & {
   scale: number;
-  angle: number;
 };
 
 export type Camera = ReturnType<typeof createCamera>;
@@ -13,8 +12,7 @@ export const createCamera = (defaults: Partial<CameraView>) => {
     {
       x: 0,
       y: 0,
-      scale: 2,
-      angle: 0
+      scale: 2
     },
     defaults
   );
@@ -25,10 +23,16 @@ export const createCamera = (defaults: Partial<CameraView>) => {
     },
     update(newView: Partial<CameraView>) {
       Object.assign(view, newView);
+      console.log(view);
     },
 
-    apply(stage: Container) {
-      stage.position.set(view.x, view.y);
+    apply(app: Application) {
+      const { stage, screen } = app;
+
+      stage.position.set(
+        view.x * -1 * view.scale + screen.width / 2,
+        view.y * -1 * view.scale + screen.height / 2
+      );
       stage.scale.set(view.scale, view.scale);
     }
   };

@@ -1,4 +1,4 @@
-import spritesheetData from '../assets/units/seiya.json';
+import spritesheetData from '../../assets/units/seiya.json';
 
 export const seiya = {
   id: 'seiya',

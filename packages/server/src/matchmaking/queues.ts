@@ -10,10 +10,7 @@ rankedQueue.on(MATCHMAKING_EVENTS.PAIRED, async pair => {
   const users = pair.map(client => client.user);
   try {
     const userIds = users.map(user => user.id);
-    const game = await createGame(
-      users.map(user => user.id),
-      {}
-    );
+    const game = await createGame(userIds, {});
     userIds.forEach(userId => {
       const socket = getSocket(userId)!;
 

@@ -19,14 +19,15 @@ type MatchmakingClient = {
 type MatchmadePair = [MatchmakingClient, MatchmakingClient];
 
 export type MatchmakingEvents = {
-  [MATCHMAKING_EVENTS.STARTED]: () => any;
-  [MATCHMAKING_EVENTS.STOPPED]: () => any;
-  [MATCHMAKING_EVENTS.PAIRED]: (payload: MatchmadePair) => any;
+  [MATCHMAKING_EVENTS.STARTED]: () => unknown;
+  [MATCHMAKING_EVENTS.STOPPED]: () => unknown;
+  [MATCHMAKING_EVENTS.PAIRED]: (payload: MatchmadePair) => unknown;
 };
 
 export const createMatchMaking = () => {
   const emitter = new EventEmitter() as TypedEmitter<MatchmakingEvents>;
   const clients: MatchmakingClient[] = [];
+
   let pairingInterval: Nullable<ReturnType<typeof setInterval>> = null;
 
   const isEmpty = () => clients.length === 0;
@@ -84,6 +85,7 @@ export const createMatchMaking = () => {
       .slice()
       .sort((a, b) => b.user.matchmakingRating - a.user.matchmakingRating);
     const pairs: MatchmadePair[] = [];
+
     while (sortedClientsByRating.length > 1) {
       const [a, b] = sortedClientsByRating;
 

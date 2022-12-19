@@ -83,8 +83,12 @@ export const initIO = (server: http.Server) => {
     });
 
     socket.on(GET_GAME_WORLD, async (id, callback) => {
-      const world = await getWorldById(id);
-      callback(world);
+      try {
+        const world = await getWorldById(id);
+        callback(world);
+      } catch (err) {
+        console.log(err);
+      }
     });
   });
 };

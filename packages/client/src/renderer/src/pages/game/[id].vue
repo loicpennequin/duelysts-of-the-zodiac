@@ -68,6 +68,13 @@ const opponent = computed(() =>
       </Center>
     </template>
 
+    <template #error="{ error }">
+      <Center>
+        <p>{{ error }}</p>
+        <router-link to="/">Back to home</router-link>
+      </Center>
+    </template>
+
     <template #default="{ data: gameSession }">
       <EndGameModal :game-session="gameSession" />
 

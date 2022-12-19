@@ -10,6 +10,7 @@ import type { Prisma } from '@prisma/client';
 import { TRPCError } from '@trpc/server';
 
 const SALT_ROUNDS = 10;
+const MAX_USERNAMETAG = 9999;
 
 const generateUsernameTag = async (
   username: Nullable<string> | Prisma.NullableStringFieldUpdateOperationsInput
@@ -24,12 +25,13 @@ const generateUsernameTag = async (
   });
 
   const tag = randomIntExcluding(
-    9999,
-    users.map(u => parseInt(u.usernameTag!, 10)) // prisma type choking on the not null clause ?
+    MAX_USERNAMETAG,
+    users.map(u => parseInt(u.usernameTag!, 10))
   );
 
   return String(tag).padStart(4, '0');
 };
+
 export const findAllUsers = async () => {
   return await db.user.findMany();
 };

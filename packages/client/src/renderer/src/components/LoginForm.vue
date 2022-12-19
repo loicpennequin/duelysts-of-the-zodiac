@@ -79,10 +79,4 @@ form > footer > a {
     color: var(--color-accent);
   }
 }
-
-h1 {
-  font-size: var(--text-size-7);
-  margin-block-end: var(--space-6);
-  text-shadow: rgba(0, 0, 0, 0.7) 1px 0 0.5rem;
-}
 </style>

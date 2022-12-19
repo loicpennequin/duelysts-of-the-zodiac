@@ -79,24 +79,6 @@ export class PlayerControls {
     );
   }
 
-  private handleCameraRotation() {
-    document.addEventListener('keyup', e => {
-      if (!this.isCameraEnabled) return;
-      switch (e.code) {
-        case 'KeyQ':
-          this.camera.update({
-            angle: (this.camera.view.angle -= CAMERA_ROTATE_SCALE)
-          });
-          break;
-        case 'KeyE':
-          this.camera.update({
-            angle: (this.camera.view.angle += CAMERA_ROTATE_SCALE)
-          });
-          break;
-      }
-    });
-  }
-
   private handleCameraPosition() {
     this.canvas.addEventListener('mousedown', () => {
       if (!this.isCameraEnabled) return;
@@ -127,7 +109,6 @@ export class PlayerControls {
 
     this.handleCameraPosition();
     this.handleCameraScale();
-    this.handleCameraRotation();
   }
 
   // private handlePlayerMovement() {

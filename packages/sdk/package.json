@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@dotz/shared": "*",
+    "@types/pngjs": "^6.0.1",
     "fractal-noise": "^2.1.0-pre1",
     "open-simplex-noise": "^2.5.0"
   },

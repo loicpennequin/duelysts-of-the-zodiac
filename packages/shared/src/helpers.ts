@@ -157,3 +157,17 @@ export function randomIntExcluding(max: number, excluded: number[]) {
 
   return available[randomInt(available.length)];
 }
+
+type WeightedRandomChoice<T> = {
+  value: T;
+  weight: number;
+};
+export const weightedRandom = <T>(choices: WeightedRandomChoice<T>[]): T => {
+  const weights = choices.map(
+    (choice, index) => choice.weight + (choices[index - 1]?.weight ?? 0)
+  );
+  const int = randomInt(weights.at(-1) as number);
+  const index = weights.findIndex(weight => weight >= int)!;
+
+  return choices[index].value;
+};

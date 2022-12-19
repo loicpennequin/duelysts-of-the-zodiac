@@ -14,7 +14,8 @@ module.exports = {
     'plugin:vue/vue3-recommended',
     'eslint:recommended',
     '@vue/eslint-config-typescript/recommended',
-    '@vue/eslint-config-prettier'
+    '@vue/eslint-config-prettier',
+    'plugin:vue-scoped-css/vue3-recommended'
   ],
   rules: {
     '@typescript-eslint/ban-ts-comment': [
@@ -32,7 +33,8 @@ module.exports = {
     '@typescript-eslint/no-var-requires': 'off',
     'vue/require-default-prop': 'off',
     'vue/multi-word-component-names': 'off',
-    'no-undef': 'off'
+    'no-undef': 'off',
+    'vue-scoped-css/no-unused-selector': 'error'
   },
   overrides: [
     {
