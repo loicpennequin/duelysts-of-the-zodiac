@@ -107,7 +107,7 @@ export class PlayerControls {
   private handleCameraControls() {
     if (this.isCameraEnabled) return;
 
-    this.handleCameraPosition();
+    // this.handleCameraPosition();
     this.handleCameraScale();
   }
 

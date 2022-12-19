@@ -6,6 +6,9 @@ import { createMouseTracker } from './createMouseTracker';
 import { createStage } from './createStage';
 import { throttle } from '@dotz/shared';
 import { Graphics } from 'pixi.js';
+import { units } from '@dotz/sdk';
+
+import { createStageEntity } from './createStageEntity';
 
 if (import.meta.env.DEV) {
   // @ts-ignore enables PIXI devtools
@@ -43,7 +46,25 @@ export const createGameCanvas = async (
     camera
   });
   controls.enableCamera();
-  await createStage(app, gameWorld, camera);
+  await createStage(app, gameWorld);
+
+  gameWorld.players.forEach(async player => {
+    console.log(player.position);
+    const sprite = await createStageEntity(units.slime, 'idle');
+    sprite.position.set(player.position.x, player.position.y);
+    sprite.anchor.set(0.5, 0.5);
+    app.stage.addChild(sprite);
+    // const graphics = new PIXI.Graphics();
+    // graphics.beginFill(player.color);
+    // graphics.drawCircle(player.position.x, player.position.y, 16);
+    // graphics.endFill();
+    // container.addChild(graphics);
+
+    camera.update({
+      x: player.position.x,
+      y: player.position.y
+    });
+  });
 
   app.ticker.add(() => {
     camera.apply(app);

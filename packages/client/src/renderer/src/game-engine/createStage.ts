@@ -2,7 +2,6 @@ import * as PIXI from 'pixi.js';
 import { GameWorldDto, MapCellEdge, randomInt } from '@dotz/shared';
 import { createTilesetSpriteSheet } from './createTilesetSpritesheet';
 import { spritePaths } from './sprites';
-import { Camera } from './createCamera';
 
 const VARIANTS_BY_EDGES = {
   [MapCellEdge.NONE]: 4,
@@ -18,10 +17,8 @@ const MAX_TILES_PER_TERRAIN = 6;
 
 export const createStage = async (
   app: PIXI.Application,
-  gameWorld: GameWorldDto,
-  camera: Camera
+  gameWorld: GameWorldDto
 ) => {
-  console.log(gameWorld);
   const container = new PIXI.Container();
 
   const tilesetOptions = {
@@ -50,29 +47,18 @@ export const createStage = async (
     const sprite = new PIXI.Sprite(
       sheet.textures[`${tilesetOptions.id}-${tileIndex}`]
     );
-    sprite.width = mapOptions.tileSize;
-    sprite.height = mapOptions.tileSize;
+    // we add a small offset to the size and position to overlap the tiles because of PIXI aliasing issues at certain scales
+    sprite.width = mapOptions.tileSize + 0.02;
+    sprite.height = mapOptions.tileSize + 0.02;
     sprite.position.set(
-      mapOptions.tileSize * (cellIndex % mapOptions.dimensions.w),
-      mapOptions.tileSize * Math.floor(cellIndex / mapOptions.dimensions.h)
+      mapOptions.tileSize * (cellIndex % mapOptions.dimensions.w) - 0.01,
+      mapOptions.tileSize * Math.floor(cellIndex / mapOptions.dimensions.h) -
+        0.01
     );
     sprite.anchor.set(0.5);
     sprite.angle = cell.angle;
     sprite.cullable = true;
     container.addChild(sprite);
-  });
-
-  gameWorld.players.forEach(player => {
-    console.log(player.position);
-    const graphics = new PIXI.Graphics();
-    graphics.beginFill(player.color);
-    graphics.drawCircle(player.position.x, player.position.y, 16);
-    graphics.endFill();
-    container.addChild(graphics);
-    camera.update({
-      x: player.position.x,
-      y: player.position.y
-    });
   });
 
   app.stage.addChild(container);
