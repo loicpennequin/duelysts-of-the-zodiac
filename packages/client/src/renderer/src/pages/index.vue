@@ -35,7 +35,7 @@ const { mutate: createSinglePlayerGame, isLoading } = useCreateSinglePlayerGame(
 
     <template #default>
       <Container class="home-page">
-        <Surface as="ul">
+        <Surface as="ul" class="home-menu">
           <li>
             <ButtonBase :disabled="isLoading" @click="createSinglePlayerGame()">
               Single player game
@@ -58,16 +58,15 @@ const { mutate: createSinglePlayerGame, isLoading } = useCreateSinglePlayerGame(
   display: grid;
   grid-template-columns: auto 1fr;
   margin-top: var(--space-8);
+}
 
-  & > ul a,
-  & > ul button {
-    font-size: var(--text-size-4);
-    width: 100%;
-  }
+.home-menu > li * {
+  font-size: var(--text-size-4);
+  width: 100%;
+}
 
-  & > ul > li + li {
-    margin-top: var(--space-5);
-  }
+.home-menu li + li {
+  margin-top: var(--space-5);
 }
 </style>
 

@@ -50,3 +50,5 @@ export interface IMailService {
 export type GameSession = Prisma.GameGetPayload<{
   include: { gameUsers: { include: { user: true } } };
 }>;
+
+export type GameId = string;

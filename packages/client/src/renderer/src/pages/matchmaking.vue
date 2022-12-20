@@ -1,37 +1,17 @@
 <script setup lang="ts">
-import { GAME_FOUND } from '@dotz/shared';
 import { useOngoingGame } from '@renderer/composables/useGame';
 import {
   useJoinRankedQueue,
   useLeaveRankedQueue
 } from '@renderer/composables/useMatchmaking';
-import { useSocketEvent } from '@renderer/composables/useSocket';
 import Center from '@renderer/components/ui/Center.vue';
 import Surface from '@renderer/components/ui/Surface.vue';
 import ButtonBase from '@renderer/components/ui/Button/ButtonBase.vue';
-
-const hasJoined = ref(false);
-const counterInSeconds = ref(0);
-const formatedCounter = computed(() => {
-  const minutes = Math.round(counterInSeconds.value / 60);
-  const seconds = counterInSeconds.value % 60;
-
-  return `${String(minutes).padStart(2, '0')} : ${String(seconds).padStart(
-    2,
-    '0'
-  )}`;
-});
-const { pause, resume } = useIntervalFn(
-  () => {
-    counterInSeconds.value++;
-  },
-  1000,
-  { immediate: false }
-);
-
-const router = useRouter();
+import { useStopwatch } from '@renderer/composables/useStopwatch';
 
 const { data: ongoingGame } = useOngoingGame();
+const { formatedCounter, resume, reset } = useStopwatch();
+const hasJoined = ref(false);
 
 const { mutate: join } = useJoinRankedQueue({
   onSuccess() {
@@ -43,17 +23,12 @@ const { mutate: join } = useJoinRankedQueue({
 const { mutate: leave } = useLeaveRankedQueue({
   onSuccess() {
     hasJoined.value = false;
-    pause();
-    counterInSeconds.value = 0;
+    reset();
   }
 });
 
 onUnmounted(() => {
   leave();
-});
-
-useSocketEvent(GAME_FOUND, payload => {
-  router.push({ name: 'GameSession', params: { id: payload.gameId } });
 });
 </script>
 
@@ -67,11 +42,11 @@ useSocketEvent(GAME_FOUND, payload => {
       >
         {{ formatedCounter }}
       </div>
-      <ButtonBase v-if="hasJoined" :disabled="!!ongoingGame" @click="leave()">
-        Leave queue
-      </ButtonBase>
-      <ButtonBase v-else :disabled="!!ongoingGame" @click="join()">
-        Enter queue
+      <ButtonBase
+        :disabled="!!ongoingGame"
+        @click="hasJoined ? leave() : join()"
+      >
+        {{ hasJoined ? 'Leave queue' : 'Enter queue' }}
       </ButtonBase>
     </Surface>
   </Center>

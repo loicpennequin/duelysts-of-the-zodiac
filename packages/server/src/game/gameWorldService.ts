@@ -31,12 +31,9 @@ export const updateWorldById = (id: string, newWorld: GameWorld) => {
 
 export const createWorld = (id: string, playerIds: string[]) => {
   const world = createDotzWorld(playerIds, (world: GameWorld) => {
-    world.ecs.getEntitiesByComponent(Player).forEach(entity => {
-      const id = world.ecs.getComponents(entity).get(Player).playerId;
-      const socket = getSocket(id);
+    const room = getIo().in(SOCKET_ROOMS.GAME(id));
 
-      socket?.emit(GAME_WORLD_UPDATE, { players: world.players });
-    });
+    room.emit(GAME_WORLD_UPDATE, { players: world.players });
   });
   worlds.set(id, world);
 

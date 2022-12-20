@@ -1,8 +1,8 @@
-import { GAME_ENDED, Nullable } from '@dotz/shared';
+import { GAME_ENDED, GAME_FOUND, Nullable } from '@dotz/shared';
 import { Prisma } from '@prisma/client';
 import { SOCKET_ROOMS } from '../constants';
 import { db } from '../core/db';
-import { getIo } from '../core/io';
+import { getIo, getSocket } from '../core/io';
 import { gameMapper } from './gameMapper';
 import { createWorld } from './gameWorldService';
 
@@ -23,6 +23,14 @@ export const createGame = async <T extends Omit<Prisma.GameCreateArgs, 'data'>>(
     }
   });
   createWorld(game.id, userIds);
+
+  userIds.forEach(userId => {
+    const socket = getSocket(userId)!;
+
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
+    socket.join(SOCKET_ROOMS.GAME(game));
+    socket.emit(GAME_FOUND, { gameId: game.id });
+  });
 
   return game as Prisma.GameGetPayload<T>;
 };

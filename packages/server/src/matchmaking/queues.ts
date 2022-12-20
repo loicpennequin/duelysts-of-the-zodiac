@@ -10,14 +10,7 @@ rankedQueue.on(MATCHMAKING_EVENTS.PAIRED, async pair => {
   const users = pair.map(client => client.user);
   try {
     const userIds = users.map(user => user.id);
-    const game = await createGame(userIds, {});
-    userIds.forEach(userId => {
-      const socket = getSocket(userId)!;
-
-      // eslint-disable-next-line @typescript-eslint/no-floating-promises
-      socket.join(SOCKET_ROOMS.GAME(game));
-      socket.emit(GAME_FOUND, { gameId: game.id });
-    });
+    await createGame(userIds, {});
   } catch (err) {
     // TODO add maximum retries ?
     users.forEach(user => {

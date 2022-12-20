@@ -1,12 +1,12 @@
 <script lang="ts" setup>
 import { RouterView } from 'vue-router';
 import LoginForm from './components/LoginForm.vue';
-import { useLogout } from './composables/useAuth';
 import { useSession } from './composables/useSession';
-import { useSocket, useSocketEvent } from './composables/useSocket';
+import { useSocket } from './composables/useSocket';
 import Spinner from './components/ui/Spinner.vue';
 import AppFrame from './components/AppFrame.vue';
 import UserOnboardingModal from '@renderer/components/UserOnboardingModal.vue';
+import { useGlobalEvents } from './composables/useGlobalEvents';
 
 const socket = useSocket();
 const { data: session, isLoading } = useSession({
@@ -17,17 +17,9 @@ const { data: session, isLoading } = useSession({
   }
 });
 
-const { mutate: logout } = useLogout();
-useSocketEvent('connect_error', () => {
-  if (import.meta.env.DEV) return;
-  logout();
-});
-useSocketEvent('disconnect', () => {
-  if (import.meta.env.DEV) return;
-  logout();
-});
+useGlobalEvents();
 
-const layoutMap = {
+const layoutLookup = {
   default: defineAsyncComponent(
     () => import('@renderer/layouts/DefaultLayout.vue')
   ),
@@ -38,7 +30,7 @@ const layoutMap = {
 const router = useRouter();
 const currentLayout = computed(() => {
   const key = router.currentRoute.value.meta.layout ?? 'default';
-  return layoutMap[key as string];
+  return layoutLookup[key as string];
 });
 
 const bg = computed(
