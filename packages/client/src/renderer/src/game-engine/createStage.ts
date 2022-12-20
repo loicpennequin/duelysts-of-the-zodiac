@@ -14,7 +14,7 @@ const VARIANTS_BY_EDGES = {
 const MAX_VARIANTS = Math.max(...Object.values(VARIANTS_BY_EDGES));
 
 const MAX_TILES_PER_TERRAIN = 6;
-
+const TERRAINS_COUNT = 5;
 export const createStage = async (
   app: PIXI.Application,
   gameWorld: GameWorldDto
@@ -26,7 +26,7 @@ export const createStage = async (
     id: 'baseTileset',
     dimensions: {
       w: 32 * MAX_VARIANTS,
-      h: 32 * 3 * MAX_TILES_PER_TERRAIN
+      h: 32 * TERRAINS_COUNT * MAX_TILES_PER_TERRAIN
     },
     tileSize: 32
   };

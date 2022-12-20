@@ -88,6 +88,7 @@ const opponent = computed(() =>
         <GameCanvas
           v-if="gameWorld"
           :game-world="gameWorld"
+          :game-id="route.params.id"
           class="game-canvas"
         />
 

@@ -10,8 +10,11 @@
   "dependencies": {
     "@dotz/shared": "*",
     "@types/pngjs": "^6.0.1",
+    "ecs": "^0.17.0",
     "fractal-noise": "^2.1.0-pre1",
-    "open-simplex-noise": "^2.5.0"
+    "lofi-ecs": "^3.1.0",
+    "open-simplex-noise": "^2.5.0",
+    "remove-array-items": "^3.0.0"
   },
   "devDependencies": {
     "tsup": "^6.4.0",

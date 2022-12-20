@@ -10,3 +10,9 @@ export const MapCellEdge = {
 } as const;
 
 export type MapCellEdge = Values<typeof MapCellEdge>;
+
+export const PlayerActionTypes = {
+  MOVE: 'move'
+} as const;
+
+export type PlayerActionTypes = Values<typeof PlayerActionTypes>;

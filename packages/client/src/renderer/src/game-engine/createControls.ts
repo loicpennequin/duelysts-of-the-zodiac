@@ -10,15 +10,28 @@ import {
   addVector,
   clamp,
   mulVector,
-  subVector
+  subVector,
+  PLAYER_ACTION
 } from '@dotz/shared';
 import { Camera } from './createCamera';
 import { throttle } from '@dotz/shared';
+import { KeyboardControls } from '@renderer/utils/enums';
+import { useKeydownOnce } from '@renderer/composables/useEventListeners';
+import { Socket } from '@renderer/utils/socket';
+import { PlayerActionTypes } from '@dotz/shared';
 
 export type PlayerControlsOptions = {
   canvas: HTMLCanvasElement;
   camera: Camera;
   mousePosition: Point;
+  socket: Socket;
+};
+
+export type Directions = {
+  up: boolean;
+  down: boolean;
+  left: boolean;
+  right: boolean;
 };
 
 export class PlayerControls {
@@ -29,6 +42,15 @@ export class PlayerControls {
   private mousePosition!: Point;
 
   private isCameraEnabled = false;
+
+  private socket!: Socket;
+
+  private directions: Directions = {
+    up: false,
+    down: false,
+    left: false,
+    right: false
+  };
 
   // private isPlayerMovementEnabled = false;
 
@@ -111,6 +133,42 @@ export class PlayerControls {
     this.handleCameraScale();
   }
 
+  handleMovement(gameId: string) {
+    const keyMap: Record<string, keyof typeof this.directions> = {
+      [KeyboardControls.W]: 'up',
+      [KeyboardControls.S]: 'down',
+      [KeyboardControls.A]: 'left',
+      [KeyboardControls.D]: 'right'
+    };
+
+    const isMovement = (code: string) => Object.keys(keyMap).includes(code);
+
+    useKeydownOnce(e => {
+      if (!isMovement(e.code)) {
+        return;
+      }
+      this.directions[keyMap[e.code]] = true;
+
+      return this.socket.emit(PLAYER_ACTION, {
+        type: PlayerActionTypes.MOVE,
+        gameId,
+        payload: this.directions
+      });
+    });
+
+    document.addEventListener('keyup', e => {
+      if (!isMovement(e.code)) {
+        return;
+      }
+      this.directions[keyMap[e.code]] = false;
+
+      return this.socket.emit(PLAYER_ACTION, {
+        type: PlayerActionTypes.MOVE,
+        gameId,
+        payload: this.directions
+      });
+    });
+  }
   // private handlePlayerMovement() {
   //   if (this.isPlayerMovementEnabled) return;
   //   this.player;

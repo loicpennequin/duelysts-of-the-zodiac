@@ -22,7 +22,7 @@ export type SurrenderGameDto = z.infer<typeof SurrenderGameDto>;
 export type GameWorldPlayer = {
   id: string;
   position: Point;
-  color: number;
+  entityId: number;
 };
 export type GameWorldDto = {
   map: MapLayout;

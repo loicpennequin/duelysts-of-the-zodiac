@@ -1,4 +1,4 @@
-import { GameWorldDto } from '@dotz/shared';
+import { GAME_WORLD_UPDATE, GameWorldDto } from '@dotz/shared';
 import * as PIXI from 'pixi.js';
 import { createCamera } from './createCamera';
 import { PlayerControls } from './createControls';
@@ -9,6 +9,8 @@ import { Graphics } from 'pixi.js';
 import { units } from '@dotz/sdk';
 
 import { createStageEntity } from './createStageEntity';
+import { socket } from '@renderer/utils/socket';
+import { useSocketEvent } from '@renderer/composables/useSocket';
 
 if (import.meta.env.DEV) {
   // @ts-ignore enables PIXI devtools
@@ -17,7 +19,8 @@ if (import.meta.env.DEV) {
 
 export const createGameCanvas = async (
   container: HTMLElement,
-  gameWorld: GameWorldDto
+  gameWorld: GameWorldDto,
+  gameId: string
 ) => {
   const { width, height } = container.getBoundingClientRect();
 
@@ -43,30 +46,45 @@ export const createGameCanvas = async (
   const controls = new PlayerControls({
     mousePosition: mouseTracker,
     canvas,
-    camera
+    camera,
+    socket
   });
   controls.enableCamera();
+  controls.handleMovement(gameId);
+
   await createStage(app, gameWorld);
 
-  gameWorld.players.forEach(async player => {
-    console.log(player.position);
-    const sprite = await createStageEntity(units.slime, 'idle');
-    sprite.position.set(player.position.x, player.position.y);
-    sprite.anchor.set(0.5, 0.5);
-    app.stage.addChild(sprite);
-    // const graphics = new PIXI.Graphics();
-    // graphics.beginFill(player.color);
-    // graphics.drawCircle(player.position.x, player.position.y, 16);
-    // graphics.endFill();
-    // container.addChild(graphics);
+  const players = await Promise.all(
+    gameWorld.players.map(async player => {
+      console.log(player.position);
+      const sprite = await createStageEntity(units.slime, 'idle');
+      sprite.position.set(player.position.x, player.position.y);
+      sprite.anchor.set(0.5, 0.5);
+      app.stage.addChild(sprite);
+      // const graphics = new PIXI.Graphics();
+      // graphics.beginFill(player.color);
+      // graphics.drawCircle(player.position.x, player.position.y, 16);
+      // graphics.endFill();
+      // container.addChild(graphics);
+      return { id: player.id, sprite };
+    })
+  );
 
-    camera.update({
-      x: player.position.x,
-      y: player.position.y
+  useSocketEvent(GAME_WORLD_UPDATE, payload => {
+    payload.players.forEach(playerUpdate => {
+      const player = players.find(p => p.id === playerUpdate.id);
+      player?.sprite.position.set(
+        playerUpdate.position.x,
+        playerUpdate.position.y
+      );
     });
   });
 
   app.ticker.add(() => {
+    camera.update({
+      x: players[0].sprite.position.x,
+      y: players[0].sprite.position.y
+    });
     camera.apply(app);
   });
 

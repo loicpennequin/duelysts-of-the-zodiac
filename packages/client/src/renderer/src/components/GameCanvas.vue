@@ -2,14 +2,18 @@
 import { GameWorldDto } from '@dotz/shared';
 import { createGameCanvas } from '@renderer/game-engine';
 
-const props = defineProps<{ gameWorld: GameWorldDto }>();
+const props = defineProps<{ gameId: string; gameWorld: GameWorldDto }>();
 
 const container = ref<HTMLDivElement>();
 let engine: any;
 
 onMounted(async () => {
   if (!container.value) return;
-  engine = await createGameCanvas(container.value, props.gameWorld);
+  engine = await createGameCanvas(
+    container.value,
+    props.gameWorld,
+    props.gameId
+  );
   const { canvas } = engine;
   container.value.appendChild(canvas);
   document.body.style.overflow = 'hidden';

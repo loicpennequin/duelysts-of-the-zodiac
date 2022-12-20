@@ -22,7 +22,7 @@ export const createGame = async <T extends Omit<Prisma.GameCreateArgs, 'data'>>(
       }
     }
   });
-  await createWorld(game.id, userIds);
+  createWorld(game.id, userIds);
 
   return game as Prisma.GameGetPayload<T>;
 };
