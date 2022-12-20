@@ -14,12 +14,9 @@ export const interpolateEntity = <T extends Point = Point>(
   oldState: InterPolationState<T>,
   { now = performance.now() }: InterpolateOptions
 ): Point => {
-  const target = now;
-  const delta = target - newState.timestamp;
+  const delta = now - newState.timestamp;
   const statesDelta = newState.timestamp - oldState.timestamp;
-  let interpFactor = delta / statesDelta;
-
-  if (interpFactor === Infinity) interpFactor = 1;
+  const interpFactor = delta / statesDelta;
 
   return {
     x: lerp(interpFactor, { min: oldState.value.x, max: newState.value.x }),

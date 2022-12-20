@@ -103,24 +103,7 @@ export const createGameEngine = async ({
   let state = createGameState();
   let prevState = createGameState();
 
-  app.ticker.add(() => {
-    const ownPlayer = players.find(player => player.id === session.id);
-    if (!ownPlayer) return;
-
-    camera.update({
-      x: clamp(ownPlayer.sprite.position.x, {
-        min: app.screen.width / 2 / camera.view.scale,
-        max: stage.width - app.screen.width / 2 / camera.view.scale
-      }),
-      y: clamp(ownPlayer.sprite.position.y, {
-        min: app.screen.height / 2 / camera.view.scale,
-        max: stage.height - app.screen.height / 2 / camera.view.scale
-      })
-    });
-    camera.apply(app);
-  });
-
-  app.ticker.add(() => {
+  const interpolateEntities = () => {
     const now = performance.now();
     state.players.forEach(player => {
       const { sprite } = playersLookup[player.id];
@@ -137,8 +120,30 @@ export const createGameEngine = async ({
         { now }
       );
 
-      sprite.position.set(newPosition.x, newPosition.y);
+      sprite.position.set(Math.round(newPosition.x), Math.round(newPosition.y));
     });
+  };
+
+  const centerCameraOnPlayer = () => {
+    const ownPlayer = players.find(player => player.id === session.id);
+    if (!ownPlayer) return;
+
+    camera.update({
+      x: clamp(ownPlayer.sprite.position.x, {
+        min: app.screen.width / 2 / camera.view.scale - 16,
+        max: stage.width - app.screen.width / 2 / camera.view.scale + 16
+      }),
+      y: clamp(ownPlayer.sprite.position.y, {
+        min: app.screen.height / 2 / camera.view.scale - 16,
+        max: stage.height - app.screen.height / 2 / camera.view.scale + 16
+      })
+    });
+    camera.apply(app);
+  };
+
+  app.ticker.add(() => {
+    interpolateEntities();
+    centerCameraOnPlayer();
   });
 
   const onWindowResize = throttle(() => app.resize(), 100);
