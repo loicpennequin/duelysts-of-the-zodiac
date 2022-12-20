@@ -1,17 +1,22 @@
 <script setup lang="ts">
-import { GameWorldDto, UserDto } from '@dotz/shared';
+import { GAME_WORLD_UPDATE, GameWorldDto, UserDto } from '@dotz/shared';
 import { useSession } from '@renderer/composables/useSession';
-import { createGameCanvas } from '@renderer/game-engine';
+import { useSocketEvent } from '@renderer/composables/useSocket';
+import { GameEngine, createGameEngine } from '@renderer/game-engine';
 
 const props = defineProps<{ gameId: string; gameWorld: GameWorldDto }>();
 
 const { data: session } = useSession();
 const container = ref<HTMLDivElement>();
-let engine: any;
+let engine: GameEngine;
+
+useSocketEvent(GAME_WORLD_UPDATE, payload => {
+  engine?.updateState(payload);
+});
 
 onMounted(async () => {
   if (!container.value) return;
-  engine = await createGameCanvas({
+  engine = await createGameEngine({
     container: container.value,
     gameWorld: props.gameWorld,
     gameId: props.gameId,

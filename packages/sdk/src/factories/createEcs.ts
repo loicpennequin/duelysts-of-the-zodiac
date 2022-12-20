@@ -254,3 +254,12 @@ export class ECS {
     }
   }
 }
+
+export const createEcs = (systems: System[]) => {
+  const ecs = new ECS();
+  systems.forEach(system => {
+    ecs.addSystem(system);
+  });
+
+  return ecs;
+};

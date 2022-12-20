@@ -16,3 +16,10 @@ export const mapRange = (num: number, inRange: Range, outRange: Range) => {
 
   return clamp(mapped, { min: outRange.min, max: outRange.max });
 };
+
+export const smootherStep = (x: number) =>
+  6 * x ** 5 - 15 * x ** 4 + 10 * x ** 3;
+
+export const lerp = (num: number, { min, max }: Range) => {
+  return min + smootherStep(num) * (max - min);
+};

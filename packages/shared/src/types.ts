@@ -19,3 +19,5 @@ export type Mutable<T> = { -readonly [Key in keyof T]: T[Key] };
 export type Constructor<T = AnyObject> = new (...args: any[]) => T;
 export type AnyConstructor = Constructor<AnyObject>;
 export type Mixin<T extends AnyFunction> = InstanceType<ReturnType<T>>;
+export type AsyncReturnType<T extends (...args: any) => Promise<any>> =
+  T extends (...args: any) => Promise<infer R> ? R : any;

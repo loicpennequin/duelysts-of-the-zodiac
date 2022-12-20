@@ -3507,13 +3507,6 @@ ecdsa-sig-formatter@1.0.11:
   dependencies:
     safe-buffer "^5.0.1"
 
-ecs@^0.17.0:
-  version "0.17.0"
-  resolved "https://registry.yarnpkg.com/ecs/-/ecs-0.17.0.tgz#4ffee040007fd42e094aea0380d5a324948cb7cb"
-  integrity sha512-NCsmc4LFxkwCoLvFHBTVPvhLa4s+VJtvlnfcZdrN+UCnwLDk48AfrvG9C9k56XhuhgF+GG5hBIcE+f2Z+I2QVg==
-  dependencies:
-    remove-array-items "^3.0.0"
-
 ee-first@1.1.1:
   version "1.1.1"
   resolved "https://registry.npmjs.org/ee-first/-/ee-first-1.1.1.tgz"
@@ -5857,13 +5850,6 @@ lodash@^4.17.10, lodash@^4.17.15, lodash@^4.17.21:
   resolved "https://registry.npmjs.org/lodash/-/lodash-4.17.21.tgz"
   integrity sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==
 
-lofi-ecs@^3.1.0:
-  version "3.1.0"
-  resolved "https://registry.yarnpkg.com/lofi-ecs/-/lofi-ecs-3.1.0.tgz#367c83e5e11aadc17d7144990ad45e869998124e"
-  integrity sha512-Gf8e0x/9f+fZsMa2xTuhCcxgew3Hgo5/CxG5ANq3tBWB4kpc8198ShTKbFnCaOibMbYJAF3s89hLntCNqvgQ/A==
-  dependencies:
-    reflect-metadata "^0.1.13"
-
 log-symbols@^5.1.0:
   version "5.1.0"
   resolved "https://registry.yarnpkg.com/log-symbols/-/log-symbols-5.1.0.tgz#a20e3b9a5f53fac6aeb8e2bb22c07cf2c8f16d93"
@@ -7536,11 +7522,6 @@ redis@*, redis@^4.5.1:
     "@redis/json" "1.0.4"
     "@redis/search" "1.1.0"
     "@redis/time-series" "1.0.4"
-
-reflect-metadata@^0.1.13:
-  version "0.1.13"
-  resolved "https://registry.yarnpkg.com/reflect-metadata/-/reflect-metadata-0.1.13.tgz#67ae3ca57c972a2aa1642b10fe363fe32d49dc08"
-  integrity sha512-Ts1Y/anZELhSsjMcU605fU9RE4Oi3p5ORujwbIKXfWa+0Zxs510Qrmrce5/Jowq3cHSZSJqBjypxmHarc+vEWg==
 
 regenerator-runtime@^0.13.11, regenerator-runtime@^0.13.3:
   version "0.13.11"

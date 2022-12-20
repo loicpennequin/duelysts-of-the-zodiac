@@ -1,10 +1,9 @@
 import { GAME_ENDED, GAME_WORLD_UPDATE, GameSessionDto } from '@dotz/shared';
-import { getIo, getSocket } from '../core/io';
+import { getIo } from '../core/io';
 import { redisClient } from '../core/redis';
-import { createWorld as createDotzWorld, GameWorld, Player } from '@dotz/sdk';
+import { createWorld as createDotzWorld, GameWorld } from '@dotz/sdk';
 import { SOCKET_ROOMS } from '../constants';
-import { gameMapper } from './gameMapper';
-import { Game } from '@prisma/client';
+import { GameId, UserId } from '../types';
 
 const worlds = new Map<string, GameWorld>();
 
@@ -29,13 +28,16 @@ export const updateWorldById = (id: string, newWorld: GameWorld) => {
   // return await redisClient.set(id, serializeWorld(newWorld));
 };
 
-export const createWorld = (id: string, playerIds: string[]) => {
-  const world = createDotzWorld(playerIds, (world: GameWorld) => {
+export const createWorld = (id: GameId, playerIds: UserId[]) => {
+  const world = createDotzWorld(playerIds);
+  world.on('update', state => {
     const room = getIo().in(SOCKET_ROOMS.GAME(id));
 
-    room.emit(GAME_WORLD_UPDATE, { players: world.players });
+    room.emit(GAME_WORLD_UPDATE, state);
   });
   worlds.set(id, world);
+
+  world.start();
 
   return world;
   // return await redisClient.set(id, serializeWorld(world));

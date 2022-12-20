@@ -52,3 +52,4 @@ export type GameSession = Prisma.GameGetPayload<{
 }>;
 
 export type GameId = string;
+export type UserId = string;

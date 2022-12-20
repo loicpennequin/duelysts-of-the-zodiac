@@ -1,108 +1,78 @@
-import { type GameWorldDto, randomInt, type Point } from '@dotz/shared';
+import type TypedEmitter from 'typed-emitter';
+import { EventEmitter } from 'events';
+import {
+  PlayerActionTypes,
+  type GameWorldDto,
+  type GameWorldPlayer
+} from '@dotz/shared';
 import { createMap } from './createMap';
-import { Component, ECS, System, type Entity } from './createEcs';
+import { ECS, createEcs } from './createEcs';
+import { MovementSystem } from '../systems/MovementSystem';
+import { createPlayer } from './createPlayer';
+import { createTaskQueue } from './createTaskQueue';
+import type { PlayerAction } from '@dotz/shared';
+import { handleMoveTask } from '../taskHandlers/handleMoveTask';
+import { TICK_RATE } from '../constants';
 
-class Position extends Component {
-  constructor(public position: Point) {
-    super();
-  }
-}
-
-export class Player extends Component {
-  constructor(public playerId: string) {
-    super();
-  }
-}
-
-export type Directions = {
-  up: boolean;
-  down: boolean;
-  left: boolean;
-  right: boolean;
+export type GameWorld = GameWorldDto & {
+  ecs: ECS;
+  on: TypedEmitter<GameWorldEvents>['on'];
+  schedule: (payload: GameWorldTaskPayload) => void;
+  start: () => void;
+  destroy: () => void;
 };
 
-export class MovementIntent extends Component {
-  constructor(public directions: Directions) {
-    super();
-  }
-}
+export type GameUpdatePayload = {
+  players: GameWorldPlayer[];
+};
 
-class MovementSystem extends System {
-  componentsRequired = new Set([Position, MovementIntent]);
+export type GameWorldEvents = {
+  update: (payload: GameUpdatePayload) => void;
+};
 
-  speed = 5;
+export type GameWorldTask = (payload: GameWorldTaskPayload) => void;
+export type GameWorldTaskPayload = PlayerAction & { playerId: string };
+export type GameWorldTaskHandler = (
+  action: GameWorldTaskPayload,
+  ecs: ECS
+) => void;
 
-  update(entities: Set<Entity>): void {
-    [...entities].forEach(entity => {
-      const { directions } = this.ecs.getComponents(entity).get(MovementIntent);
-      const { position } = this.ecs.getComponents(entity).get(Position);
+const taskLookup = {
+  [PlayerActionTypes.MOVE]: handleMoveTask
+} satisfies Record<PlayerActionTypes, GameWorldTaskHandler>;
 
-      if (directions.up) {
-        position.y -= this.speed;
-      }
-      if (directions.down) {
-        position.y += this.speed;
-      }
-      if (directions.left) {
-        position.x -= this.speed;
-      }
-      if (directions.right) {
-        position.x += this.speed;
-      }
-    });
-  }
-}
-
-export type GameWorld = GameWorldDto & { ecs: ECS; destroy: () => void };
-
-const CELL_SIZE = 32;
-
-export const createWorld = (
-  playerIds: string[],
-  onUpdate: (world: GameWorld) => void
-): GameWorld => {
+export const createWorld = (playerIds: string[]): GameWorld => {
   const map = createMap();
+  const ecs = createEcs([new MovementSystem()]);
+  const players = playerIds.map(id => createPlayer({ id, ecs, map }));
+  const emitter = new EventEmitter() as TypedEmitter<GameWorldEvents>;
+  const queue = createTaskQueue();
 
-  const ecs = new ECS();
+  let tickInterval: ReturnType<typeof setInterval>;
 
-  const players = playerIds.map(playerId => {
-    const entity = ecs.addEntity();
-    ecs.addComponent(entity, new Player(playerId));
-    ecs.addComponent(
-      entity,
-      new Position({
-        x: randomInt(map.width * CELL_SIZE),
-        y: randomInt(map.height * CELL_SIZE)
-      })
-    );
-    ecs.addComponent(
-      entity,
-      new MovementIntent({ up: false, down: false, left: false, right: false })
-    );
+  const tick = () => {
+    queue.process();
+    ecs.update();
+    emitter.emit('update', {
+      players: players.map(player => player.toDto())
+    });
+  };
 
-    return entity;
-  });
-
-  ecs.addSystem(new MovementSystem());
-
-  const TICK_RATE = 20;
-  const getWorld = () => ({
+  return {
     map,
     ecs,
-    players: players.map(entity => ({
-      id: ecs.getComponents(entity).get(Player).playerId,
-      entityId: entity,
-      position: ecs.getComponents(entity).get(Position).position
-    })),
+    players: players.map(player => player.toDto()),
+    on: emitter.on.bind(emitter),
+    schedule: (action: GameWorldTaskPayload) => {
+      queue.schedule(() => {
+        taskLookup[action.type](action, ecs);
+      });
+    },
+    start: () => {
+      tickInterval = setInterval(tick, 1000 / TICK_RATE);
+    },
     destroy() {
-      clearInterval(loop);
+      clearInterval(tickInterval);
     }
-  });
-
-  const loop = setInterval(() => {
-    ecs.update();
-    onUpdate(getWorld());
-  }, 1000 / TICK_RATE);
-
-  return getWorld();
+  };
 };

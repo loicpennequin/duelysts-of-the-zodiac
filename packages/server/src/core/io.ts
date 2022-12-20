@@ -5,9 +5,7 @@ import { authenticate } from '../auth/authService';
 import { handleCORS } from './cors';
 import {
   ClientToServerEvents,
-  isDefined,
   noop,
-  PING,
   PLAYER_ACTION,
   ServerToClientEvents
 } from '@dotz/shared';
@@ -16,7 +14,6 @@ import { findGame } from '../game/gameService';
 import { SOCKET_ROOMS } from '../constants';
 import { getWorldById } from '../game/gameWorldService';
 import { GET_GAME_WORLD } from '@dotz/shared';
-import { MovementIntent, Player } from '@dotz/sdk';
 
 let io: Server<ClientToServerEvents, ServerToClientEvents>;
 const usersBySocket = new Map<Socket, User>();
@@ -95,19 +92,13 @@ export const initIO = (server: http.Server) => {
     });
 
     socket.on(PLAYER_ACTION, action => {
-      const world = getWorldById(action.gameId);
-      const playerId = usersBySocket.get(socket)!.id;
-      const player = world.ecs.getEntitiesByComponent(Player).find(entity => {
-        return (
-          world.ecs.getComponents(entity).get(Player).playerId === playerId
-        );
-      });
-
-      if (!isDefined(player)) return;
-
-      const components = world.ecs.getComponents(player);
-      if (!components.has(MovementIntent)) return;
-      Object.assign(components.get(MovementIntent).directions, action.payload);
+      try {
+        const world = getWorldById(action.gameId);
+        const playerId = usersBySocket.get(socket)!.id;
+        world.schedule({ ...action, playerId });
+      } catch (err) {
+        console.log(err);
+      }
     });
   });
 };

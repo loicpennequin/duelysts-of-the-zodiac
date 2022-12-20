@@ -1,28 +1,55 @@
-import { GAME_WORLD_UPDATE, GameWorldDto, UserDto } from '@dotz/shared';
+import {
+  AsyncReturnType,
+  GAME_WORLD_UPDATE,
+  GameWorldDto,
+  GameWorldPlayer,
+  UserDto,
+  clamp
+} from '@dotz/shared';
 import * as PIXI from 'pixi.js';
 import { createCamera } from './createCamera';
 import { PlayerControls } from './createControls';
 import { createMouseTracker } from './createMouseTracker';
 import { createStage } from './createStage';
 import { throttle } from '@dotz/shared';
-import { units } from '@dotz/sdk';
+import { TICK_RATE, units } from '@dotz/sdk';
 
 import { createStageEntity } from './createStageEntity';
 import { socket } from '@renderer/utils/socket';
-import { useSocketEvent } from '@renderer/composables/useSocket';
+import { interpolateEntity } from '@renderer/utils/interpolateEntity';
 
 if (import.meta.env.DEV) {
   // @ts-ignore enables PIXI devtools
   window.PIXI = PIXI;
 }
 
+export type GameEngine = AsyncReturnType<typeof createGameEngine>;
 export type CreateGameCanvasOptions = {
   container: HTMLElement;
   gameWorld: GameWorldDto;
   gameId: string;
   session: UserDto;
 };
-export const createGameCanvas = async ({
+
+export type GameState = {
+  players: GameWorldPlayer[];
+  playersById: Record<string, GameWorldPlayer>;
+  timestamp: number;
+};
+
+export type UpdateGameStatePayload = {
+  players: GameWorldPlayer[];
+};
+
+const createGameState = (): GameState => {
+  return {
+    players: [],
+    playersById: {},
+    timestamp: performance.now()
+  };
+};
+
+export const createGameEngine = async ({
   container,
   gameWorld,
   gameId,
@@ -58,44 +85,60 @@ export const createGameCanvas = async ({
   controls.enableCamera();
   controls.handleMovement(gameId);
 
-  await createStage(app, gameWorld);
+  const stage = await createStage(app, gameWorld);
 
   const players: { id: string; sprite: PIXI.AnimatedSprite }[] =
     await Promise.all(
       gameWorld.players.map(async player => {
-        console.log(player.position);
         const sprite = await createStageEntity(units.slime, 'idle');
         sprite.position.set(player.position.x, player.position.y);
         sprite.anchor.set(0.5, 0.5);
         app.stage.addChild(sprite);
-        // const graphics = new PIXI.Graphics();
-        // graphics.beginFill(player.color);
-        // graphics.drawCircle(player.position.x, player.position.y, 16);
-        // graphics.endFill();
-        // container.addChild(graphics);
+
         return { id: player.id, sprite };
       })
     );
+  const playersLookup = Object.fromEntries(players.map(p => [p.id, p]));
 
-  useSocketEvent(GAME_WORLD_UPDATE, payload => {
-    payload.players.forEach(playerUpdate => {
-      const player = players.find(p => p.id === playerUpdate.id);
-      player?.sprite.position.set(
-        playerUpdate.position.x,
-        playerUpdate.position.y
-      );
-    });
-  });
+  let state = createGameState();
+  let prevState = createGameState();
 
   app.ticker.add(() => {
     const ownPlayer = players.find(player => player.id === session.id);
     if (!ownPlayer) return;
 
     camera.update({
-      x: ownPlayer.sprite.position.x,
-      y: ownPlayer.sprite.position.y
+      x: clamp(ownPlayer.sprite.position.x, {
+        min: app.screen.width / 2 / camera.view.scale,
+        max: stage.width - app.screen.width / 2 / camera.view.scale
+      }),
+      y: clamp(ownPlayer.sprite.position.y, {
+        min: app.screen.height / 2 / camera.view.scale,
+        max: stage.height - app.screen.height / 2 / camera.view.scale
+      })
     });
     camera.apply(app);
+  });
+
+  app.ticker.add(() => {
+    const now = performance.now();
+    state.players.forEach(player => {
+      const { sprite } = playersLookup[player.id];
+      const oldPlayer = prevState.playersById[player.id];
+
+      if (!oldPlayer) return;
+
+      const newPosition = interpolateEntity(
+        {
+          value: player.position,
+          timestamp: state.timestamp
+        },
+        { value: oldPlayer.position, timestamp: prevState.timestamp },
+        { now }
+      );
+
+      sprite.position.set(newPosition.x, newPosition.y);
+    });
   });
 
   const onWindowResize = throttle(() => app.resize(), 100);
@@ -103,6 +146,14 @@ export const createGameCanvas = async ({
 
   return {
     canvas,
+    updateState(newState: UpdateGameStatePayload) {
+      prevState = state;
+      state = {
+        players: newState.players,
+        playersById: Object.fromEntries(newState.players.map(p => [p.id, p])),
+        timestamp: performance.now()
+      };
+    },
     cleanup() {
       window.removeEventListener('resize', onWindowResize);
     }

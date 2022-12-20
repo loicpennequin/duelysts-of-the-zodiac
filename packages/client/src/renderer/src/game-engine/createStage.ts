@@ -62,4 +62,6 @@ export const createStage = async (
   });
 
   app.stage.addChild(container);
+
+  return container;
 };

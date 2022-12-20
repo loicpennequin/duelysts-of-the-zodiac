@@ -21,7 +21,7 @@ type MoveAction = {
   payload: MoveActionPayload;
 };
 
-type PlayerAction = MoveAction;
+export type PlayerAction = MoveAction;
 // eslint-disable-next-line @typescript-eslint/ban-types
 export type ServerToClientEvents = {
   [GAME_FOUND]: (payload: { gameId: string }) => void;
