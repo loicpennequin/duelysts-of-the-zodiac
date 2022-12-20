@@ -55,13 +55,6 @@ function createWindow(): void {
     if (mainWindow.isMaximized()) mainWindow.unmaximize();
     else mainWindow.maximize();
   });
-
-  ipcMain.handle('move', (_event, diff) => {
-    if (mainWindow.isMaximized()) return;
-    const [currentX, currentY] = mainWindow.getPosition();
-
-    mainWindow.setPosition(currentX + diff.x, currentY + diff.y, false);
-  });
 }
 
 // This method will be called when Electron has finished

@@ -1,19 +1,22 @@
 <script setup lang="ts">
-import { GameWorldDto } from '@dotz/shared';
+import { GameWorldDto, UserDto } from '@dotz/shared';
+import { useSession } from '@renderer/composables/useSession';
 import { createGameCanvas } from '@renderer/game-engine';
 
 const props = defineProps<{ gameId: string; gameWorld: GameWorldDto }>();
 
+const { data: session } = useSession();
 const container = ref<HTMLDivElement>();
 let engine: any;
 
 onMounted(async () => {
   if (!container.value) return;
-  engine = await createGameCanvas(
-    container.value,
-    props.gameWorld,
-    props.gameId
-  );
+  engine = await createGameCanvas({
+    container: container.value,
+    gameWorld: props.gameWorld,
+    gameId: props.gameId,
+    session: session.value as UserDto
+  });
   const { canvas } = engine;
   container.value.appendChild(canvas);
   document.body.style.overflow = 'hidden';
