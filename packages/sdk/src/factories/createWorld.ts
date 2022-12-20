@@ -43,7 +43,7 @@ const taskLookup = {
 
 export const createWorld = (playerIds: string[]): GameWorld => {
   const map = createMap();
-  const ecs = createEcs([new MovementSystem()]);
+  const ecs = createEcs([new MovementSystem(map)]);
   const players = playerIds.map(id => createPlayer({ id, ecs, map }));
   const emitter = new EventEmitter() as TypedEmitter<GameWorldEvents>;
   const queue = createTaskQueue();

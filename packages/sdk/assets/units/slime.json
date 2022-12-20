@@ -1,6 +1,6 @@
 { "frames": [
    {
-    "filename": "slime:idle-0",
+    "filename": "slime:idle.0",
     "frame": { "x": 0, "y": 0, "w": 128, "h": 128 },
     "rotated": false,
     "trimmed": false,
@@ -9,8 +9,26 @@
     "duration": 150
    },
    {
-    "filename": "slime:idle-1",
+    "filename": "slime:idle.1",
     "frame": { "x": 128, "y": 0, "w": 128, "h": 128 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 128, "h": 128 },
+    "sourceSize": { "w": 128, "h": 128 },
+    "duration": 150
+   },
+   {
+    "filename": "slime:idle.2",
+    "frame": { "x": 256, "y": 0, "w": 128, "h": 128 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 128, "h": 128 },
+    "sourceSize": { "w": 128, "h": 128 },
+    "duration": 150
+   },
+   {
+    "filename": "slime:idle.3",
+    "frame": { "x": 384, "y": 0, "w": 128, "h": 128 },
     "rotated": false,
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 128, "h": 128 },
@@ -23,10 +41,14 @@
   "version": "1.2.40-x64",
   "image": "slime.png",
   "format": "I8",
-  "size": { "w": 256, "h": 128 },
+  "size": { "w": 512, "h": 128 },
   "scale": "1",
   "frameTags": [
-   { "name": "idle", "from": 0, "to": 1, "direction": "forward" }
+   { "name": "idle", "from": 0, "to": 3, "direction": "forward" }
+  ],
+  "layers": [
+   { "name": "Body", "opacity": 255, "blendMode": "normal" },
+   { "name": "Fx", "opacity": 255, "blendMode": "normal" }
   ]
  }
 }

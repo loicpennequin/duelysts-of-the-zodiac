@@ -4,7 +4,8 @@ import {
   GameWorldDto,
   GameWorldPlayer,
   UserDto,
-  clamp
+  clamp,
+  mapRange
 } from '@dotz/shared';
 import * as PIXI from 'pixi.js';
 import { createCamera } from './createCamera';
@@ -87,18 +88,17 @@ export const createGameEngine = async ({
 
   const stage = await createStage(app, gameWorld);
 
-  const players: { id: string; sprite: PIXI.AnimatedSprite }[] =
-    await Promise.all(
-      gameWorld.players.map(async player => {
-        const sprite = await createStageEntity(units.slime, 'idle');
-        sprite.position.set(player.position.x, player.position.y);
-        sprite.anchor.set(0.5, 0.5);
-        app.stage.addChild(sprite);
+  const playerSpritesPromises = await Promise.all(
+    gameWorld.players.map(async player => {
+      const sprite = await createStageEntity(units.slime, 'idle');
+      sprite.anchor.set(0.5, 0.5);
+      app.stage.addChild(sprite);
 
-        return { id: player.id, sprite };
-      })
-    );
-  const playersLookup = Object.fromEntries(players.map(p => [p.id, p]));
+      return [player.id, sprite] as [string, PIXI.AnimatedSprite];
+    })
+  );
+
+  const playerSprites = Object.fromEntries(playerSpritesPromises);
 
   let state = createGameState();
   let prevState = createGameState();
@@ -106,12 +106,12 @@ export const createGameEngine = async ({
   const interpolateEntities = () => {
     const now = performance.now();
     state.players.forEach(player => {
-      const { sprite } = playersLookup[player.id];
+      const sprite = playerSprites[player.id];
       const oldPlayer = prevState.playersById[player.id];
 
       if (!oldPlayer) return;
 
-      const newPosition = interpolateEntity(
+      const { x, y } = interpolateEntity(
         {
           value: player.position,
           timestamp: state.timestamp
@@ -120,20 +120,31 @@ export const createGameEngine = async ({
         { now }
       );
 
-      sprite.position.set(Math.round(newPosition.x), Math.round(newPosition.y));
+      sprite.position.set(
+        mapRange(
+          x,
+          { min: 0, max: gameWorld.map.width },
+          { min: 0, max: stage.width }
+        ),
+        mapRange(
+          y,
+          { min: 0, max: gameWorld.map.height },
+          { min: 0, max: stage.height }
+        )
+      );
     });
   };
 
   const centerCameraOnPlayer = () => {
-    const ownPlayer = players.find(player => player.id === session.id);
-    if (!ownPlayer) return;
+    const sprite = playerSprites[session.id];
+    if (!sprite) return;
 
     camera.update({
-      x: clamp(ownPlayer.sprite.position.x, {
+      x: clamp(sprite.position.x, {
         min: app.screen.width / 2 / camera.view.scale - 16,
         max: stage.width - app.screen.width / 2 / camera.view.scale + 16
       }),
-      y: clamp(ownPlayer.sprite.position.y, {
+      y: clamp(sprite.position.y, {
         min: app.screen.height / 2 / camera.view.scale - 16,
         max: stage.height - app.screen.height / 2 / camera.view.scale + 16
       })
@@ -161,6 +172,7 @@ export const createGameEngine = async ({
     },
     cleanup() {
       window.removeEventListener('resize', onWindowResize);
+      app.destroy();
     }
   };
 };

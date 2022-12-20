@@ -1,10 +1,8 @@
-import { randomInt, type MapLayout } from '@dotz/shared';
+import { type MapLayout, random } from '@dotz/shared';
 import { Position } from '../components/Position';
 import type { ECS } from './createEcs';
 import { MovementIntent } from '../components/MovementIntent';
 import { Player } from '../components/Player';
-
-const CELL_SIZE = 32;
 
 export type CreatePlayerOptions = {
   id: string;
@@ -17,8 +15,8 @@ export const createPlayer = ({ id, ecs, map }: CreatePlayerOptions) => {
   ecs.addComponent(
     entity,
     new Position({
-      x: randomInt(map.width * CELL_SIZE),
-      y: randomInt(map.height * CELL_SIZE)
+      x: random(map.width),
+      y: random(map.height)
     })
   );
   ecs.addComponent(
